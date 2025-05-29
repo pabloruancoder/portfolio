@@ -687,7 +687,7 @@ img {
     box-shadow: 0 0 0 3px var(--primary-color); /* Efeito de "aura" */
 }
 
-.timeline__content {
+.timeline__content { /* Aplica-se a .experiencia__card e .formacao__card dentro da timeline */
     padding: var(--mb-1-5);
     background-color: var(--container-color);
     position: relative;
@@ -721,7 +721,7 @@ img {
 .timeline__item-subtitle { /* Para empresa/instituição */
     font-size: var(--normal-font-size);
     color: var(--text-color);
-    font-weight: var(--font-medium); /* Deixando um pouco mais leve que o título */
+    font-weight: var(--font-medium); 
     margin-bottom: var(--mb-0-25);
 }
 
@@ -733,8 +733,8 @@ img {
 }
 .timeline__item-location::before {
     content: "\f3c5"; /* Ícone de localização do Font Awesome */
-    font-family: "Font Awesome 6 Free"; /* Garante que a fonte correta seja usada */
-    font-weight: 900; /* Necessário para ícones sólidos do FA */
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900; 
     margin-right: var(--mb-0-5);
     color: var(--text-color-light);
 }
@@ -773,4 +773,63 @@ img {
     .timeline__content {
         padding: var(--mb-1); /* Menos padding interno nos cards */
     }
+}
+
+/* ===== Estilos para Página de Todos os Projetos e Filtros (relevante para todos-projetos.html) ===== */
+/* Botão "Ver mais projetos" e "Voltar" centralizado */
+.projetos__ver-mais,
+.projetos__voltar { /* Adicionado .projetos__voltar para consistência */
+    text-align: center;
+    margin-top: var(--mb-2-5); 
+    padding-bottom: var(--mb-2); 
+}
+
+/* Utilitário para centralizar texto, se precisar em outros lugares */
+.text-center {
+    text-align: center;
+}
+
+/* Estilos para os filtros de categoria (para todos-projetos.html) */
+.projetos-filtros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: var(--mb-1);
+    margin-bottom: var(--mb-2-5); 
+}
+
+.projetos-filtros__item {
+    padding: 0.6rem 1.2rem;
+    font-size: var(--small-font-size);
+    font-weight: var(--font-medium);
+    color: var(--text-color);
+    background-color: var(--container-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50px; /* Formato de pílula */
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-transform: capitalize; /* Primeira letra maiúscula */
+}
+
+.projetos-filtros__item:hover {
+    background-color: var(--primary-color-alt);
+    color: var(--body-color);
+    border-color: var(--primary-color-alt);
+}
+
+.projetos-filtros__item.active-filter {
+    background-color: var(--primary-color);
+    color: var(--body-color); 
+    border-color: var(--primary-color);
+}
+
+/* Ajuste de padding para a página de todos os projetos (para todos-projetos.html) */
+.todos-projetos-page {
+    padding-top: calc(var(--header-height) + 2rem); 
+}
+
+/* Classe para esconder projetos (usada pelo JS em todos-projetos.html) */
+.projeto-hidden {
+    display: none !important; 
 }
