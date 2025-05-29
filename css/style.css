@@ -1,19 +1,19 @@
 /* ===== Variáveis Globais ===== */
 :root {
-    --header-height: 4.5rem; /* Aumentado para 72px */
+    --header-height: 4.5rem;
 
     /* Cores (Tema Escuro Profissional) */
     --hue: 200; /* Base para HSL (Ciano/Azul) */
-    --primary-color: hsl(var(--hue), 70%, 55%); /* Cor de destaque principal */
+    --primary-color: hsl(var(--hue), 70%, 55%);
     --primary-color-alt: hsl(var(--hue), 70%, 50%);
     --primary-color-darker: hsl(var(--hue), 60%, 45%);
     --title-color: hsl(var(--hue), 10%, 95%);
     --text-color: hsl(var(--hue), 10%, 75%);
     --text-color-light: hsl(var(--hue), 10%, 65%);
-    --body-color: hsl(var(--hue), 30%, 8%);   /* Fundo principal bem escuro */
-    --container-color: hsl(var(--hue), 25%, 12%); /* Fundo para seções/cards */
+    --body-color: hsl(var(--hue), 30%, 8%);
+    --container-color: hsl(var(--hue), 25%, 12%);
     --border-color: hsl(var(--hue), 20%, 20%);
-    --box-shadow-color: hsla(var(--hue), 70%, 55%, 0.2); /* Sombra com a cor de destaque */
+    --box-shadow-color: hsla(var(--hue), 70%, 55%, 0.2);
 
     /* Fontes */
     --body-font: 'Poppins', sans-serif;
@@ -50,8 +50,8 @@
     --z-modal: 1000;
 
     /* Outros */
-    --border-radius: 0.5rem; /* 8px */
-    --transition-cubic: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1); /* Transição mais suave */
+    --border-radius: 0.5rem;
+    --transition-cubic: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
     --transition-fast: all 0.2s ease-out;
 }
 
@@ -85,7 +85,7 @@ body {
     font-size: var(--normal-font-size);
     background-color: var(--body-color);
     color: var(--text-color);
-    padding-top: var(--header-height); /* Para o header fixo */
+    padding-top: var(--header-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -138,7 +138,7 @@ img {
     text-align: center;
     margin-bottom: var(--mb-0-5);
 }
-.section__title::before { /* Linha acima do título */
+.section__title::before {
     content: '';
     display: block;
     width: 50px;
@@ -159,7 +159,7 @@ img {
 /* ===== Header & Navegação ===== */
 .header {
     width: 100%;
-    background-color: hsla(var(--hue), 30%, 8%, 0.8); /* Fundo com transparência */
+    background-color: hsla(var(--hue), 30%, 8%, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     position: fixed;
@@ -168,9 +168,9 @@ img {
     z-index: var(--z-fixed);
     transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
-.header.scrolled { /* Classe adicionada com JS */
+.header.scrolled {
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    background-color: hsla(var(--hue), 30%, 8%, 0.95); /* Menos transparente ao rolar */
+    background-color: hsla(var(--hue), 30%, 8%, 0.95);
 }
 
 .nav {
@@ -181,7 +181,7 @@ img {
 }
 
 .nav__logo,
-.nav__toggle { /* Para menu mobile, se adicionar */
+.nav__toggle {
     color: var(--title-color);
     font-weight: var(--font-semibold);
 }
@@ -196,7 +196,7 @@ img {
 
 .nav__list {
     display: flex;
-    column-gap: 2.5rem; /* Espaço entre itens */
+    column-gap: 2.5rem;
 }
 
 .nav__link {
@@ -207,12 +207,12 @@ img {
     color: var(--title-color);
     font-weight: var(--font-medium);
     transition: var(--transition-fast);
-    position: relative; /* Para o efeito da linha abaixo */
+    position: relative;
 }
 .nav__link::after {
     content: '';
     position: absolute;
-    bottom: -5px; /* Posição da linha */
+    bottom: -5px;
     left: 0;
     width: 0;
     height: 2px;
@@ -220,36 +220,66 @@ img {
     transition: width 0.3s ease-in-out;
 }
 .nav__link:hover,
-.nav__link.active-link { /* Classe para link ativo */
+.nav__link.active-link {
     color: var(--primary-color);
 }
 .nav__link:hover::after,
 .nav__link.active-link::after {
-    width: 100%; /* Largura da linha no hover/active */
+    width: 100%;
 }
 
-/* Ícone do menu (para mobile, se for implementar) */
 .nav__toggle {
     font-size: 1.5rem;
     cursor: pointer;
-    display: none; /* Escondido por padrão em telas maiores */
+    display: none;
 }
 
 
 /* ===== Hero (Home) ===== */
-.hero__container { /* Aplicado ao container dentro da .hero-section */
-    min-height: calc(100vh - var(--header-height) - 6rem); /* Ajuste para padding da section */
+.hero-section {
+    padding-top: 0; /* Controlado pelo flexbox e min-height */
+    padding-bottom: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+    /* Gradiente Animado */
+    background: linear-gradient(
+        -45deg,
+        hsl(var(--hue), 30%, 10%),
+        hsl(var(--hue), 25%, 15%),
+        hsl(var(--hue), 30%, 8%),
+        hsl(var(--hue), 25%, 12%)
+    );
+    background-size: 400% 400%;
+    animation: gradientBG 25s ease infinite;
+}
+
+.hero-section::before { /* Overlay sutil */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.hero__container {
+    /* min-height: calc(100vh - var(--header-height) - 6rem);  Ajustado pois o parent controla 100vh */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    position: relative; /* Para ficar sobre o ::before do .hero-section */
+    z-index: 2; /* Para ficar sobre o ::before do .hero-section */
+    padding: 2rem 0; /* Adiciona algum padding interno */
 }
-.hero-section { /* Para dar um padding geral à seção hero */
-    padding-top: calc(var(--header-height) + 2rem);
-    padding-bottom: 4rem;
-}
-
 
 .hero__title {
     font-size: var(--biggest-font-size);
@@ -258,7 +288,7 @@ img {
 }
 .hero__title #typed-name {
     color: var(--primary-color);
-    display: inline-block; /* Para animações/efeitos */
+    display: inline-block;
 }
 
 .hero__subtitle {
@@ -268,13 +298,26 @@ img {
     margin-bottom: var(--mb-2);
 }
 
+/* Keyframes para a animação do gradiente */
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .button {
     display: inline-block;
     background-color: var(--primary-color);
-    color: var(--body-color); /* Texto escuro no botão claro */
+    color: var(--body-color);
     padding: 1.1rem 2.2rem;
     font-weight: var(--font-medium);
-    border-radius: 50px; /* Botão "pílula" */
+    border-radius: 50px;
     transition: var(--transition-cubic);
     box-shadow: 0 5px 15px var(--box-shadow-color);
     border: 2px solid transparent;
@@ -284,12 +327,12 @@ img {
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 8px 20px hsla(var(--hue), 70%, 55%, 0.3);
 }
-.button--flex { /* Para botões com ícones */
+.button--flex {
     display: inline-flex;
     align-items: center;
     gap: var(--mb-0-5);
 }
-.button--ghost { /* Botão com fundo transparente */
+.button--ghost {
     background-color: transparent;
     border-color: var(--primary-color);
     color: var(--primary-color);
@@ -298,7 +341,7 @@ img {
     background-color: var(--primary-color);
     color: var(--body-color);
 }
-.button__icon { /* Ícone dentro do botão */
+.button__icon {
     transition: transform .3s ease;
 }
 .button:hover .button__icon {
@@ -315,11 +358,11 @@ img {
 
 .sobre__img-wrapper {
     position: relative;
-    width: 280px; /* Ajuste o tamanho conforme sua foto */
+    width: 280px;
     height: 280px;
-    justify-self: center; /* Centraliza o wrapper na coluna do grid */
-    border-radius: var(--border-radius); /* Borda na imagem */
-    overflow: hidden; /* Garante que a imagem não escape */
+    justify-self: center;
+    border-radius: var(--border-radius);
+    overflow: hidden;
     border: 4px solid var(--primary-color);
     box-shadow: 0 0 25px var(--box-shadow-color);
 }
@@ -327,7 +370,7 @@ img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease; /* Efeito de zoom na imagem */
+    transition: transform 0.5s ease;
 }
 .sobre__img-wrapper:hover img {
     transform: scale(1.1);
@@ -359,7 +402,7 @@ img {
     transition: var(--transition-cubic);
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Para o efeito da imagem */
+    overflow: hidden;
 }
 .projeto__card:hover {
     transform: translateY(-8px) scale(1.02);
@@ -368,8 +411,8 @@ img {
 }
 
 .projeto__img-container {
-    width: calc(100% + 3.6rem); /* Compensa o padding do card */
-    margin: -1.8rem -1.8rem 1.5rem -1.8rem; /* Negativa o padding */
+    width: calc(100% + 3.6rem);
+    margin: -1.8rem -1.8rem 1.5rem -1.8rem;
     height: 220px;
     overflow: hidden;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -404,19 +447,19 @@ img {
 .projeto__description {
     font-size: var(--small-font-size);
     margin-bottom: var(--mb-1-5);
-    flex-grow: 1; /* Para que os botões fiquem alinhados em baixo */
+    flex-grow: 1;
     line-height: 1.7;
 }
 
 .projeto__links {
     display: flex;
     gap: var(--mb-1);
-    margin-top: auto; /* Empurra para baixo */
+    margin-top: auto;
 }
-.projeto__links .button { /* Estilo para botões dentro dos cards de projeto */
+.projeto__links .button {
     padding: 0.7rem 1rem;
     font-size: var(--small-font-size);
-    flex-grow: 1; /* Ocupa espaço igual */
+    flex-grow: 1;
     text-align: center;
 }
 
@@ -455,13 +498,13 @@ img {
     transition: background-color 0.2s ease;
 }
 .habilidade__item:hover {
-    background-color: hsla(var(--hue), 20%, 20%, 0.5); /* Fundo sutil no hover */
+    background-color: hsla(var(--hue), 20%, 20%, 0.5);
 }
 .habilidade__item i {
     font-size: 1.4rem;
     color: var(--primary-color);
     margin-right: var(--mb-0-75);
-    width: 25px; /* Alinhamento */
+    width: 25px;
     text-align: center;
 }
 .habilidade__name {
@@ -471,10 +514,10 @@ img {
 }
 
 /* ===== Contato ===== */
-#contato .section__subtitle { /* Específico para subtítulo da seção contato */
+#contato .section__subtitle {
     margin-bottom: var(--mb-1-5);
 }
-.contato__container { /* Container específico da seção contato */
+.contato__container {
     text-align: center;
 }
 .contato__info {
@@ -490,7 +533,7 @@ img {
     margin-bottom: var(--mb-1-5);
 }
 .contato__link {
-    font-size: 2.5rem; /* Ícones maiores */
+    font-size: 2.5rem;
     color: var(--primary-color);
     transition: transform 0.3s ease, color 0.3s ease;
 }
@@ -499,7 +542,7 @@ img {
     transform: translateY(-5px) scale(1.1);
 }
 .contato__email-link {
-    display: inline-block; /* Para aplicar margin e padding corretamente */
+    display: inline-block;
     font-size: var(--h3-font-size);
     color: var(--text-color);
     font-weight: var(--font-medium);
@@ -547,29 +590,27 @@ img {
 
 
 /* ===== Responsividade ===== */
-/* Para dispositivos menores (Mobile) */
 @media screen and (max-width: 767px) {
     .container {
         padding-left: 0.75rem;
         padding-right: 0.75rem;
     }
     body {
-        padding-top: 0; /* Header não é mais fixo ou tem altura diferente */
+        padding-top: 0;
     }
     .header {
-         position: relative; /* Header deixa de ser fixo no mobile */
+         position: relative;
          backdrop-filter: none;
          -webkit-backdrop-filter: none;
-         background-color: var(--body-color); /* Fundo sólido para header no mobile */
-         box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra sutil */
+         background-color: var(--body-color);
+         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .nav {
-        height: calc(var(--header-height) - 1.5rem); /* Altura do header no mobile */
+        height: calc(var(--header-height) - 1.5rem);
     }
     .nav__list {
-        /* Estilos para menu hamburguer - precisa de JS para alternar a classe 'show-menu' */
         position: fixed;
-        top: calc(var(--header-height) - 1.5rem); /* Abaixo do header */
+        top: calc(var(--header-height) - 1.5rem);
         left: -100%;
         width: 100%;
         padding: 2rem 0;
@@ -579,33 +620,35 @@ img {
         flex-direction: column;
         row-gap: 1.5rem;
         text-align: center;
-        z-index: calc(var(--z-fixed) - 1); /* Abaixo do header mas acima do conteúdo */
+        z-index: calc(var(--z-fixed) - 1);
     }
-    .nav__list.show-menu { /* Classe a ser adicionada via JS */
+    .nav__list.show-menu {
         left: 0;
     }
-    .nav__link::after { display: none; } /* Remove linha abaixo no mobile */
+    .nav__link::after { display: none; }
     .nav__toggle { display: block; font-size: 1.3rem; }
 
     .section { padding: 4rem 0 1rem; }
-    .section__title { font-size: var(--h2-font-size); } /* Ajuste se necessário */
+    .section__title { font-size: var(--h2-font-size); }
     .section__title::before { width: 40px; }
     .section__subtitle { margin-bottom: var(--mb-2); }
 
     .hero-section {
-      padding-top: 2rem; /* Ajusta padding do hero no mobile */
+      padding-top: 2rem;
       padding-bottom: 2rem;
+      min-height: auto; /* Ajusta min-height para mobile */
     }
     .hero__container {
-      min-height: auto;
+      min-height: auto; /* Ajusta min-height para mobile */
+      padding: 2rem 1rem; /* Ajusta padding interno no mobile */
     }
-    .hero__title { font-size: 2rem; } /* Ajuste se necessário */
+    .hero__title { font-size: 2rem; }
     .hero__subtitle { font-size: 1.2rem; }
     .button { padding: 0.9rem 1.8rem; font-size: 0.9rem; }
 
     .sobre__container { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
     .sobre__img-wrapper { width: 200px; height: 200px; margin-bottom: var(--mb-1); }
-    .sobre__data { text-align: justify; } /* Ou center */
+    .sobre__data { text-align: justify; }
 
     .projetos__container { grid-template-columns: 1fr; }
     .projeto__card { padding: 1.5rem; }
@@ -617,10 +660,9 @@ img {
     .contato__link { font-size: 2rem; }
 }
 
-/* Para telas médias */
 @media screen and (min-width: 768px) {
     body {
-        margin: 0; /* Resetar margem se houver para scrollbar */
+        margin: 0;
     }
     .section { padding: 7rem 0 3rem; }
     .section__subtitle { margin-bottom: 4rem; }
@@ -631,7 +673,7 @@ img {
         margin-left: auto;
         margin-right: auto;
     }
-    .header { padding: 0 1rem; } /* Adiciona padding lateral ao header */
+    .header { padding: 0 1rem; }
     .nav { height: calc(var(--header-height) + 1rem); column-gap: 3rem; }
     .nav__link { font-size: var(--normal-font-size); }
 }
@@ -639,12 +681,11 @@ img {
 /* ===== TIMELINE (Experiência & Formação) ===== */
 .timeline {
     position: relative;
-    max-width: 900px; /* Ajuste conforme necessário */
+    max-width: 900px;
     margin: 0 auto;
     padding: var(--mb-2) 0;
 }
 
-/* A linha vertical da timeline */
 .timeline::after {
     content: '';
     position: absolute;
@@ -653,41 +694,40 @@ img {
     opacity: 0.3;
     top: 0;
     bottom: 0;
-    left: 20px; /* Posição da linha à esquerda */
+    left: 20px;
     margin-left: -2px;
     border-radius: 2px;
 }
 
 .timeline__item {
-    padding: var(--mb-1) 0 var(--mb-2) 60px; /* Espaçamento à direita da linha */
+    padding: var(--mb-1) 0 var(--mb-2) 60px;
     position: relative;
-    background-color: inherit; /* Garante que não haja fundo próprio inesperado */
+    background-color: inherit;
 }
 
 .timeline__item:last-child {
-    padding-bottom: 0; /* Remove padding extra do último item */
+    padding-bottom: 0;
 }
 
-/* Ícone na timeline */
 .timeline__icon {
     position: absolute;
-    left: 0; /* Alinha com a linha da timeline */
-    top: 5px; /* Ajuste vertical do ícone */
+    left: 0;
+    top: 5px;
     width: 40px;
     height: 40px;
     background-color: var(--primary-color);
-    color: var(--body-color); /* Cor do ícone dentro do círculo */
+    color: var(--body-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    z-index: 10; /* Para ficar acima da linha */
-    border: 3px solid var(--body-color); /* Para destacar da linha */
-    box-shadow: 0 0 0 3px var(--primary-color); /* Efeito de "aura" */
+    z-index: 10;
+    border: 3px solid var(--body-color);
+    box-shadow: 0 0 0 3px var(--primary-color);
 }
 
-.timeline__content { /* Aplica-se a .experiencia__card e .formacao__card dentro da timeline */
+.timeline__content {
     padding: var(--mb-1-5);
     background-color: var(--container-color);
     position: relative;
@@ -702,7 +742,6 @@ img {
     transform: translateY(-3px);
 }
 
-/* Classes específicas de conteúdo dentro da timeline */
 .timeline__date {
     display: block;
     font-size: var(--small-font-size);
@@ -711,17 +750,17 @@ img {
     margin-bottom: var(--mb-0-5);
 }
 
-.timeline__item-title { /* Para h3 dentro do .timeline__content */
+.timeline__item-title {
     font-size: var(--h3-font-size);
     color: var(--title-color);
     margin-bottom: var(--mb-0-25);
     font-weight: var(--font-semibold);
 }
 
-.timeline__item-subtitle { /* Para empresa/instituição */
+.timeline__item-subtitle {
     font-size: var(--normal-font-size);
     color: var(--text-color);
-    font-weight: var(--font-medium); 
+    font-weight: var(--font-medium);
     margin-bottom: var(--mb-0-25);
 }
 
@@ -732,9 +771,9 @@ img {
     font-style: italic;
 }
 .timeline__item-location::before {
-    content: "\f3c5"; /* Ícone de localização do Font Awesome */
-    font-family: "Font Awesome 6 Free"; 
-    font-weight: 900; 
+    content: "\f3c5";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
     margin-right: var(--mb-0-5);
     color: var(--text-color-light);
 }
@@ -748,55 +787,51 @@ img {
 }
 
 
-/* Responsividade da Timeline */
 @media screen and (max-width: 767px) {
     .timeline::after {
-        left: 15px; /* Ajusta a linha para telas menores */
+        left: 15px;
     }
     .timeline__item {
-        padding-left: 50px; /* Mais espaço para o conteúdo */
-        padding-right: 0; /* Remove padding da direita */
+        padding-left: 50px;
+        padding-right: 0;
     }
     .timeline__icon {
         width: 30px;
         height: 30px;
         font-size: 1rem;
-        left: 0px; /* Garante que o ícone esteja na borda */
+        left: 0px;
         top: 8px;
     }
     .timeline__item-title {
-        font-size: 1.15rem; /* Ajusta tamanho da fonte do título */
+        font-size: 1.15rem;
     }
     .timeline__item-subtitle {
         font-size: 0.95rem;
     }
     .timeline__content {
-        padding: var(--mb-1); /* Menos padding interno nos cards */
+        padding: var(--mb-1);
     }
 }
 
 /* ===== Estilos para Página de Todos os Projetos e Filtros (relevante para todos-projetos.html) ===== */
-/* Botão "Ver mais projetos" e "Voltar" centralizado */
 .projetos__ver-mais,
-.projetos__voltar { /* Adicionado .projetos__voltar para consistência */
+.projetos__voltar {
     text-align: center;
-    margin-top: var(--mb-2-5); 
-    padding-bottom: var(--mb-2); 
+    margin-top: var(--mb-2-5);
+    padding-bottom: var(--mb-2);
 }
 
-/* Utilitário para centralizar texto, se precisar em outros lugares */
 .text-center {
     text-align: center;
 }
 
-/* Estilos para os filtros de categoria (para todos-projetos.html) */
 .projetos-filtros {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: var(--mb-1);
-    margin-bottom: var(--mb-2-5); 
+    margin-bottom: var(--mb-2-5);
 }
 
 .projetos-filtros__item {
@@ -806,10 +841,10 @@ img {
     color: var(--text-color);
     background-color: var(--container-color);
     border: 1px solid var(--border-color);
-    border-radius: 50px; /* Formato de pílula */
+    border-radius: 50px;
     cursor: pointer;
     transition: var(--transition-fast);
-    text-transform: capitalize; /* Primeira letra maiúscula */
+    text-transform: capitalize;
 }
 
 .projetos-filtros__item:hover {
@@ -820,16 +855,14 @@ img {
 
 .projetos-filtros__item.active-filter {
     background-color: var(--primary-color);
-    color: var(--body-color); 
+    color: var(--body-color);
     border-color: var(--primary-color);
 }
 
-/* Ajuste de padding para a página de todos os projetos (para todos-projetos.html) */
-.todos-projetos-page {
-    padding-top: calc(var(--header-height) + 2rem); 
+.todos-projetos-page { /* Para a página todos-projetos.html */
+    padding-top: calc(var(--header-height) + 2rem);
 }
 
-/* Classe para esconder projetos (usada pelo JS em todos-projetos.html) */
-.projeto-hidden {
-    display: none !important; 
+.projeto-hidden { /* Para a página todos-projetos.html */
+    display: none !important;
 }
