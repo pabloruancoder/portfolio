@@ -49,9 +49,28 @@
                 <span class="projetos-filtros__item" data-filter="mobile">Mobile</span>
                 <span class="projetos-filtros__item" data-filter="ia">IA/ML</span>
                 <span class="projetos-filtros__item" data-filter="data">Dados</span>
-                </div>
+                <span class="projetos-filtros__item" data-filter="ferramenta">Ferramentas</span>
+            </div>
 
             <div class="projetos__container container grid">
+
+                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="ferramenta ia">
+                    <div class="projeto__img-container">
+                        <img src="assets/dashboard-sistema-financeiro.png" alt="Dashboard do Sistema Financeiro">
+                    </div>
+                    <h3 class="projeto__title">Sistema Financeiro <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <p class="projeto__description">
+                        <strong>Conceito:</strong> Sistema financeiro para Pessoa Física (PF) e Pessoa Jurídica (PJ) visando a organização financeira. Já possui transações, orçamentos, relatórios, DRE, gráficos e histórico desenvolvidos.<br>
+                        <strong>Progresso/Próximos Passos:</strong> Exploração de APIs para captura automática de extratos bancários e lançamento de transações. A meta futura é consolidar essa integração.<br>
+                        <strong>Tecnologias:</strong> Python, JSON, Banco de Dados.
+                    </p>
+                    <div class="projeto__links">
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Sistema Financeiro">
+                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web">
                     <div class="projeto__img-container">
                         <div class="placeholder-img">Visual do Projeto Alpha</div>
@@ -111,8 +130,8 @@
                         <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
                     </div>
                 </div>
-
-                 <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web">
+                
+                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web">
                     <div class="projeto__img-container">
                         <div class="placeholder-img">Visual do Projeto Zeta</div>
                     </div>
@@ -123,7 +142,7 @@
                         <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
                     </div>
                 </div>
-                </div>
+            </div>
 
             <div class="projetos__voltar container text-center" data-aos="fade-up" data-aos-delay="100">
                 <a href="index.html#projetos" class="button button--flex button--ghost">
@@ -139,6 +158,24 @@
             <p class="footer__copy">&copy; <span id="currentYear"></span> Pablo Ruan. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <div id="galleryModal" class="modal">
+        <div class="modal-content" data-aos="zoom-in" data-aos-duration="300">
+            <span class="modal-close-button" id="modalCloseButton" aria-label="Fechar modal">&times;</span>
+            <h3 id="modalProjectTitle" class="modal-project-title">Galeria do Projeto</h3>
+            <div class="modal-gallery">
+                <img id="modalImage" src="" alt="Imagem do Projeto">
+                <a class="modal-prev" id="modalPrevButton" aria-label="Imagem anterior">&#10094;</a>
+                <a class="modal-next" id="modalNextButton" aria-label="Próxima imagem">&#10095;</a>
+            </div>
+            <div id="modalImageCounter" class="modal-image-counter"></div>
+            <div id="modalImageCaption" class="modal-image-caption"></div>
+        </div>
+    </div>
+
+    <a href="#" id="backToTopBtn" class="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/script.js"></script>
