@@ -47,6 +47,9 @@
     <main class="main-content">
 
         <section class="section hero-section" id="home">
+            <!-- PARTÍCULAS SERÃO INJETADAS AQUI -->
+            <div id="tsparticles"></div>
+            
             <div class="hero__container container grid" data-aos="fade-in" data-aos-duration="1000">
                 <h1 class="hero__title"><span data-translate="hero_greeting">Olá, eu sou</span> <span id="typed-name">Pablo Ruan</span></h1>
                 <p class="hero__subtitle" id="typed-role" data-translate="hero_role">Junior Systems Analyst & Developer, and AI Developer</p>
@@ -213,7 +216,7 @@
                         <img src="assets/maos-que-falam/index-maoes-que-falam.png" alt="Interface do projeto Mãos que falam">
                     </div>
                     <h3 class="projeto__title">Mãos que falam <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
-                    <p class="projeto__description">
+                    <p class="projeto__description" data-translate="maos_que_falam_desc">
                         <strong>Conceito:</strong> Aplicação web para reconhecimento de Libras em tempo real, usando Visão Computacional e Machine Learning.<br>
                         <strong>Tecnologias:</strong> Python (MediaPipe, Scikit-learn, OpenCV), HTML, CSS, JavaScript.
                     </p>
@@ -229,7 +232,7 @@
                         <img src="assets/dashboard-sistema-financeiro.png" alt="Dashboard do Sistema Financeiro">
                     </div>
                     <h3 class="projeto__title">Sistema Financeiro <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
-                    <p class="projeto__description">
+                    <p class="projeto__description" data-translate="sistema_financeiro_desc">
                         <strong>Conceito:</strong> Sistema financeiro para PF/PJ visando organização financeira, com transações, orçamentos, relatórios, DRE, gráficos e histórico.<br>
                         <strong>Tecnologias:</strong> Python, JSON, Banco de Dados.
                     </p>
@@ -245,7 +248,7 @@
                         <img src="assets/fitness-pro/Fitness_Pro.png" alt="Interface do Fitness Pro">
                     </div>
                     <h3 class="projeto__title">Fitness Pro <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
-                    <p class="projeto__description">
+                    <p class="projeto__description" data-translate="fitness_pro_desc">
                         <strong>Conceito:</strong> Sistema que ajuda o usuário a gerenciar a jornada fitness, acompanhando receitas, progresso de peso e hábitos diários.<br>
                         <strong>Tecnologias:</strong> Python (CustomTkinter), MySQL, JSON.
                     </p>
@@ -332,6 +335,9 @@
     <a href="#" id="backToTopBtn" class="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo" data-translate-title="back_to_top">
         <i class="fas fa-arrow-up"></i>
     </a>
+    
+    <!-- SCRIPT DA BIBLIOTECA DE PARTÍCULAS -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/translations.js"></script>

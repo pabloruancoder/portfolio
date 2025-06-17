@@ -101,9 +101,13 @@ img {
     display: grid;
     gap: 1.5rem;
 }
+
 .section {
     padding: 6rem 0 2rem;
+    position: relative; 
+    z-index: 2;         
 }
+
 .section__title {
     font-size: var(--h1-font-size);
     color: var(--title-color);
@@ -152,11 +156,15 @@ img {
     color: var(--title-color);
     font-weight: var(--font-semibold);
 }
+
+/* *** A CORREÇÃO ESTÁ AQUI *** */
 .nav__logo {
     font-size: 1.5rem;
     letter-spacing: 1px;
     color: var(--primary-color);
+    white-space: nowrap; /* Impede que o texto quebre em duas linhas */
 }
+
 .nav__logo:hover {
     color: var(--primary-color-alt);
 }
@@ -201,6 +209,7 @@ img {
     cursor: pointer;
     display: none;
 }
+
 .hero-section {
     padding-top: 0;
     padding-bottom: 0;
@@ -208,28 +217,19 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
     overflow: hidden;
-    background: linear-gradient(
-        -45deg,
-        hsl(var(--hue), 30%, 8%),
-        hsl(var(--hue), 35%, 18%),
-        hsl(var(--hue), 25%, 12%),
-        hsl(var(--hue), 40%, 22%)
-    );
-    background-size: 300% 300%;
-    animation: gradientBG 18s ease infinite;
+    background-color: var(--body-color);
 }
-.hero-section::before {
-    content: '';
+
+.hero-section #tsparticles {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
 }
+
 .hero__container {
     display: flex;
     flex-direction: column;
@@ -237,9 +237,11 @@ img {
     align-items: center;
     text-align: center;
     position: relative;
-    z-index: 2;
+    z-index: 2; 
     padding: 2rem 0;
 }
+
+
 .hero__title {
     font-size: var(--biggest-font-size);
     margin-bottom: var(--mb-0-75);
@@ -254,19 +256,9 @@ img {
     color: var(--text-color);
     font-weight: var(--font-light);
     margin-bottom: var(--mb-2);
-    min-height: 3.5em; /* Garante espaço para o texto traduzido */
+    min-height: 3.5em; 
 }
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+
 .button {
     display: inline-block;
     background-color: var(--primary-color);
@@ -569,6 +561,8 @@ img {
     padding: 3rem 0;
     text-align: center;
     border-top: 1px solid var(--border-color);
+    position: relative; 
+    z-index: 2;        
 }
 .footer__copy {
     font-size: var(--small-font-size);
@@ -1025,14 +1019,14 @@ img {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-left: 2rem; /* Ajuste conforme necessário */
+    margin-left: 2rem; 
 }
 
 .lang-switcher__btn {
     background: none;
     border: 2px solid transparent;
     color: var(--text-color);
-    font-size: 1.5rem; /* Ajuste o tamanho dos emojis */
+    font-size: 1.5rem; 
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease;
     padding: 0.25rem;

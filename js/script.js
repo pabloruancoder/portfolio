@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // --- RASTREADOR DE ANIMAÇÕES DE DIGITAÇÃO ---
+    let activeTypeEffects = {};
+
     // --- INICIALIZAÇÃO AOS ---
     if (typeof AOS !== 'undefined') {
         AOS.init({
@@ -117,9 +120,17 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
-    // --- EFEITO DE DIGITAÇÃO ---
+    // --- EFEITO DE DIGITAÇÃO (FUNÇÃO ATUALIZADA) ---
     function typeEffect(element, text, speed, callback) {
-        if (!element || typeof text === 'undefined' || text === null) return;
+        if (!element || typeof text === 'undefined' || text === null || !element.id) {
+            console.error("Elemento para typeEffect precisa de um ID.");
+            return;
+        }
+
+        if (activeTypeEffects[element.id]) {
+            clearTimeout(activeTypeEffects[element.id]);
+        }
+
         let i = 0;
         element.innerHTML = "";
 
@@ -127,8 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (i < text.length) {
                 element.innerHTML += text.charAt(i);
                 i++;
-                setTimeout(typing, speed);
+                activeTypeEffects[element.id] = setTimeout(typing, speed);
             } else {
+                delete activeTypeEffects[element.id];
                 if (callback) callback();
             }
         }
@@ -208,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- FORMULÁRIO DE CONTATO ---
     const contactForm = document.getElementById('contactForm');
     const formMessage = document.getElementById('formMessage');
-    const googleAppScriptURL = 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI';
+    const googleAppScriptURL = 'https://script.google.com/macros/s/AKfycby-4R_aKVq-_7ArJunG5pvz65h8QD10xLyElqXEHU2BDZNX9NFmxPV4S3lVCwp9CG-3dQ/exec';
 
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
@@ -348,9 +360,25 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         "Ingles Facil": {
             title: "Ingles Facil",
-            images: [
-                // Adicione aqui as imagens da galeria do "Ingles Facil" quando disponíveis
-            ]
+            images: [{
+                src: "assets/ingles-facil/ingles.png",
+                caption: "Tela inicial da plataforma interativa"
+            }, {
+                src: "assets/ingles-facil/print1.png",
+                caption: "Módulo 1: Aula sobre o Alfabeto com pronúncia e exemplos"
+            }, {
+                src: "assets/ingles-facil/print2.png",
+                caption: "Lição interativa sobre os números de 0 a 10"
+            }, {
+                src: "assets/ingles-facil/print3.png",
+                caption: "Atividade prática sobre as cores básicas"
+            }, {
+                src: "assets/ingles-facil/print4.png",
+                caption: "Sistema de gamificação para motivar o aprendizado"
+            }, {
+                src: "assets/ingles-facil/print5.png",
+                caption: "Glossário completo com busca e filtros para consulta rápida"
+            }]
         }
     };
 
@@ -461,7 +489,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Traduz textos normais
         document.querySelectorAll('[data-translate]').forEach(el => {
             const key = el.getAttribute('data-translate');
-            if (langTranslations[key]) el.textContent = langTranslations[key];
+            if (langTranslations[key]) {
+                el.innerHTML = langTranslations[key];
+            }
         });
 
         // Traduz placeholders
@@ -511,4 +541,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicia a página com o idioma correto
     updateContent(currentLang);
-});
+
+    // --- INICIALIZAÇÃO TSPARTICLES ---
+    if (document.getElementById('tsparticles')) {
+        // Pega a cor primária calculada pelo CSS
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+
+        tsParticles.load("tsparticles", {
+            fpsLimit: 120,
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: primaryColor }, // Usa a cor real, não a variável
+                shape: { type: "circle" },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false },
+                },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: primaryColor, // Usa a cor real, não a variável
+                    opacity: 0.4,
+                    width: 1,
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    attract: { enable: false },
+                },
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true,
+                },
+                modes: {
+                    grab: { distance: 140, line_opacity: 1 },
+                    push: { particles_nb: 4 },
+                },
+            },
+            retina_detect: true,
+        });
+    }
+
+}); // Fim do DOMContentLoaded
