@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todos os Projetos - Pablo Ruan</title>
+    <title data-translate="page_title_projects">Todos os Projetos - Pablo Ruan</title>
+    <meta name="description" content="Explore todos os projetos de Pablo Ruan, incluindo desenvolvimento Web, Mobile, IA/Machine Learning e mais.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,14 +23,19 @@
 
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                    <li class="nav__item"><a href="index.html#home" class="nav__link">Início</a></li>
-                    <li class="nav__item"><a href="index.html#sobre" class="nav__link">Sobre Mim</a></li>
-                    <li class="nav__item"><a href="index.html#experiencia" class="nav__link">Experiência</a></li>
-                    <li class="nav__item"><a href="index.html#formacao" class="nav__link">Formação</a></li>
-                    <li class="nav__item"><a href="index.html#habilidades" class="nav__link">Habilidades</a></li>
-                    <li class="nav__item"><a href="#todos-os-projetos" class="nav__link active-link">Projetos</a></li>
-                    <li class="nav__item"><a href="index.html#contato" class="nav__link">Contato</a></li>
+                    <li class="nav__item"><a href="index.html#home" class="nav__link" data-translate="nav_home">Início</a></li>
+                    <li class="nav__item"><a href="index.html#sobre" class="nav__link" data-translate="nav_about">Sobre Mim</a></li>
+                    <li class="nav__item"><a href="index.html#experiencia" class="nav__link" data-translate="nav_experience">Experiência</a></li>
+                    <li class="nav__item"><a href="index.html#formacao" class="nav__link" data-translate="nav_education">Formação</a></li>
+                    <li class="nav__item"><a href="index.html#habilidades" class="nav__link" data-translate="nav_skills">Habilidades</a></li>
+                    <li class="nav__item"><a href="#todos-os-projetos" class="nav__link active-link" data-translate="nav_projects">Projetos</a></li>
+                    <li class="nav__item"><a href="index.html#contato" class="nav__link" data-translate="nav_contact">Contato</a></li>
                 </ul>
+                <div class="nav__lang-switcher">
+                    <button class="lang-switcher__btn" data-lang="pt-BR">🇧🇷</button>
+                    <button class="lang-switcher__btn" data-lang="en-US">🇺🇸</button>
+                    <button class="lang-switcher__btn" data-lang="es-ES">🇪🇸</button>
+                </div>
             </div>
 
             <div class="nav__toggle" id="nav-toggle">
@@ -40,19 +46,19 @@
 
     <main class="main-content">
         <section class="section todos-projetos-page" id="todos-os-projetos" data-aos="fade-up">
-            <h2 class="section__title">Todos os Meus Projetos</h2>
-            <span class="section__subtitle">Explore meu trabalho por categoria</span>
+            <h2 class="section__title" data-translate="all_projects_title">Todos os Meus Projetos</h2>
+            <span class="section__subtitle" data-translate="all_projects_subtitle">Explore meu trabalho por categoria</span>
 
             <div class="projetos-filtros container" data-aos="fade-up" data-aos-delay="100">
-                <span class="projetos-filtros__item active-filter" data-filter="all">Todos</span>
-                <span class="projetos-filtros__item" data-filter="web">Web</span>
-                <span class="projetos-filtros__item" data-filter="mobile">Mobile</span>
-                <span class="projetos-filtros__item" data-filter="ia">IA/ML</span>
-                <span class="projetos-filtros__item" data-filter="data">Dados</span>
-                <span class="projetos-filtros__item" data-filter="ferramenta">Ferramentas</span>
-                <span class="projetos-filtros__item" data-filter="python">Python</span>
-                <span class="projetos-filtros__item" data-filter="fit">Fit</span>
-                <span class="projetos-filtros__item" data-filter="aprendizado">Aprendizado</span>
+                <span class="projetos-filtros__item active-filter" data-filter="all" data-translate="filter_all">Todos</span>
+                <span class="projetos-filtros__item" data-filter="web" data-translate="filter_web">Web</span>
+                <span class="projetos-filtros__item" data-filter="mobile" data-translate="filter_mobile">Mobile</span>
+                <span class="projetos-filtros__item" data-filter="ia" data-translate="filter_ia">IA/ML</span>
+                <span class="projetos-filtros__item" data-filter="data" data-translate="filter_data">Dados</span>
+                <span class="projetos-filtros__item" data-filter="ferramenta" data-translate="filter_tool">Ferramentas</span>
+                <span class="projetos-filtros__item" data-filter="python" data-translate="filter_python">Python</span>
+                <span class="projetos-filtros__item" data-filter="fit" data-translate="filter_fit">Fit</span>
+                <span class="projetos-filtros__item" data-filter="aprendizado" data-translate="filter_learning">Aprendizado</span>
             </div>
 
             <div class="projetos__container container grid">
@@ -61,7 +67,7 @@
                     <div class="projeto__img-container">
                         <img src="assets/maos-que-falam/index-maoes-que-falam.png" alt="Interface do projeto Mãos que falam">
                     </div>
-                    <h3 class="projeto__title">Mãos que falam <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <h3 class="projeto__title">Mãos que falam <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
                     <p class="projeto__description">
                         <strong>Conceito:</strong> Aplicação web para reconhecimento de Libras em tempo real, usando a câmera do usuário, Visão Computacional e Machine Learning.<br>
                         <strong>Funcionalidades:</strong> Tradução de gestos para texto com feedback visual avançado, interface moderna e um vasto vocabulário de sinais.<br>
@@ -69,7 +75,7 @@
                     </p>
                     <div class="projeto__links">
                         <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Mãos que falam">
-                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                            <span data-translate="gallery_button">Ver Galeria</span> <i class="fas fa-images button__icon"></i>
                         </a>
                     </div>
                 </div>
@@ -78,7 +84,7 @@
                     <div class="projeto__img-container">
                         <img src="assets/dashboard-sistema-financeiro.png" alt="Dashboard do Sistema Financeiro">
                     </div>
-                    <h3 class="projeto__title">Sistema Financeiro <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <h3 class="projeto__title">Sistema Financeiro <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
                     <p class="projeto__description">
                         <strong>Conceito:</strong> Sistema financeiro para Pessoa Física (PF) e Pessoa Jurídica (PJ) visando a organização financeira. Já possui transações, orçamentos, relatórios, DRE, gráficos e histórico desenvolvidos.<br>
                         <strong>Progresso/Próximos Passos:</strong> Exploração de APIs para captura automática de extratos bancários e lançamento de transações. A meta futura é consolidar essa integração.<br>
@@ -86,7 +92,7 @@
                     </p>
                     <div class="projeto__links">
                         <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Sistema Financeiro">
-                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                            <span data-translate="gallery_button">Ver Galeria</span> <i class="fas fa-images button__icon"></i>
                         </a>
                     </div>
                 </div>
@@ -95,7 +101,7 @@
                     <div class="projeto__img-container">
                         <img src="assets/fitness-pro/Fitness_Pro.png" alt="Interface do Fitness Pro">
                     </div>
-                    <h3 class="projeto__title">Fitness Pro <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <h3 class="projeto__title">Fitness Pro <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
                     <p class="projeto__description">
                         <strong>Conceito:</strong> Sistema que ajuda o usuário a gerenciar a jornada fitness, acompanhando receitas, progresso de peso e hábitos diários. O objetivo é organizar e facilitar o dia a dia do usuário.<br>
                         <strong>Funcionalidades:</strong> Visão geral, Nutrição (planejador de Dieta, Receitas), Biblioteca de Exercícios, Treinos (registrar Treinos diários e históricos), Calculadora Métricas, Progresso.<br>
@@ -103,7 +109,7 @@
                     </p>
                     <div class="projeto__links">
                         <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Fitness Pro">
-                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                            <span data-translate="gallery_button">Ver Galeria</span> <i class="fas fa-images button__icon"></i>
                         </a>
                     </div>
                 </div>
@@ -112,7 +118,7 @@
                     <div class="projeto__img-container">
                         <img src="assets/ingles-facil/ingles.png" alt="Interface do Ingles Facil">
                     </div>
-                    <h3 class="projeto__title">Ingles Facil <span class="status-dev">(Protótipo)</span></h3>
+                    <h3 class="projeto__title">Ingles Facil <span class="status-dev" data-translate="project_status_proto">(Protótipo)</span></h3>
                     <p class="projeto__description">
                         <strong>Conceito:</strong> Plataforma interativa para aprendizado de inglês, começando pelos fundamentos, com aulas dinâmicas, gamificação e glossário.<br>
                         <strong>Progresso:</strong> Módulo 1 (Fundamental) com 3 aulas interativas (Alfabeto, Números 0-10, Cores básicas), incluindo pronúncia, dicas, vídeos práticos, gamificação e glossário filtrável.<br>
@@ -120,7 +126,7 @@
                     </p>
                     <div class="projeto__links">
                         <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Ingles Facil">
-                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                            <span data-translate="gallery_button">Ver Galeria</span> <i class="fas fa-images button__icon"></i>
                         </a>
                     </div>
                 </div>
@@ -129,7 +135,7 @@
 
             <div class="projetos__voltar container text-center" data-aos="fade-up" data-aos-delay="100">
                 <a href="index.html#projetos" class="button button--flex button--ghost">
-                    <i class="fas fa-arrow-left button__icon"></i> Voltar ao Portfólio
+                    <i class="fas fa-arrow-left button__icon"></i> <span data-translate="back_to_portfolio">Voltar ao Portfólio</span>
                 </a>
             </div>
 
@@ -138,29 +144,30 @@
 
     <footer class="footer">
         <div class="container">
-            <p class="footer__copy">&copy; <span id="currentYear"></span> Pablo Ruan. Todos os direitos reservados.</p>
+            <p class="footer__copy">© <span id="currentYear"></span> <span data-translate="footer_text">Pablo Ruan. Todos os direitos reservados.</span></p>
         </div>
     </footer>
 
     <div id="galleryModal" class="modal">
         <div class="modal-content" data-aos="zoom-in" data-aos-duration="300">
-            <span class="modal-close-button" id="modalCloseButton" aria-label="Fechar modal">&times;</span>
+            <span class="modal-close-button" id="modalCloseButton" aria-label="Fechar modal">×</span>
             <h3 id="modalProjectTitle" class="modal-project-title">Galeria do Projeto</h3>
             <div class="modal-gallery">
                 <img id="modalImage" src="" alt="Imagem do Projeto">
-                <a class="modal-prev" id="modalPrevButton" aria-label="Imagem anterior">&#10094;</a>
-                <a class="modal-next" id="modalNextButton" aria-label="Próxima imagem">&#10095;</a>
+                <a class="modal-prev" id="modalPrevButton" aria-label="Imagem anterior">❮</a>
+                <a class="modal-next" id="modalNextButton" aria-label="Próxima imagem">❯</a>
             </div>
             <div id="modalImageCounter" class="modal-image-counter"></div>
             <div id="modalImageCaption" class="modal-image-caption"></div>
         </div>
     </div>
 
-    <a href="#" id="backToTopBtn" class="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+    <a href="#" id="backToTopBtn" class="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo" data-translate-title="back_to_top">
         <i class="fas fa-arrow-up"></i>
     </a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/translations.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

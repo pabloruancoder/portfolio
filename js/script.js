@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // --- INICIALIZAÇÃO AOS ---
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 800,
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- HEADER SCROLLED ---
     const header = document.querySelector('.header');
     if (header) {
         window.addEventListener('scroll', function() {
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- NAVEGAÇÃO E SCROLL SUAVE ---
     const navLinks = document.querySelectorAll('.nav__link[href^="#"], .nav__link[href^="index.html#"]');
     const heroButtonLink = document.querySelector('.hero__container .button[href^="#"]');
 
@@ -63,10 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (navMenu && navMenu.classList.contains('show-menu')) {
                     navMenu.classList.remove('show-menu');
                 }
-            }
-            else if (targetHref === '#todos-os-projetos' && window.location.pathname.includes('todos-projetos.html')) {
-                 e.preventDefault();
-                 smoothScrollTo(targetHref);
+            } else if (targetHref === '#todos-os-projetos' && window.location.pathname.includes('todos-projetos.html')) {
+                e.preventDefault();
+                smoothScrollTo(targetHref);
             }
         });
     });
@@ -79,15 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- ATIVAR LINK DA SEÇÃO ATUAL NA NAVEGAÇÃO ---
     const sections = document.querySelectorAll('section[id]');
     function scrollActive() {
         const scrollY = window.pageYOffset;
         const headerHeight = header ? header.offsetHeight : 0;
-        let currentSectionId = '#home'; 
+        let currentSectionId = '#home';
 
         sections.forEach(current => {
             const sectionHeight = current.offsetHeight;
-            const sectionTop = current.offsetTop - headerHeight - 150; 
+            const sectionTop = current.offsetTop - headerHeight - 150;
             const sectionId = current.getAttribute('id');
 
             if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
@@ -95,33 +98,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         if ((window.innerHeight + scrollY) >= document.body.offsetHeight - 100) {
-             const lastSection = sections[sections.length-1];
-             if (lastSection) currentSectionId = '#' + lastSection.getAttribute('id');
+            const lastSection = sections[sections.length - 1];
+            if (lastSection) currentSectionId = '#' + lastSection.getAttribute('id');
         }
         setActiveLink(currentSectionId);
     }
 
-    if (sections.length > 0 && (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html') || window.location.pathname === '') ) {
+    if (sections.length > 0 && (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html') || window.location.pathname === '')) {
         window.addEventListener('scroll', scrollActive);
-        scrollActive(); 
+        scrollActive();
     } else if (window.location.pathname.includes('todos-projetos.html')) {
         setActiveLink('#todos-os-projetos');
     }
 
+    // --- ATUALIZAR ANO NO FOOTER ---
     const currentYearSpan = document.getElementById('currentYear');
     if (currentYearSpan) {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
+    // --- EFEITO DE DIGITAÇÃO ---
     function typeEffect(element, text, speed, callback) {
-        if (!element || !text) return;
+        if (!element || typeof text === 'undefined' || text === null) return;
         let i = 0;
-        const originalText = text;
         element.innerHTML = "";
 
         function typing() {
-            if (i < originalText.length) {
-                element.innerHTML += originalText.charAt(i);
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
                 i++;
                 setTimeout(typing, speed);
             } else {
@@ -131,32 +135,24 @@ document.addEventListener('DOMContentLoaded', function() {
         typing();
     }
 
+    // Efeito de digitação para o nome (não precisa de tradução)
     const nameElement = document.getElementById('typed-name');
-    const roleElement = document.getElementById('typed-role');
-
-    if (nameElement && roleElement) {
+    if (nameElement) {
         const yourName = nameElement.textContent || "Pablo Ruan";
-        const yourRole = roleElement.textContent || "Junior Systems Analyst & Developer, and AI Developer";
-
         nameElement.textContent = '';
-        roleElement.textContent = '';
-
-        typeEffect(nameElement, yourName, 100, () => {
-            setTimeout(() => {
-                typeEffect(roleElement, yourRole, 75);
-            }, 300);
-        });
+        typeEffect(nameElement, yourName, 100);
     }
 
+    // --- MENU MOBILE ---
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
-
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('show-menu');
         });
     }
 
+    // --- FILTRO DE PROJETOS ---
     function inicializarFiltrosDeProjetos() {
         const filtroItems = document.querySelectorAll('.projetos-filtros__item');
         const projetoCards = document.querySelectorAll('.projetos__container .projeto__card');
@@ -178,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             card.classList.add('projeto-hidden');
                         }
                     });
-                     if (typeof AOS !== 'undefined') {
+                    if (typeof AOS !== 'undefined') {
                         AOS.refresh();
                     }
                 });
@@ -188,15 +184,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (document.querySelector('.projetos-filtros')) {
         inicializarFiltrosDeProjetos();
-         if (typeof AOS !== 'undefined') {
-            setTimeout(() => {
-                AOS.refreshHard();
-            }, 300);
-        }
     }
 
+    // --- BOTÃO VOLTAR AO TOPO ---
     const backToTopButton = document.getElementById("backToTopBtn");
-
     if (backToTopButton) {
         window.addEventListener("scroll", () => {
             if (window.pageYOffset > 300) {
@@ -205,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 backToTopButton.classList.remove("show");
             }
         });
-
         backToTopButton.addEventListener("click", (e) => {
             e.preventDefault();
             window.scrollTo({
@@ -215,10 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- FORMULÁRIO DE CONTATO ---
     const contactForm = document.getElementById('contactForm');
     const formMessage = document.getElementById('formMessage');
-    
-    const googleAppScriptURL = 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI'; 
+    const googleAppScriptURL = 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI';
 
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
@@ -237,46 +227,50 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalButtonHTML;
                 console.error("URL do Google Apps Script não foi definida no script.js.");
-                return; 
+                return;
             }
 
             const formData = new FormData(contactForm);
 
             fetch(googleAppScriptURL, {
-                method: 'POST',
-                body: formData,
-                mode: 'cors' 
-            })
-            .then(response => {
-                if (!response.ok && response.type === 'opaque') {
-                    console.warn("Resposta opaca recebida. Assumindo sucesso devido à política CORS do Apps Script.");
-                    return { result: 'success_opaque', message: 'Mensagem enviada (resposta opaca).' };
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.result === 'success' || data.result === 'success_opaque') {
-                    formMessage.textContent = 'Mensagem enviada com sucesso!';
-                    formMessage.classList.add('success');
-                    contactForm.reset(); 
-                } else {
-                    formMessage.textContent = 'Erro ao enviar mensagem: ' + (data.message || 'Tente novamente.');
+                    method: 'POST',
+                    body: formData,
+                    mode: 'cors'
+                })
+                .then(response => {
+                    if (!response.ok && response.type === 'opaque') {
+                        console.warn("Resposta opaca recebida. Assumindo sucesso devido à política CORS do Apps Script.");
+                        return {
+                            result: 'success_opaque',
+                            message: 'Mensagem enviada (resposta opaca).'
+                        };
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.result === 'success' || data.result === 'success_opaque') {
+                        formMessage.textContent = 'Mensagem enviada com sucesso!';
+                        formMessage.classList.add('success');
+                        contactForm.reset();
+                    } else {
+                        formMessage.textContent = 'Erro ao enviar mensagem: ' + (data.message || 'Tente novamente.');
+                        formMessage.classList.add('error');
+                        console.error("Erro retornado pelo script:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro no fetch:', error);
+                    formMessage.textContent = 'Erro de rede ao enviar mensagem. Verifique sua conexão ou tente novamente.';
                     formMessage.classList.add('error');
-                    console.error("Erro retornado pelo script:", data);
-                }
-            })
-            .catch(error => {
-                console.error('Erro no fetch:', error);
-                formMessage.textContent = 'Erro de rede ao enviar mensagem. Verifique sua conexão ou tente novamente.';
-                formMessage.classList.add('error');
-            })
-            .finally(() => {
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonHTML; 
-            });
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonHTML;
+                });
         });
     }
 
+    // --- GALERIA MODAL ---
     const galleryModal = document.getElementById("galleryModal");
     const modalCloseButton = document.getElementById("modalCloseButton");
     const modalImage = document.getElementById("modalImage");
@@ -293,34 +287,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const projectGalleries = {
         "Sistema Financeiro": {
-            title: "Sistema Financeiro - Galeria de Imagens",
-            images: [
-                { src: "assets/sistema-financeiro/print1.png", caption: "Visão geral do Dashboard" },
-                { src: "assets/sistema-financeiro/print2.png", caption: "Tela de Transações" },
-                { src: "assets/sistema-financeiro/print3.png", caption: "Geração de Relatórios" },
-                { src: "assets/sistema-financeiro/print4.png", caption: "Detalhe do Orçamento" },
-            ]
+            title: "Sistema Financeiro",
+            images: [{
+                src: "assets/sistema-financeiro/print1.png",
+                caption: "Visão geral do Dashboard"
+            }, {
+                src: "assets/sistema-financeiro/print2.png",
+                caption: "Tela de Transações"
+            }, {
+                src: "assets/sistema-financeiro/print3.png",
+                caption: "Geração de Relatórios"
+            }, {
+                src: "assets/sistema-financeiro/print4.png",
+                caption: "Detalhe do Orçamento"
+            }, ]
         },
         "Fitness Pro": {
-            title: "Fitness Pro - Galeria de Telas",
-            images: [
-                { src: "assets/fitness-pro/print1.png", caption: "Visão Geral do App" },
-                { src: "assets/fitness-pro/print2.png", caption: "Nutrição - Planejador de Dieta" },
-                { src: "assets/fitness-pro/print3.png", caption: "Nutrição - Receitas" },
-                { src: "assets/fitness-pro/print4.png", caption: "Biblioteca de Exercícios" },
-                { src: "assets/fitness-pro/print5.png", caption: "Treinos - Registro Diário e Histórico" },
-                { src: "assets/fitness-pro/print6.png", caption: "Calculadora de Métricas Corporais" },
-                { src: "assets/fitness-pro/print7.png", caption: "Acompanhamento de Progresso" },
-                { src: "assets/fitness-pro/print8.png", caption: "Perfil" },
-                { src: "assets/fitness-pro/print9.png", caption: "Configurações" }
-            ]
+            title: "Fitness Pro",
+            images: [{
+                src: "assets/fitness-pro/print1.png",
+                caption: "Visão Geral do App"
+            }, {
+                src: "assets/fitness-pro/print2.png",
+                caption: "Nutrição - Planejador de Dieta"
+            }, {
+                src: "assets/fitness-pro/print3.png",
+                caption: "Nutrição - Receitas"
+            }, {
+                src: "assets/fitness-pro/print4.png",
+                caption: "Biblioteca de Exercícios"
+            }, {
+                src: "assets/fitness-pro/print5.png",
+                caption: "Treinos - Registro Diário e Histórico"
+            }, {
+                src: "assets/fitness-pro/print6.png",
+                caption: "Calculadora de Métricas Corporais"
+            }, {
+                src: "assets/fitness-pro/print7.png",
+                caption: "Acompanhamento de Progresso"
+            }, {
+                src: "assets/fitness-pro/print8.png",
+                caption: "Perfil"
+            }, {
+                src: "assets/fitness-pro/print9.png",
+                caption: "Configurações"
+            }]
         },
         "Mãos que falam": {
-            title: "Mãos que falam - Galeria de Telas",
+            title: "Mãos que falam",
+            images: [{
+                src: "assets/maos-que-falam/print1.png",
+                caption: "Visão geral da interface"
+            }, {
+                src: "assets/maos-que-falam/print2.png",
+                caption: "Chat"
+            }, {
+                src: "assets/maos-que-falam/print3.png",
+                caption: "Interface do chat de tradução"
+            }]
+        },
+        "Ingles Facil": {
+            title: "Ingles Facil",
             images: [
-                { src: "assets/maos-que-falam/print1.png", caption: "Visão geral da interface" },
-                { src: "assets/maos-que-falam/print2.png", caption: "Chat" },
-                { src: "assets/maos-que-falam/print3.png", caption: "Interface do chat de tradução" }
+                // Adicione aqui as imagens da galeria do "Ingles Facil" quando disponíveis
             ]
         }
     };
@@ -349,8 +378,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function openModal(projectName) {
         const galleryData = projectGalleries[projectName];
         if (galleryModal && galleryData && galleryData.images && galleryData.images.length > 0) {
+            const lang = document.documentElement.lang;
+            const titleSuffix = translations[lang]['gallery_title_suffix'] || ' - Image Gallery';
+            
             currentGalleryImages = galleryData.images;
-            currentGalleryTitle = galleryData.title || projectName + " - Galeria";
+            currentGalleryTitle = galleryData.title + titleSuffix;
             currentImageIndex = 0;
 
             if(modalProjectTitle) modalProjectTitle.textContent = currentGalleryTitle;
@@ -381,96 +413,102 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    if (modalCloseButton) {
-        modalCloseButton.addEventListener("click", closeModal);
-    }
+    if (modalCloseButton) modalCloseButton.addEventListener("click", closeModal);
+    if (modalPrevButton) modalPrevButton.addEventListener("click", () => {
+        if (!modalPrevButton.classList.contains("disabled")) {
+            currentImageIndex--;
+            showImage(currentImageIndex);
+        }
+    });
 
-    if (modalPrevButton) {
-        modalPrevButton.addEventListener("click", () => {
-            if (!modalPrevButton.classList.contains("disabled") && currentImageIndex > 0) {
-                currentImageIndex--;
-                showImage(currentImageIndex);
-            }
-        });
-    }
+    if (modalNextButton) modalNextButton.addEventListener("click", () => {
+        if (!modalNextButton.classList.contains("disabled")) {
+            currentImageIndex++;
+            showImage(currentImageIndex);
+        }
+    });
 
-    if (modalNextButton) {
-        modalNextButton.addEventListener("click", () => {
-            if (!modalNextButton.classList.contains("disabled") && currentImageIndex < currentGalleryImages.length - 1) {
-                currentImageIndex++;
-                showImage(currentImageIndex);
-            }
-        });
-    }
-
-    if (galleryModal) {
-        galleryModal.addEventListener("click", function(event) {
-            if (event.target === galleryModal) {
-                closeModal();
-            }
-        });
-    }
+    if (galleryModal) galleryModal.addEventListener("click", (event) => {
+        if (event.target === galleryModal) closeModal();
+    });
 
     document.addEventListener("keydown", function(event) {
         if (galleryModal && galleryModal.style.display === "block") {
-            if (event.key === "Escape") {
-                closeModal();
-            } else if (event.key === "ArrowLeft") {
-                 if (modalPrevButton && !modalPrevButton.classList.contains("disabled") && currentImageIndex > 0) {
-                    currentImageIndex--;
-                    showImage(currentImageIndex);
-                }
-            } else if (event.key === "ArrowRight") {
-                 if (modalNextButton && !modalNextButton.classList.contains("disabled") && currentImageIndex < currentGalleryImages.length - 1) {
-                    currentImageIndex++;
-                    showImage(currentImageIndex);
-                }
-            }
+            if (event.key === "Escape") closeModal();
+            else if (event.key === "ArrowLeft") modalPrevButton.click();
+            else if (event.key === "ArrowRight") modalNextButton.click();
         }
     });
+
+
+    // --- CÓDIGO DE INTERNACIONALIZAÇÃO (I18N) ---
+    const langSwitcherButtons = document.querySelectorAll('.lang-switcher__btn');
+    let currentLang = localStorage.getItem('lang') || navigator.language || 'pt-BR';
     
-    if (modalImage) {
-        modalImage.addEventListener('click', () => {
-            if (!document.fullscreenElement && 
-                !document.mozFullScreenElement && 
-                !document.webkitFullscreenElement && 
-                !document.msFullscreenElement) {
-                if (modalImage.requestFullscreen) {
-                    modalImage.requestFullscreen();
-                } else if (modalImage.mozRequestFullScreen) { 
-                    modalImage.mozRequestFullScreen();
-                } else if (modalImage.webkitRequestFullscreen) { 
-                    modalImage.webkitRequestFullscreen();
-                } else if (modalImage.msRequestFullscreen) { 
-                    modalImage.msRequestFullscreen();
-                }
-            } else { 
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { 
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { 
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { 
-                    document.msExitFullscreen();
-                }
-            }
+    // Simplifica o código do idioma (ex: 'pt-BR' -> 'pt-BR', 'en-US' -> 'en-US', 'es-AR' -> 'es-ES')
+    if (currentLang.startsWith('en')) currentLang = 'en-US';
+    else if (currentLang.startsWith('es')) currentLang = 'es-ES';
+    else currentLang = 'pt-BR'; // Padrão
+
+    const updateContent = (lang) => {
+        if (typeof translations === 'undefined' || !translations[lang]) {
+            console.error(`Traduções para o idioma "${lang}" não encontradas.`);
+            return;
+        }
+
+        const langTranslations = translations[lang];
+
+        // Traduz textos normais
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const key = el.getAttribute('data-translate');
+            if (langTranslations[key]) el.textContent = langTranslations[key];
         });
 
-        function handleFullscreenChange() {
-            const isFullscreen = document.fullscreenElement ||
-                                 document.mozFullScreenElement ||
-                                 document.webkitFullscreenElement ||
-                                 document.msFullscreenElement;
-            if (isFullscreen && isFullscreen === modalImage) {
-                modalImage.style.cursor = 'zoom-out';
-            } else {
-                modalImage.style.cursor = 'zoom-in';
-            }
+        // Traduz placeholders
+        document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-translate-placeholder');
+            if (langTranslations[key]) el.placeholder = langTranslations[key];
+        });
+
+        // Traduz titles (para tooltips)
+        document.querySelectorAll('[data-translate-title]').forEach(el => {
+            const key = el.getAttribute('data-translate-title');
+            if (langTranslations[key]) el.title = langTranslations[key];
+        });
+
+        // Atualiza o efeito de digitação do subtítulo
+        const roleElement = document.getElementById('typed-role');
+        if (roleElement) {
+            const roleKey = roleElement.getAttribute('data-translate');
+            const translatedRole = langTranslations[roleKey] || roleElement.textContent;
+            typeEffect(roleElement, translatedRole, 75);
         }
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-        document.addEventListener('msfullscreenchange', handleFullscreenChange);
-    }
+
+        // Atualiza título da página
+        const titleElement = document.querySelector('title');
+        if (titleElement) {
+            const titleKey = titleElement.getAttribute('data-translate');
+            if (langTranslations[titleKey]) titleElement.textContent = langTranslations[titleKey];
+        }
+
+        // Atualiza o atributo lang do HTML
+        document.documentElement.lang = lang;
+
+        // Atualiza o botão ativo
+        langSwitcherButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+    };
+
+    langSwitcherButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedLang = button.getAttribute('data-lang');
+            localStorage.setItem('lang', selectedLang);
+            currentLang = selectedLang;
+            updateContent(currentLang);
+        });
+    });
+
+    // Inicia a página com o idioma correto
+    updateContent(currentLang);
 });

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Portfólio Profissional - Pablo Ruan</title>
+    <title data-translate="page_title_home">Meu Portfólio Profissional - Pablo Ruan</title>
+    <meta name="description" content="Portfólio de Pablo Ruan, Analista e Desenvolvedor de Sistemas Júnior e Desenvolvedor de IA. Explore meus projetos em Python, IA, Web e mais.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,14 +23,19 @@
 
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                    <li class="nav__item"><a href="#home" class="nav__link active-link">Início</a></li>
-                    <li class="nav__item"><a href="#sobre" class="nav__link">Sobre Mim</a></li>
-                    <li class="nav__item"><a href="#experiencia" class="nav__link">Experiência</a></li>
-                    <li class="nav__item"><a href="#formacao" class="nav__link">Formação</a></li>
-                    <li class="nav__item"><a href="#habilidades" class="nav__link">Habilidades</a></li>
-                    <li class="nav__item"><a href="#projetos" class="nav__link">Projetos</a></li>
-                    <li class="nav__item"><a href="#contato" class="nav__link">Contato</a></li>
+                    <li class="nav__item"><a href="#home" class="nav__link active-link" data-translate="nav_home">Início</a></li>
+                    <li class="nav__item"><a href="#sobre" class="nav__link" data-translate="nav_about">Sobre Mim</a></li>
+                    <li class="nav__item"><a href="#experiencia" class="nav__link" data-translate="nav_experience">Experiência</a></li>
+                    <li class="nav__item"><a href="#formacao" class="nav__link" data-translate="nav_education">Formação</a></li>
+                    <li class="nav__item"><a href="#habilidades" class="nav__link" data-translate="nav_skills">Habilidades</a></li>
+                    <li class="nav__item"><a href="#projetos" class="nav__link" data-translate="nav_projects">Projetos</a></li>
+                    <li class="nav__item"><a href="#contato" class="nav__link" data-translate="nav_contact">Contato</a></li>
                 </ul>
+                <div class="nav__lang-switcher">
+                    <button class="lang-switcher__btn" data-lang="pt-BR">🇧🇷</button>
+                    <button class="lang-switcher__btn" data-lang="en-US">🇺🇸</button>
+                    <button class="lang-switcher__btn" data-lang="es-ES">🇪🇸</button>
+                </div>
             </div>
 
             <div class="nav__toggle" id="nav-toggle">
@@ -42,17 +48,17 @@
 
         <section class="section hero-section" id="home">
             <div class="hero__container container grid" data-aos="fade-in" data-aos-duration="1000">
-                <h1 class="hero__title">Olá, eu sou <span id="typed-name">Pablo Ruan</span></h1>
-                <p class="hero__subtitle" id="typed-role">Junior Systems Analyst & Developer, and AI Developer</p>
+                <h1 class="hero__title"><span data-translate="hero_greeting">Olá, eu sou</span> <span id="typed-name">Pablo Ruan</span></h1>
+                <p class="hero__subtitle" id="typed-role" data-translate="hero_role">Junior Systems Analyst & Developer, and AI Developer</p>
                 <a href="#projetos" class="button button--flex">
-                    Veja meus projetos <i class="fas fa-arrow-down button__icon"></i>
+                    <span data-translate="hero_button">Veja meus projetos</span> <i class="fas fa-arrow-down button__icon"></i>
                 </a>
             </div>
         </section>
 
         <section class="section sobre" id="sobre" data-aos="fade-up" data-aos-delay="100">
-            <h2 class="section__title">Sobre Mim</h2>
-            <span class="section__subtitle">Minha introdução</span>
+            <h2 class="section__title" data-translate="about_title">Sobre Mim</h2>
+            <span class="section__subtitle" data-translate="about_subtitle">Minha introdução</span>
 
             <div class="sobre__container container grid">
                 <div class="sobre__img-wrapper" data-aos="zoom-in" data-aos-delay="200">
@@ -60,13 +66,13 @@
                 </div>
 
                 <div class="sobre__data" data-aos="fade-left" data-aos-delay="300">
-                    <p>
+                    <p data-translate="about_p1">
                         Eu sou Pablo Ruan, Analista e Desenvolvedor de Sistemas Júnior e Desenvolvedor de IA, dedicado a promover soluções impulsionadas pela tecnologia com um forte foco em inovação. Atualmente, como Analista e Desenvolvedor de Sistemas Júnior, contribuo para projetos impactantes que melhoram a saúde e o bem-estar da comunidade.
                     </p>
-                    <p>
+                    <p data-translate="about_p2">
                         Estou cursando Bacharelado em Administração, Marketing e Gestão na Universidade Federal do Piauí, com formatura prevista para dezembro de 2026. Além disso, possuo certificação técnica em Desenvolvimento de Sistemas pelo Instituto Federal do Piauí, concluída em 2021.
                     </p>
-                    <p>
+                    <p data-translate="about_p3">
                         Minha jornada profissional é definida por um compromisso com o aprendizado contínuo e a aplicação prática do conhecimento em iniciativas que impulsionam mudanças significativas. Tenho experiência no desenvolvimento de APIs e uma paixão por Inteligência Artificial. Estou sempre aberto a explorar oportunidades de colaboração e discutir ideias transformadoras. Sinta-se à vontade para se conectar comigo para discutir potenciais sinergias.
                     </p>
                 </div>
@@ -74,8 +80,8 @@
         </section>
 
         <section class="section experiencia" id="experiencia" data-aos="fade-up" data-aos-delay="100">
-            <h2 class="section__title">Experiência Profissional</h2>
-            <span class="section__subtitle">Minha trajetória</span>
+            <h2 class="section__title" data-translate="experience_title">Experiência Profissional</h2>
+            <span class="section__subtitle" data-translate="experience_subtitle">Minha trajetória</span>
             <div class="timeline container">
 
                 <div class="timeline__item" data-aos="fade-up" data-aos-delay="200">
@@ -83,10 +89,10 @@
                         <i class="fas fa-briefcase"></i>
                     </div>
                     <div class="timeline__content experiencia__card">
-                        <span class="timeline__date">julho de 2024 - Presente</span>
-                        <h3 class="timeline__item-title">Analista e Desenvolvedor de Sistema Jr.</h3>
-                        <p class="timeline__item-subtitle">Vem Prevenir</p>
-                        <p class="timeline__item-description">
+                        <span class="timeline__date" data-translate="exp1_date">julho de 2024 - Presente</span>
+                        <h3 class="timeline__item-title" data-translate="exp1_title">Analista e Desenvolvedor de Sistema Jr.</h3>
+                        <p class="timeline__item-subtitle" data-translate="exp1_company">Vem Prevenir</p>
+                        <p class="timeline__item-description" data-translate="exp1_desc">
                             Contribuindo para projetos impactantes que melhoram a saúde e o bem-estar da comunidade através de soluções tecnológicas.
                         </p>
                     </div>
@@ -97,10 +103,10 @@
                         <i class="fas fa-rocket"></i>
                     </div>
                     <div class="timeline__content experiencia__card">
-                        <span class="timeline__date">julho de 2024 - novembro de 2024 (5 meses)</span>
-                        <h3 class="timeline__item-title">Founders at Campus</h3>
-                        <p class="timeline__item-subtitle">Google for Startups</p>
-                        <p class="timeline__item-description">
+                        <span class="timeline__date" data-translate="exp2_date">julho de 2024 - novembro de 2024 (5 meses)</span>
+                        <h3 class="timeline__item-title" data-translate="exp2_title">Founders at Campus</h3>
+                        <p class="timeline__item-subtitle" data-translate="exp2_company">Google for Startups</p>
+                        <p class="timeline__item-description" data-translate="exp2_desc">
                             Participei da 3ª Turma do programa Founders at Campus, com acesso ao Campus do Google for Startups e mentorias.
                         </p>
                     </div>
@@ -109,8 +115,8 @@
         </section>
 
         <section class="section formacao" id="formacao" data-aos="fade-up" data-aos-delay="100">
-            <h2 class="section__title">Formação Acadêmica</h2>
-            <span class="section__subtitle">Meus estudos</span>
+            <h2 class="section__title" data-translate="education_title">Formação Acadêmica</h2>
+            <span class="section__subtitle" data-translate="education_subtitle">Meus estudos</span>
             <div class="timeline container">
 
                 <div class="timeline__item" data-aos="fade-up" data-aos-delay="200">
@@ -118,9 +124,9 @@
                         <i class="fas fa-graduation-cap"></i>
                     </div>
                     <div class="timeline__content formacao__card">
-                        <span class="timeline__date">junho de 2021 - dezembro de 2026 (Previsto)</span>
-                        <h3 class="timeline__item-title">Universidade Federal do Piauí</h3>
-                        <p class="timeline__item-subtitle">Bacharelado em Administração, Negócios e Marketing</p>
+                        <span class="timeline__date" data-translate="edu1_date">junho de 2021 - dezembro de 2026 (Previsto)</span>
+                        <h3 class="timeline__item-title" data-translate="edu1_title">Universidade Federal do Piauí</h3>
+                        <p class="timeline__item-subtitle" data-translate="edu1_desc">Bacharelado em Administração, Negócios e Marketing</p>
                     </div>
                 </div>
 
@@ -129,21 +135,21 @@
                         <i class="fas fa-school"></i>
                     </div>
                     <div class="timeline__content formacao__card">
-                        <span class="timeline__date">agosto de 2020 - julho de 2021</span>
-                        <h3 class="timeline__item-title">IFPI - Instituto Federal do Piauí</h3>
-                        <p class="timeline__item-subtitle">Curso Técnico Integrado em Desenvolvimento de Sistemas</p>
+                        <span class="timeline__date" data-translate="edu2_date">agosto de 2020 - julho de 2021</span>
+                        <h3 class="timeline__item-title" data-translate="edu2_title">IFPI - Instituto Federal do Piauí</h3>
+                        <p class="timeline__item-subtitle" data-translate="edu2_desc">Curso Técnico Integrado em Desenvolvimento de Sistemas</p>
                     </div>
                 </div>
             </div>
         </section>
 
-<section class="section habilidades" id="habilidades" data-aos="fade-up" data-aos-delay="100">
-            <h2 class="section__title">Habilidades</h2>
-            <span class="section__subtitle">Minhas ferramentas técnicas</span>
+        <section class="section habilidades" id="habilidades" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section__title" data-translate="skills_title">Habilidades</h2>
+            <span class="section__subtitle" data-translate="skills_subtitle">Minhas ferramentas técnicas</span>
 
             <div class="habilidades__container container grid">
                 <div class="habilidade__categoria" data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="habilidade__categoria__title">IA & Cloud</h3>
+                    <h3 class="habilidade__categoria__title" data-translate="skills_cat1">IA & Cloud</h3>
                     <ul>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="100"><i class="fas fa-brain"></i> <span class="habilidade__name">Machine Learning (ML)</span></li>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="150"><i class="fas fa-cogs"></i> <span class="habilidade__name">Implementation</span></li>
@@ -154,7 +160,7 @@
                 </div>
 
                 <div class="habilidade__categoria" data-aos="fade-up" data-aos-delay="300">
-                    <h3 class="habilidade__categoria__title">Linguagens de Programação</h3>
+                    <h3 class="habilidade__categoria__title" data-translate="skills_cat2">Linguagens de Programação</h3>
                     <ul>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="100"><i class="fab fa-js-square"></i> <span class="habilidade__name">JavaScript (ES6+)</span></li>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="150"><i class="fab fa-python"></i> <span class="habilidade__name">Python</span></li>
@@ -164,7 +170,7 @@
                 </div>
                 
                 <div class="habilidade__categoria" data-aos="fade-up" data-aos-delay="400">
-                    <h3 class="habilidade__categoria__title">Backend & Desenvolvimento de APIs</h3>
+                    <h3 class="habilidade__categoria__title" data-translate="skills_cat3">Backend & Desenvolvimento de APIs</h3>
                     <ul>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="100"><i class="fab fa-laravel"></i> <span class="habilidade__name">Laravel</span></li>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="150"><i class="fab fa-node-js"></i> <span class="habilidade__name">Node.js (Express)</span></li>
@@ -175,7 +181,7 @@
                 </div>
 
                 <div class="habilidade__categoria" data-aos="fade-up" data-aos-delay="500">
-                    <h3 class="habilidade__categoria__title">Frontend</h3>
+                    <h3 class="habilidade__categoria__title" data-translate="skills_cat4">Frontend</h3>
                     <ul>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="100"><i class="fab fa-react"></i> <span class="habilidade__name">React.js</span></li>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="150"><i class="fab fa-html5"></i> <span class="habilidade__name">HTML5</span></li>
@@ -184,7 +190,7 @@
                 </div>
 
                 <div class="habilidade__categoria" data-aos="fade-up" data-aos-delay="600">
-                    <h3 class="habilidade__categoria__title">Ferramentas, Segurança & Outros</h3>
+                    <h3 class="habilidade__categoria__title" data-translate="skills_cat5">Ferramentas, Segurança & Outros</h3>
                     <ul>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="100"><i class="fab fa-git-alt"></i> <span class="habilidade__name">Git & GitHub</span></li>
                         <li class="habilidade__item" data-aos="fade-right" data-aos-delay="150"><i class="fas fa-shield-alt"></i> <span class="habilidade__name">Pentest</span></li>
@@ -196,60 +202,56 @@
             </div>
         </section>
 
-<section class="section projetos" id="projetos" data-aos="fade-up" data-aos-delay="100">
-            <h2 class="section__title">Meus Projetos</h2>
-            <span class="section__subtitle">Alguns trabalhos e estudos recentes</span>
+        <section class="section projetos" id="projetos" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section__title" data-translate="projects_title">Meus Projetos</h2>
+            <span class="section__subtitle" data-translate="projects_subtitle">Alguns trabalhos e estudos recentes</span>
 
             <div class="projetos__container container grid">
+                <!-- SUBSTITUA OS PROJETOS PLACEHOLDER PELOS REAIS, COMO ESTE EXEMPLO -->
+                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200">
+                    <div class="projeto__img-container">
+                        <img src="assets/maos-que-falam/index-maoes-que-falam.png" alt="Interface do projeto Mãos que falam">
+                    </div>
+                    <h3 class="projeto__title">Mãos que falam <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
+                    <p class="projeto__description">
+                        <strong>Conceito:</strong> Aplicação web para reconhecimento de Libras em tempo real, usando Visão Computacional e Machine Learning.<br>
+                        <strong>Tecnologias:</strong> Python (MediaPipe, Scikit-learn, OpenCV), HTML, CSS, JavaScript.
+                    </p>
+                    <div class="projeto__links">
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Mãos que falam">
+                           <span data-translate="project_details">Ver Detalhes</span> <i class="fas fa-images button__icon"></i>
+                        </a>
+                    </div>
+                </div>
 
                 <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200">
                     <div class="projeto__img-container">
                         <img src="assets/dashboard-sistema-financeiro.png" alt="Dashboard do Sistema Financeiro">
                     </div>
-                    <h3 class="projeto__title">Sistema Financeiro <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <h3 class="projeto__title">Sistema Financeiro <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
                     <p class="projeto__description">
                         <strong>Conceito:</strong> Sistema financeiro para PF/PJ visando organização financeira, com transações, orçamentos, relatórios, DRE, gráficos e histórico.<br>
                         <strong>Tecnologias:</strong> Python, JSON, Banco de Dados.
                     </p>
                     <div class="projeto__links">
-                        <a href="#" class="button button--flex button--ghost" onclick="alert('Galeria com prints do Sistema Financeiro em breve!'); return false;"> 
-                            Ver Detalhes <i class="fas fa-images button__icon"></i>
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Sistema Financeiro"> 
+                            <span data-translate="project_details">Ver Detalhes</span> <i class="fas fa-images button__icon"></i>
                         </a>
-                        </div>
+                    </div>
                 </div>
 
                 <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="300">
                     <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Destacado 2</div>
+                        <img src="assets/fitness-pro/Fitness_Pro.png" alt="Interface do Fitness Pro">
                     </div>
-                    <h3 class="projeto__title">Seu Projeto de Destaque 2 <span class="status-dev">(Status)</span></h3>
+                    <h3 class="projeto__title">Fitness Pro <span class="status-dev" data-translate="project_status_dev">(Em Desenvolvimento)</span></h3>
                     <p class="projeto__description">
-                        Breve descrição do seu segundo projeto principal. Destaque o objetivo, as tecnologias chave e o que o torna interessante.
+                        <strong>Conceito:</strong> Sistema que ajuda o usuário a gerenciar a jornada fitness, acompanhando receitas, progresso de peso e hábitos diários.<br>
+                        <strong>Tecnologias:</strong> Python (CustomTkinter), MySQL, JSON.
                     </p>
                     <div class="projeto__links">
-                        <a href="todos-projetos.html" class="button button--flex button--ghost">
-                            Ver Detalhes <i class="fas fa-arrow-right button__icon"></i>
-                        </a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">
-                            Repositório <i class="fab fa-github button__icon"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="400">
-                    <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Destacado 3</div>
-                    </div>
-                    <h3 class="projeto__title">Seu Projeto de Destaque 3 <span class="status-dev">(Status)</span></h3>
-                    <p class="projeto__description">
-                        Uma descrição concisa do seu terceiro projeto. Pode ser um desafio técnico interessante, uma solução criativa ou um projeto com IA.
-                    </p>
-                    <div class="projeto__links">
-                        <a href="todos-projetos.html" class="button button--flex button--ghost">
-                            Ver Detalhes <i class="fas fa-arrow-right button__icon"></i>
-                        </a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">
-                            Repositório <i class="fab fa-github button__icon"></i>
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Fitness Pro">
+                            <span data-translate="project_details">Ver Detalhes</span> <i class="fas fa-images button__icon"></i>
                         </a>
                     </div>
                 </div>
@@ -257,45 +259,45 @@
 
             <div class="projetos__ver-mais container text-center" data-aos="fade-up" data-aos-delay="100">
                 <a href="todos-projetos.html" class="button button--flex">
-                    Ver mais projetos <i class="fas fa-arrow-right button__icon"></i>
+                    <span data-translate="see_more_projects">Ver mais projetos</span> <i class="fas fa-arrow-right button__icon"></i>
                 </a>
             </div>
         </section>
 
         <section class="section contato" id="contato" data-aos="fade-up" data-aos-delay="100">
-            <h2 class="section__title">Contato</h2>
-            <span class="section__subtitle">Envie uma mensagem</span>
+            <h2 class="section__title" data-translate="contact_title">Contato</h2>
+            <span class="section__subtitle" data-translate="contact_subtitle">Envie uma mensagem</span>
 
             <div class="contato__container container grid">
                 <form id="contactForm" class="contact__form" data-aos="fade-up" data-aos-delay="200">
                     <div class="contact__form-div">
-                        <label for="nome" class="contact__form-tag">Nome Completo</label>
-                        <input type="text" id="nome" name="Nome" class="contact__form-input" placeholder="Seu nome" required>
+                        <label for="nome" class="contact__form-tag" data-translate="form_name">Nome Completo</label>
+                        <input type="text" id="nome" name="Nome" class="contact__form-input" data-translate-placeholder="form_name_placeholder" placeholder="Seu nome" required>
                     </div>
 
                     <div class="contact__form-div">
-                        <label for="email" class="contact__form-tag">Seu Melhor Email</label>
-                        <input type="email" id="email" name="Email" class="contact__form-input" placeholder="seu.email@exemplo.com" required>
+                        <label for="email" class="contact__form-tag" data-translate="form_email">Seu Melhor Email</label>
+                        <input type="email" id="email" name="Email" class="contact__form-input" data-translate-placeholder="form_email_placeholder" placeholder="seu.email@exemplo.com" required>
                     </div>
 
                     <div class="contact__form-div">
-                        <label for="assunto" class="contact__form-tag">Assunto</label>
-                        <input type="text" id="assunto" name="Assunto" class="contact__form-input" placeholder="Motivo do contato" required>
+                        <label for="assunto" class="contact__form-tag" data-translate="form_subject">Assunto</label>
+                        <input type="text" id="assunto" name="Assunto" class="contact__form-input" data-translate-placeholder="form_subject_placeholder" placeholder="Motivo do contato" required>
                     </div>
 
                     <div class="contact__form-div contact__form-area">
-                        <label for="mensagem" class="contact__form-tag">Sua Mensagem</label>
-                        <textarea id="mensagem" name="Mensagem" class="contact__form-input" cols="30" rows="7" placeholder="Escreva sua mensagem aqui..." required></textarea>
+                        <label for="mensagem" class="contact__form-tag" data-translate="form_message">Sua Mensagem</label>
+                        <textarea id="mensagem" name="Mensagem" class="contact__form-input" cols="30" rows="7" data-translate-placeholder="form_message_placeholder" placeholder="Escreva sua mensagem aqui..." required></textarea>
                     </div>
 
                     <button type="submit" class="button button--flex contact__form-button">
-                        Enviar Mensagem <i class="fas fa-paper-plane button__icon"></i>
+                        <span data-translate="form_button">Enviar Mensagem</span> <i class="fas fa-paper-plane button__icon"></i>
                     </button>
                     <div id="formMessage" class="contact__form-message"></div>
                 </form>
 
                 <div class="contato__alternativas" data-aos="fade-up" data-aos-delay="300">
-                     <p>Ou, se preferir, me encontre aqui:</p>
+                     <p data-translate="contact_alternative">Ou, se preferir, me encontre aqui:</p>
                      <div class="contato__links-wrapper">
                         <a href="mailto:colopip808@gmail.com" class="contato__link" aria-label="Email" target="_blank"><i class="fas fa-envelope-square"></i></a>
                         <a href="https://www.linkedin.com/in/dev-pabloruan/" target="_blank" class="contato__link" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
@@ -308,15 +310,31 @@
 
     <footer class="footer">
         <div class="container">
-            <p class="footer__copy">&copy; <span id="currentYear"></span> Pablo Ruan. Todos os direitos reservados.</p>
+            <p class="footer__copy">© <span id="currentYear"></span> <span data-translate="footer_text">Pablo Ruan. Todos os direitos reservados.</span></p>
         </div>
     </footer>
+    
+    <div id="galleryModal" class="modal">
+        <!-- O conteúdo do modal será preenchido via JS, mas podemos traduzir os aria-labels -->
+        <div class="modal-content" data-aos="zoom-in" data-aos-duration="300">
+            <span class="modal-close-button" id="modalCloseButton" aria-label="Fechar modal">×</span>
+            <h3 id="modalProjectTitle" class="modal-project-title">Galeria do Projeto</h3>
+            <div class="modal-gallery">
+                <img id="modalImage" src="" alt="Imagem do Projeto">
+                <a class="modal-prev" id="modalPrevButton" aria-label="Imagem anterior">❮</a>
+                <a class="modal-next" id="modalNextButton" aria-label="Próxima imagem">❯</a>
+            </div>
+            <div id="modalImageCounter" class="modal-image-counter"></div>
+            <div id="modalImageCaption" class="modal-image-caption"></div>
+        </div>
+    </div>
 
-    <a href="#" id="backToTopBtn" class="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo">
+    <a href="#" id="backToTopBtn" class="back-to-top" title="Voltar ao topo" aria-label="Voltar ao topo" data-translate-title="back_to_top">
         <i class="fas fa-arrow-up"></i>
     </a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/translations.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
