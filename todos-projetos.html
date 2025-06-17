@@ -50,9 +50,29 @@
                 <span class="projetos-filtros__item" data-filter="ia">IA/ML</span>
                 <span class="projetos-filtros__item" data-filter="data">Dados</span>
                 <span class="projetos-filtros__item" data-filter="ferramenta">Ferramentas</span>
+                <span class="projetos-filtros__item" data-filter="python">Python</span>
+                <span class="projetos-filtros__item" data-filter="fit">Fit</span>
+                <span class="projetos-filtros__item" data-filter="aprendizado">Aprendizado</span>
             </div>
 
             <div class="projetos__container container grid">
+
+                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web ia ferramenta python">
+                    <div class="projeto__img-container">
+                        <img src="assets/maos-que-falam/index-maoes-que-falam.png" alt="Interface do projeto Mãos que falam">
+                    </div>
+                    <h3 class="projeto__title">Mãos que falam <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <p class="projeto__description">
+                        <strong>Conceito:</strong> Aplicação web para reconhecimento de Libras em tempo real, usando a câmera do usuário, Visão Computacional e Machine Learning.<br>
+                        <strong>Funcionalidades:</strong> Tradução de gestos para texto com feedback visual avançado, interface moderna e um vasto vocabulário de sinais.<br>
+                        <strong>Tecnologias:</strong> Python (MediaPipe, Scikit-learn, OpenCV), HTML, CSS, JavaScript.
+                    </p>
+                    <div class="projeto__links">
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Mãos que falam">
+                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                        </a>
+                    </div>
+                </div>
 
                 <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="ferramenta ia">
                     <div class="projeto__img-container">
@@ -71,77 +91,40 @@
                     </div>
                 </div>
 
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web">
+                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="ferramenta python fit">
                     <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Alpha</div>
+                        <img src="assets/fitness-pro/Fitness_Pro.png" alt="Interface do Fitness Pro">
                     </div>
-                    <h3 class="projeto__title">Sistema de Gestão Web</h3>
-                    <p class="projeto__description">Plataforma web completa para gerenciamento de clientes e pedidos, desenvolvida com React e Node.js.</p>
+                    <h3 class="projeto__title">Fitness Pro <span class="status-dev">(Em Desenvolvimento)</span></h3>
+                    <p class="projeto__description">
+                        <strong>Conceito:</strong> Sistema que ajuda o usuário a gerenciar a jornada fitness, acompanhando receitas, progresso de peso e hábitos diários. O objetivo é organizar e facilitar o dia a dia do usuário.<br>
+                        <strong>Funcionalidades:</strong> Visão geral, Nutrição (planejador de Dieta, Receitas), Biblioteca de Exercícios, Treinos (registrar Treinos diários e históricos), Calculadora Métricas, Progresso.<br>
+                        <strong>Tecnologias:</strong> Python (CustomTkinter, Tkinter, TkCalendar), MySQL, JSON.
+                    </p>
                     <div class="projeto__links">
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Demo</a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
-                    </div>
-                </div>
-
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="mobile">
-                    <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Beta</div>
-                    </div>
-                    <h3 class="projeto__title">App Mobile de Produtividade</h3>
-                    <p class="projeto__description">Aplicativo móvel para iOS e Android que auxilia na organização de tarefas e metas, utilizando Flutter e Firebase.</p>
-                    <div class="projeto__links">
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Demo</a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
-                    </div>
-                </div>
-
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="ia data">
-                    <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Gamma</div>
-                    </div>
-                    <h3 class="projeto__title">Análise Preditiva com IA</h3>
-                    <p class="projeto__description">Modelo de Machine Learning para previsão de churn de clientes, implementado com Python, Scikit-learn e Google BigQuery.</p>
-                    <div class="projeto__links">
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Artigo</a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
-                    </div>
-                </div>
-
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web data">
-                    <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Delta</div>
-                    </div>
-                    <h3 class="projeto__title">Dashboard Interativo de Vendas</h3>
-                    <p class="projeto__description">Painel de visualização de dados de vendas construído com Dash (Python) e integrado com Google Sheets API.</p>
-                    <div class="projeto__links">
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Demo</a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
-                    </div>
-                </div>
-
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="mobile ia">
-                    <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Epsilon</div>
-                    </div>
-                    <h3 class="projeto__title">Assistente Virtual Mobile</h3>
-                    <p class="projeto__description">Aplicativo mobile com assistente virtual integrado, utilizando processamento de linguagem natural (PLN) e APIs de IA.</p>
-                    <div class="projeto__links">
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Demo</a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Fitness Pro">
+                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                        </a>
                     </div>
                 </div>
                 
-                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web">
+                <div class="projeto__card" data-aos="zoom-in-up" data-aos-delay="200" data-category="web aprendizado">
                     <div class="projeto__img-container">
-                        <div class="placeholder-img">Visual do Projeto Zeta</div>
+                        <img src="assets/ingles-facil/ingles.png" alt="Interface do Ingles Facil">
                     </div>
-                    <h3 class="projeto__title">Landing Page Responsiva</h3>
-                    <p class="projeto__description">Criação de uma landing page moderna e totalmente responsiva para um produto digital, focada em conversão e SEO.</p>
+                    <h3 class="projeto__title">Ingles Facil <span class="status-dev">(Protótipo)</span></h3>
+                    <p class="projeto__description">
+                        <strong>Conceito:</strong> Plataforma interativa para aprendizado de inglês, começando pelos fundamentos, com aulas dinâmicas, gamificação e glossário.<br>
+                        <strong>Progresso:</strong> Módulo 1 (Fundamental) com 3 aulas interativas (Alfabeto, Números 0-10, Cores básicas), incluindo pronúncia, dicas, vídeos práticos, gamificação e glossário filtrável.<br>
+                        <strong>Tecnologias:</strong> HTML, CSS, JavaScript.
+                    </p>
                     <div class="projeto__links">
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Ver Site</a>
-                        <a href="#" target="_blank" class="button button--flex button--ghost">Repositório</a>
+                        <a href="#" class="button button--flex button--ghost open-gallery-button" data-project-name="Ingles Facil">
+                            Ver Galeria <i class="fas fa-images button__icon"></i>
+                        </a>
                     </div>
                 </div>
+
             </div>
 
             <div class="projetos__voltar container text-center" data-aos="fade-up" data-aos-delay="100">

@@ -919,6 +919,28 @@ img {
     border-radius: var(--border-radius);
     border: 2px solid var(--border-color);
     background-color: var(--body-color);
+    cursor: zoom-in;
+    transition: cursor 0.3s ease;
+}
+#modalImage:fullscreen {
+    background-color: #000;
+    object-fit: contain;
+    cursor: zoom-out;
+}
+#modalImage:-webkit-full-screen {
+    background-color: #000;
+    object-fit: contain;
+    cursor: zoom-out;
+}
+#modalImage:-moz-full-screen {
+    background-color: #000;
+    object-fit: contain;
+    cursor: zoom-out;
+}
+#modalImage:-ms-fullscreen {
+    background-color: #000;
+    object-fit: contain;
+    cursor: zoom-out;
 }
 .modal-prev,
 .modal-next {

@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formMessage.textContent = '';
             formMessage.className = 'contact__form-message';
 
-            if (!googleAppScriptURL || googleAppScriptURL === 'https://script.google.com/macros/s/AKfycby-4R_aKVq-_7ArJunG5pvz65h8QD10xLyElqXEHU2BDZNX9NFmxPV4S3lVCwp9CG-3dQ/exec') {
+            if (!googleAppScriptURL || googleAppScriptURL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
                 formMessage.textContent = 'Erro: URL do script de envio não configurada.';
                 formMessage.classList.add('error');
                 submitButton.disabled = false;
@@ -298,16 +298,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 { src: "assets/sistema-financeiro/print1.png", caption: "Visão geral do Dashboard" },
                 { src: "assets/sistema-financeiro/print2.png", caption: "Tela de Transações" },
                 { src: "assets/sistema-financeiro/print3.png", caption: "Geração de Relatórios" },
-                { src: "assets/sistema-financeiro/print4.png", caption: "DRE" },
+                { src: "assets/sistema-financeiro/print4.png", caption: "Detalhe do Orçamento" },
             ]
         },
+        "Fitness Pro": {
+            title: "Fitness Pro - Galeria de Telas",
+            images: [
+                { src: "assets/fitness-pro/print1.png", caption: "Visão Geral do App" },
+                { src: "assets/fitness-pro/print2.png", caption: "Nutrição - Planejador de Dieta" },
+                { src: "assets/fitness-pro/print3.png", caption: "Nutrição - Receitas" },
+                { src: "assets/fitness-pro/print4.png", caption: "Biblioteca de Exercícios" },
+                { src: "assets/fitness-pro/print5.png", caption: "Treinos - Registro Diário e Histórico" },
+                { src: "assets/fitness-pro/print6.png", caption: "Calculadora de Métricas Corporais" },
+                { src: "assets/fitness-pro/print7.png", caption: "Acompanhamento de Progresso" },
+                { src: "assets/fitness-pro/print8.png", caption: "Perfil" },
+                { src: "assets/fitness-pro/print9.png", caption: "Configurações" }
+            ]
+        },
+        "Mãos que falam": {
+            title: "Mãos que falam - Galeria de Telas",
+            images: [
+                { src: "assets/maos-que-falam/print1.png", caption: "Visão geral da interface" },
+                { src: "assets/maos-que-falam/print2.png", caption: "Chat" },
+                { src: "assets/maos-que-falam/print3.png", caption: "Interface do chat de tradução" }
+            ]
+        }
     };
 
     function showImage(index) {
+        if (!modalImage || !modalImageCounter || !modalImageCaption || !modalPrevButton || !modalNextButton) return;
+        
         if (currentGalleryImages.length === 0 || index < 0 || index >= currentGalleryImages.length) {
             modalImage.style.display = 'none';
             modalImageCounter.textContent = 'Nenhuma imagem disponível';
             modalImageCaption.textContent = '';
+            modalPrevButton.classList.add("disabled");
+            modalNextButton.classList.add("disabled");
             return;
         }
         modalImage.style.display = 'block';
@@ -327,11 +353,11 @@ document.addEventListener('DOMContentLoaded', function() {
             currentGalleryTitle = galleryData.title || projectName + " - Galeria";
             currentImageIndex = 0;
 
-            modalProjectTitle.textContent = currentGalleryTitle;
+            if(modalProjectTitle) modalProjectTitle.textContent = currentGalleryTitle;
             showImage(currentImageIndex);
             galleryModal.style.display = "block";
             document.body.style.overflow = "hidden"; 
-            galleryModal.focus(); 
+            if(galleryModal.hasAttribute('tabindex')) galleryModal.focus(); else galleryModal.setAttribute('tabindex', '-1'); galleryModal.focus();
         } else {
             alert("Galeria para este projeto ainda não disponível ou imagens não definidas.");
             console.error("Dados da galeria não encontrados ou vazios para o projeto:", projectName);
@@ -349,7 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener("click", function(e) {
             e.preventDefault();
             const projectName = this.getAttribute("data-project-name");
-            openModal(projectName);
+            if (projectName) {
+                openModal(projectName);
+            }
         });
     });
 
@@ -359,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (modalPrevButton) {
         modalPrevButton.addEventListener("click", () => {
-            if (currentImageIndex > 0) {
+            if (!modalPrevButton.classList.contains("disabled") && currentImageIndex > 0) {
                 currentImageIndex--;
                 showImage(currentImageIndex);
             }
@@ -368,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (modalNextButton) {
         modalNextButton.addEventListener("click", () => {
-            if (currentImageIndex < currentGalleryImages.length - 1) {
+            if (!modalNextButton.classList.contains("disabled") && currentImageIndex < currentGalleryImages.length - 1) {
                 currentImageIndex++;
                 showImage(currentImageIndex);
             }
@@ -388,16 +416,61 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.key === "Escape") {
                 closeModal();
             } else if (event.key === "ArrowLeft") {
-                if (currentImageIndex > 0) {
+                 if (modalPrevButton && !modalPrevButton.classList.contains("disabled") && currentImageIndex > 0) {
                     currentImageIndex--;
                     showImage(currentImageIndex);
                 }
             } else if (event.key === "ArrowRight") {
-                 if (currentImageIndex < currentGalleryImages.length - 1) {
+                 if (modalNextButton && !modalNextButton.classList.contains("disabled") && currentImageIndex < currentGalleryImages.length - 1) {
                     currentImageIndex++;
                     showImage(currentImageIndex);
                 }
             }
         }
     });
+    
+    if (modalImage) {
+        modalImage.addEventListener('click', () => {
+            if (!document.fullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.webkitFullscreenElement && 
+                !document.msFullscreenElement) {
+                if (modalImage.requestFullscreen) {
+                    modalImage.requestFullscreen();
+                } else if (modalImage.mozRequestFullScreen) { 
+                    modalImage.mozRequestFullScreen();
+                } else if (modalImage.webkitRequestFullscreen) { 
+                    modalImage.webkitRequestFullscreen();
+                } else if (modalImage.msRequestFullscreen) { 
+                    modalImage.msRequestFullscreen();
+                }
+            } else { 
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { 
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { 
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { 
+                    document.msExitFullscreen();
+                }
+            }
+        });
+
+        function handleFullscreenChange() {
+            const isFullscreen = document.fullscreenElement ||
+                                 document.mozFullScreenElement ||
+                                 document.webkitFullscreenElement ||
+                                 document.msFullscreenElement;
+            if (isFullscreen && isFullscreen === modalImage) {
+                modalImage.style.cursor = 'zoom-out';
+            } else {
+                modalImage.style.cursor = 'zoom-in';
+            }
+        }
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+    }
 });
