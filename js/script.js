@@ -300,91 +300,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectGalleries = {
         "Sistema Financeiro": {
             title: "Sistema Financeiro",
-            images: [{
-                src: "assets/sistema-financeiro/print1.png",
-                caption: "Visão geral do Dashboard"
-            }, {
-                src: "assets/sistema-financeiro/print2.png",
-                caption: "Tela de Transações"
-            }, {
-                src: "assets/sistema-financeiro/print3.png",
-                caption: "Geração de Relatórios"
-            }, {
-                src: "assets/sistema-financeiro/print4.png",
-                caption: "Detalhe do Orçamento"
-            }, ]
+            images: [{ src: "assets/sistema-financeiro/print1.png", caption: "Visão geral do Dashboard" }, { src: "assets/sistema-financeiro/print2.png", caption: "Tela de Transações" }, { src: "assets/sistema-financeiro/print3.png", caption: "Geração de Relatórios" }, { src: "assets/sistema-financeiro/print4.png", caption: "Detalhe do Orçamento" }, ]
         },
         "Fitness Pro": {
             title: "Fitness Pro",
-            images: [{
-                src: "assets/fitness-pro/print1.png",
-                caption: "Visão Geral do App"
-            }, {
-                src: "assets/fitness-pro/print2.png",
-                caption: "Nutrição - Planejador de Dieta"
-            }, {
-                src: "assets/fitness-pro/print3.png",
-                caption: "Nutrição - Receitas"
-            }, {
-                src: "assets/fitness-pro/print4.png",
-                caption: "Biblioteca de Exercícios"
-            }, {
-                src: "assets/fitness-pro/print5.png",
-                caption: "Treinos - Registro Diário e Histórico"
-            }, {
-                src: "assets/fitness-pro/print6.png",
-                caption: "Calculadora de Métricas Corporais"
-            }, {
-                src: "assets/fitness-pro/print7.png",
-                caption: "Acompanhamento de Progresso"
-            }, {
-                src: "assets/fitness-pro/print8.png",
-                caption: "Perfil"
-            }, {
-                src: "assets/fitness-pro/print9.png",
-                caption: "Configurações"
-            }]
+            images: [{ src: "assets/fitness-pro/print1.png", caption: "Visão Geral do App" }, { src: "assets/fitness-pro/print2.png", caption: "Nutrição - Planejador de Dieta" }, { src: "assets/fitness-pro/print3.png", caption: "Nutrição - Receitas" }, { src: "assets/fitness-pro/print4.png", caption: "Biblioteca de Exercícios" }, { src: "assets/fitness-pro/print5.png", caption: "Treinos - Registro Diário e Histórico" }, { src: "assets/fitness-pro/print6.png", caption: "Calculadora de Métricas Corporais" }, { src: "assets/fitness-pro/print7.png", caption: "Acompanhamento de Progresso" }, { src: "assets/fitness-pro/print8.png", caption: "Perfil" }, { src: "assets/fitness-pro/print9.png", caption: "Configurações" }]
         },
         "Mãos que falam": {
             title: "Mãos que falam",
-            images: [{
-                src: "assets/maos-que-falam/print1.png",
-                caption: "Visão geral da interface"
-            }, {
-                src: "assets/maos-que-falam/print2.png",
-                caption: "Chat"
-            }, {
-                src: "assets/maos-que-falam/print3.png",
-                caption: "Interface do chat de tradução"
-            }]
+            images: [{ src: "assets/maos-que-falam/print1.png", caption: "Visão geral da interface" }, { src: "assets/maos-que-falam/print2.png", caption: "Chat" }, { src: "assets/maos-que-falam/print3.png", caption: "Interface do chat de tradução" }]
         },
         "Ingles Facil": {
             title: "Ingles Facil",
-            images: [{
-                src: "assets/ingles-facil/ingles.png",
-                caption: "Tela inicial da plataforma interativa"
-            }, {
-                src: "assets/ingles-facil/print1.png",
-                caption: "Módulo 1: Aula sobre o Alfabeto com pronúncia e exemplos"
-            }, {
-                src: "assets/ingles-facil/print2.png",
-                caption: "Lição interativa sobre os números de 0 a 10"
-            }, {
-                src: "assets/ingles-facil/print3.png",
-                caption: "Atividade prática sobre as cores básicas"
-            }, {
-                src: "assets/ingles-facil/print4.png",
-                caption: "Sistema de gamificação para motivar o aprendizado"
-            }, {
-                src: "assets/ingles-facil/print5.png",
-                caption: "Glossário completo com busca e filtros para consulta rápida"
-            }]
+            images: [{ src: "assets/ingles-facil/ingles.png", caption: "Tela inicial da plataforma interativa" }, { src: "assets/ingles-facil/print1.png", caption: "Módulo 1: Aula sobre o Alfabeto com pronúncia e exemplos" }, { src: "assets/ingles-facil/print2.png", caption: "Lição interativa sobre os números de 0 a 10" }, { src: "assets/ingles-facil/print3.png", caption: "Atividade prática sobre as cores básicas" }, { src: "assets/ingles-facil/print4.png", caption: "Sistema de gamificação para motivar o aprendizado" }, { src: "assets/ingles-facil/print5.png", caption: "Glossário completo com busca e filtros para consulta rápida" }]
         }
     };
 
     function showImage(index) {
         if (!modalImage || !modalImageCounter || !modalImageCaption || !modalPrevButton || !modalNextButton) return;
-        
         if (currentGalleryImages.length === 0 || index < 0 || index >= currentGalleryImages.length) {
             modalImage.style.display = 'none';
             modalImageCounter.textContent = 'Nenhuma imagem disponível';
@@ -398,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modalImage.alt = currentGalleryImages[index].caption || `Imagem ${index + 1} de ${currentGalleryTitle}`;
         modalImageCounter.textContent = `${index + 1} / ${currentGalleryImages.length}`;
         modalImageCaption.textContent = currentGalleryImages[index].caption || '';
-
         modalPrevButton.classList.toggle("disabled", index === 0);
         modalNextButton.classList.toggle("disabled", index === currentGalleryImages.length - 1);
     }
@@ -408,16 +340,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (galleryModal && galleryData && galleryData.images && galleryData.images.length > 0) {
             const lang = document.documentElement.lang;
             const titleSuffix = translations[lang]['gallery_title_suffix'] || ' - Image Gallery';
-            
             currentGalleryImages = galleryData.images;
             currentGalleryTitle = galleryData.title + titleSuffix;
             currentImageIndex = 0;
-
-            if(modalProjectTitle) modalProjectTitle.textContent = currentGalleryTitle;
+            if (modalProjectTitle) modalProjectTitle.textContent = currentGalleryTitle;
             showImage(currentImageIndex);
             galleryModal.style.display = "block";
-            document.body.style.overflow = "hidden"; 
-            if(galleryModal.hasAttribute('tabindex')) galleryModal.focus(); else galleryModal.setAttribute('tabindex', '-1'); galleryModal.focus();
+            document.body.style.overflow = "hidden";
+            if (galleryModal.hasAttribute('tabindex')) galleryModal.focus();
+            else galleryModal.setAttribute('tabindex', '-1');
+            galleryModal.focus();
         } else {
             alert("Galeria para este projeto ainda não disponível ou imagens não definidas.");
             console.error("Dados da galeria não encontrados ou vazios para o projeto:", projectName);
@@ -427,56 +359,42 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeModal() {
         if (galleryModal) {
             galleryModal.style.display = "none";
-            document.body.style.overflow = "auto"; 
+            document.body.style.overflow = "auto";
         }
     }
 
-    openGalleryButtons.forEach(button => {
-        button.addEventListener("click", function(e) {
-            e.preventDefault();
-            const projectName = this.getAttribute("data-project-name");
-            if (projectName) {
-                openModal(projectName);
-            }
-        });
-    });
-
+    openGalleryButtons.forEach(button => { button.addEventListener("click", function(e) { e.preventDefault(); const projectName = this.getAttribute("data-project-name"); if (projectName) { openModal(projectName); } }); });
     if (modalCloseButton) modalCloseButton.addEventListener("click", closeModal);
-    if (modalPrevButton) modalPrevButton.addEventListener("click", () => {
-        if (!modalPrevButton.classList.contains("disabled")) {
-            currentImageIndex--;
-            showImage(currentImageIndex);
+    if (modalPrevButton) modalPrevButton.addEventListener("click", () => { if (!modalPrevButton.classList.contains("disabled")) { currentImageIndex--; showImage(currentImageIndex); } });
+    if (modalNextButton) modalNextButton.addEventListener("click", () => { if (!modalNextButton.classList.contains("disabled")) { currentImageIndex++; showImage(currentImageIndex); } });
+    if (galleryModal) galleryModal.addEventListener("click", (event) => { if (event.target === galleryModal) closeModal(); });
+    document.addEventListener("keydown", function(event) { if (galleryModal && galleryModal.style.display === "block") { if (event.key === "Escape") closeModal(); else if (event.key === "ArrowLeft") modalPrevButton.click(); else if (event.key === "ArrowRight") modalNextButton.click(); } });
+
+    // *** CÓDIGO DE INTERNACIONALIZAÇÃO ATUALIZADO ***
+
+    // 1. Função para detectar o idioma inicial
+    const getInitialLanguage = () => {
+        const savedLang = localStorage.getItem('lang');
+        if (savedLang && ['pt-BR', 'en-US', 'es-ES'].includes(savedLang)) {
+            return savedLang; // Retorna a preferência salva se for válida
         }
-    });
 
-    if (modalNextButton) modalNextButton.addEventListener("click", () => {
-        if (!modalNextButton.classList.contains("disabled")) {
-            currentImageIndex++;
-            showImage(currentImageIndex);
+        // Se não houver preferência salva, detecta pelo navegador
+        const browserLang = navigator.language || navigator.userLanguage;
+
+        if (browserLang.startsWith('es')) {
+            return 'es-ES';
         }
-    });
-
-    if (galleryModal) galleryModal.addEventListener("click", (event) => {
-        if (event.target === galleryModal) closeModal();
-    });
-
-    document.addEventListener("keydown", function(event) {
-        if (galleryModal && galleryModal.style.display === "block") {
-            if (event.key === "Escape") closeModal();
-            else if (event.key === "ArrowLeft") modalPrevButton.click();
-            else if (event.key === "ArrowRight") modalNextButton.click();
+        if (browserLang.startsWith('en')) {
+            return 'en-US';
         }
-    });
+        // O padrão para pt-* ou qualquer outro idioma será pt-BR
+        return 'pt-BR';
+    };
 
-
-    // --- CÓDIGO DE INTERNACIONALIZAÇÃO (I18N) ---
+    // 2. Lógica principal de tradução
     const langSwitcherButtons = document.querySelectorAll('.lang-switcher__btn');
-    let currentLang = localStorage.getItem('lang') || navigator.language || 'pt-BR';
-    
-    // Simplifica o código do idioma (ex: 'pt-BR' -> 'pt-BR', 'en-US' -> 'en-US', 'es-AR' -> 'es-ES')
-    if (currentLang.startsWith('en')) currentLang = 'en-US';
-    else if (currentLang.startsWith('es')) currentLang = 'es-ES';
-    else currentLang = 'pt-BR'; // Padrão
+    let currentLang = getInitialLanguage(); // Usa a nova função para definir o idioma
 
     const updateContent = (lang) => {
         if (typeof translations === 'undefined' || !translations[lang]) {
@@ -486,7 +404,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const langTranslations = translations[lang];
 
-        // Traduz textos normais
         document.querySelectorAll('[data-translate]').forEach(el => {
             const key = el.getAttribute('data-translate');
             if (langTranslations[key]) {
@@ -494,19 +411,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Traduz placeholders
         document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
             const key = el.getAttribute('data-translate-placeholder');
             if (langTranslations[key]) el.placeholder = langTranslations[key];
         });
 
-        // Traduz titles (para tooltips)
         document.querySelectorAll('[data-translate-title]').forEach(el => {
             const key = el.getAttribute('data-translate-title');
             if (langTranslations[key]) el.title = langTranslations[key];
         });
 
-        // Atualiza o efeito de digitação do subtítulo
         const roleElement = document.getElementById('typed-role');
         if (roleElement) {
             const roleKey = roleElement.getAttribute('data-translate');
@@ -514,17 +428,15 @@ document.addEventListener('DOMContentLoaded', function() {
             typeEffect(roleElement, translatedRole, 75);
         }
 
-        // Atualiza título da página
         const titleElement = document.querySelector('title');
         if (titleElement) {
             const titleKey = titleElement.getAttribute('data-translate');
             if (langTranslations[titleKey]) titleElement.textContent = langTranslations[titleKey];
         }
 
-        // Atualiza o atributo lang do HTML
         document.documentElement.lang = lang;
+        localStorage.setItem('lang', lang); // Salva a escolha atual para futuras visitas
 
-        // Atualiza o botão ativo
         langSwitcherButtons.forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
         });
@@ -533,7 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
     langSwitcherButtons.forEach(button => {
         button.addEventListener('click', () => {
             const selectedLang = button.getAttribute('data-lang');
-            localStorage.setItem('lang', selectedLang);
             currentLang = selectedLang;
             updateContent(currentLang);
         });
@@ -544,14 +455,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- INICIALIZAÇÃO TSPARTICLES ---
     if (document.getElementById('tsparticles')) {
-        // Pega a cor primária calculada pelo CSS
         const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
-
         tsParticles.load("tsparticles", {
             fpsLimit: 120,
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: primaryColor }, // Usa a cor real, não a variável
+                color: { value: primaryColor },
                 shape: { type: "circle" },
                 opacity: {
                     value: 0.5,
@@ -562,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 line_linked: {
                     enable: true,
                     distance: 150,
-                    color: primaryColor, // Usa a cor real, não a variável
+                    color: primaryColor,
                     opacity: 0.4,
                     width: 1,
                 },
