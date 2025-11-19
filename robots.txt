@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pabloruancoder.github.io/portfolio/sitemap.xml
