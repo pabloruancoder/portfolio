@@ -1,0 +1,8 @@
+# Planejamento interno (não vai pro repositório público)
+PLANO.md
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+*.log

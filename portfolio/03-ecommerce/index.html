@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stride 01 — The everyday running shoe, in 3D</title>
+  <meta name="description" content="Stride 01 — featherweight knit, responsive AuraFoam cushioning and a grippy outsole. Explore it in interactive 3D." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --bg:#ffffff; --bg-2:#f4f5f8; --ink:#0e1116; --muted:#5b6470; --faint:#9aa1ad; --line:#e7e9ee;
+      --acc:#ff5a36; --acc-d:#e3461f; --acc-soft:#ffeee9; --ink-soft:#191d24; --green:#16a34a;
+      --radius:18px; --radius-lg:28px; --shadow-sm:0 8px 24px -16px rgba(14,17,22,.4); --shadow:0 30px 60px -34px rgba(14,17,22,.45);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
+    .grotesk { font-family:'Space Grotesk',sans-serif; }
+    .container { width:100%; max-width:1180px; margin:0 auto; padding:0 24px; }
+    svg { display:block; }
+    .ico { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:9px; font-weight:600; font-size:15px; padding:13px 24px; border-radius:12px; cursor:pointer; border:1.5px solid transparent; transition:transform .15s, background .2s, color .2s, border-color .2s, box-shadow .2s; white-space:nowrap; }
+    .btn-primary { background:var(--acc); color:#fff; box-shadow:0 14px 30px -14px rgba(255,90,54,.7); }
+    .btn-primary:hover { background:var(--acc-d); transform:translateY(-2px); }
+    .btn-dark { background:var(--ink); color:#fff; }
+    .btn-dark:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+    .btn-outline { background:transparent; color:var(--ink); border-color:var(--line); }
+    .btn-outline:hover { border-color:var(--ink); transform:translateY(-2px); }
+    .btn-lg { padding:16px 30px; font-size:16px; }
+
+    .announce { background:var(--ink); color:#e7e9ee; font-size:13px; font-weight:500; text-align:center; padding:9px 16px; }
+    .announce b { color:var(--acc); }
+
+    header { position:sticky; top:0; z-index:60; background:rgba(255,255,255,.82); backdrop-filter:saturate(160%) blur(14px); border-bottom:1px solid transparent; transition:border-color .25s, box-shadow .25s; }
+    header.scrolled { border-color:var(--line); box-shadow:0 6px 24px -20px rgba(14,17,22,.5); }
+    .nav { display:flex; align-items:center; justify-content:space-between; height:68px; }
+    .logo { display:flex; align-items:center; gap:9px; font-weight:700; font-size:22px; letter-spacing:-1px; }
+    .logo .mark { width:30px; height:30px; border-radius:9px; background:var(--ink); display:grid; place-items:center; }
+    .logo .mark .ico { stroke:var(--acc); width:18px; height:18px; stroke-width:2.2; }
+    .nav-links { display:flex; gap:30px; }
+    .nav-links a { color:var(--muted); font-weight:500; font-size:14.5px; transition:color .15s; }
+    .nav-links a:hover { color:var(--ink); }
+    .nav-right { display:flex; align-items:center; gap:14px; }
+    .cart-btn { position:relative; width:42px; height:42px; border-radius:11px; border:1px solid var(--line); background:#fff; display:grid; place-items:center; cursor:pointer; transition:border-color .2s; }
+    .cart-btn:hover { border-color:var(--ink); }
+    .cart-count { position:absolute; top:-7px; right:-7px; min-width:20px; height:20px; padding:0 5px; border-radius:999px; background:var(--acc); color:#fff; font-size:11px; font-weight:700; display:grid; place-items:center; transform:scale(0); transition:transform .2s; }
+    .cart-count.show { transform:scale(1); }
+    .burger { display:none; background:none; border:none; cursor:pointer; flex-direction:column; gap:5px; }
+    .burger span { width:24px; height:2px; background:var(--ink); border-radius:2px; }
+
+    /* ===== 3D scrollytelling stage ===== */
+    .stage { position:relative; height:340vh; background:radial-gradient(120% 80% at 80% 10%, #fff6f3, #ffffff 55%); }
+    .stage-sticky { position:sticky; top:0; height:100vh; display:grid; grid-template-columns:0.92fr 1.08fr; align-items:center; gap:30px; }
+    .stage-left { padding-left:max(24px, calc((100vw - 1180px)/2 + 24px)); padding-right:20px; position:relative; z-index:2; }
+    .rating-inline { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+    .stars { display:flex; gap:2px; color:var(--acc); }
+    .stars .ico { width:16px; height:16px; fill:currentColor; stroke:currentColor; }
+    .rating-inline .txt { font-size:13.5px; color:var(--muted); font-weight:600; }
+    .stage-left h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(38px,5vw,60px); line-height:1.0; letter-spacing:-2px; font-weight:700; margin-bottom:16px; }
+    .stage-left h1 em { font-style:normal; color:var(--acc); }
+    .stage-left .lead { font-size:17px; color:var(--muted); max-width:42ch; margin-bottom:18px; }
+    .tour-cap { display:flex; align-items:center; gap:12px; background:var(--bg-2); border:1px solid var(--line); border-radius:14px; padding:12px 16px; margin-bottom:20px; max-width:380px; min-height:58px; }
+    .tour-cap .num { font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--acc); font-size:18px; }
+    .tour-cap .txt { font-weight:600; font-size:15px; transition:opacity .2s; }
+    .tour-cap .bar { flex:1; height:4px; border-radius:999px; background:var(--line); overflow:hidden; margin-left:4px; }
+    .tour-cap .bar i { display:block; height:100%; background:var(--acc); width:0; transition:width .15s linear; }
+    .price-row { display:flex; align-items:baseline; gap:12px; margin-bottom:18px; }
+    .price-now { font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; letter-spacing:-1px; }
+    .price-was { font-size:17px; color:var(--faint); text-decoration:line-through; }
+    .price-save { font-size:12px; font-weight:700; color:var(--green); background:#e7f7ee; padding:4px 10px; border-radius:999px; }
+    .swatches { margin-bottom:20px; }
+    .swatches .label { font-size:13px; font-weight:600; color:var(--muted); margin-bottom:9px; }
+    .swatches .label b { color:var(--ink); }
+    .sw-row { display:flex; gap:12px; }
+    .sw { width:40px; height:40px; border-radius:50%; cursor:pointer; border:2px solid var(--line); padding:3px; transition:border-color .15s, transform .15s; background:#fff; }
+    .sw:hover { transform:translateY(-2px); }
+    .sw span { display:block; width:100%; height:100%; border-radius:50%; }
+    .sw.active { border-color:var(--acc); }
+    .stage-cta { display:flex; gap:12px; flex-wrap:wrap; }
+
+    .stage-right { position:relative; height:100vh; }
+    #mv { width:100%; height:100%; background:transparent; --poster-color:transparent; --progress-bar-color:var(--acc); }
+    .drag-hint { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); z-index:3; font-size:12px; font-weight:500; color:var(--muted); background:rgba(255,255,255,.85); border:1px solid var(--line); padding:6px 13px; border-radius:999px; display:inline-flex; align-items:center; gap:7px; pointer-events:none; }
+    .drag-hint .ico { width:14px; height:14px; stroke:var(--acc); }
+    .scroll-cue { position:absolute; bottom:24px; left:24px; z-index:3; font-size:12px; color:var(--faint); font-weight:600; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+    .scroll-cue .dot { width:18px; height:28px; border:2px solid var(--faint); border-radius:10px; position:relative; }
+    .scroll-cue .dot::after { content:""; position:absolute; top:5px; left:50%; transform:translateX(-50%); width:3px; height:6px; border-radius:2px; background:var(--faint); animation:scrolldot 1.6s ease-in-out infinite; }
+    @keyframes scrolldot { 0%,100%{ opacity:.3; top:5px; } 50%{ opacity:1; top:12px; } }
+
+    .trust { border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2); }
+    .trust-grid { display:grid; grid-template-columns:repeat(4,1fr); }
+    .trust-item { display:flex; align-items:center; gap:12px; padding:22px 18px; justify-content:center; }
+    .trust-item + .trust-item { border-left:1px solid var(--line); }
+    .trust-item .ico { width:24px; height:24px; stroke:var(--acc); flex-shrink:0; }
+    .trust-item .k { font-weight:700; font-size:14px; }
+    .trust-item .s { font-size:12.5px; color:var(--muted); }
+
+    section.block { padding:96px 0; }
+    .head { max-width:640px; margin:0 auto 58px; text-align:center; }
+    .eyebrow { display:inline-block; color:var(--acc); font-weight:700; font-size:13px; letter-spacing:1.4px; text-transform:uppercase; margin-bottom:14px; }
+    .head h2 { font-family:'Space Grotesk',sans-serif; font-size:clamp(30px,4.2vw,46px); line-height:1.06; letter-spacing:-1.4px; font-weight:700; }
+    .head p { color:var(--muted); font-size:18px; margin-top:16px; }
+
+    .feat { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; margin-bottom:64px; }
+    .feat:last-child { margin-bottom:0; }
+    .feat.rev .feat-text { order:2; }
+    .feat-img { border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); aspect-ratio:4/3; background:var(--bg-2); box-shadow:var(--shadow-sm); }
+    .feat-img img { width:100%; height:100%; object-fit:cover; }
+    .feat-text .tag { display:inline-block; font-size:12.5px; font-weight:700; color:var(--acc); background:var(--acc-soft); padding:5px 12px; border-radius:999px; margin-bottom:16px; }
+    .feat-text h3 { font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,3.2vw,34px); line-height:1.1; letter-spacing:-1px; margin-bottom:14px; }
+    .feat-text p { color:var(--muted); font-size:16.5px; margin-bottom:18px; }
+    .feat-list { list-style:none; }
+    .feat-list li { display:flex; gap:11px; align-items:center; font-size:15px; font-weight:500; margin-bottom:11px; }
+    .feat-list .ico { width:20px; height:20px; stroke:var(--green); stroke-width:2.4; flex-shrink:0; }
+
+    .specs-wrap { background:var(--ink); color:#e7e9ee; }
+    .specs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:0 60px; max-width:840px; margin:0 auto; }
+    .spec { display:flex; justify-content:space-between; gap:20px; padding:18px 0; border-bottom:1px solid #242a33; }
+    .spec .k { color:#9aa1ad; font-size:14.5px; }
+    .spec .v { font-weight:600; font-size:14.5px; text-align:right; }
+    .specs-wrap .head h2 { color:#fff; }
+    .specs-wrap .eyebrow { color:var(--acc); }
+
+    .rev-top { display:grid; grid-template-columns:300px 1fr; gap:48px; align-items:center; margin-bottom:46px; }
+    .rev-score { text-align:center; background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius); padding:30px; }
+    .rev-score .big { font-family:'Space Grotesk',sans-serif; font-size:60px; font-weight:700; line-height:1; letter-spacing:-2px; }
+    .rev-score .stars { justify-content:center; margin:10px 0 6px; }
+    .rev-score .cnt { font-size:13.5px; color:var(--muted); }
+    .bars { display:flex; flex-direction:column; gap:9px; }
+    .bar-row { display:flex; align-items:center; gap:12px; font-size:13px; color:var(--muted); }
+    .bar-row .n { width:32px; }
+    .bar-track { flex:1; height:8px; background:var(--bg-2); border-radius:999px; overflow:hidden; }
+    .bar-track i { display:block; height:100%; background:var(--acc); border-radius:999px; }
+    .bar-row .pct { width:38px; text-align:right; }
+    .rev-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .rev-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; }
+    .rev-card .stars { margin-bottom:12px; }
+    .rev-card p { font-size:15px; margin-bottom:16px; }
+    .rev-card .who { display:flex; align-items:center; gap:10px; }
+    .rev-card .ava { width:38px; height:38px; border-radius:50%; background:var(--acc-soft); color:var(--acc); display:grid; place-items:center; font-weight:700; font-size:14px; }
+    .rev-card .name { font-weight:700; font-size:14px; }
+    .rev-card .verified { font-size:12px; color:var(--green); display:flex; align-items:center; gap:4px; }
+    .rev-card .verified .ico { width:13px; height:13px; stroke:var(--green); stroke-width:2.6; }
+
+    .gallery { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .gallery .g { position:relative; border-radius:14px; overflow:hidden; aspect-ratio:1/1; border:1px solid var(--line); }
+    .gallery .g img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+    .gallery .g:hover img { transform:scale(1.06); }
+    .gallery .g .handle { position:absolute; left:12px; bottom:10px; color:#fff; font-size:12.5px; font-weight:600; text-shadow:0 1px 6px rgba(0,0,0,.6); z-index:2; }
+    .gallery .g::after { content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.35),transparent 45%); }
+
+    .cross { display:flex; align-items:center; gap:30px; background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; flex-wrap:wrap; }
+    .cross-img { width:150px; height:150px; border-radius:16px; overflow:hidden; flex-shrink:0; border:1px solid var(--line); }
+    .cross-img img { width:100%; height:100%; object-fit:cover; }
+    .cross-info { flex:1; min-width:220px; }
+    .cross-info .tag { font-size:12px; font-weight:700; color:var(--acc); letter-spacing:1px; text-transform:uppercase; }
+    .cross-info h3 { font-family:'Space Grotesk',sans-serif; font-size:24px; letter-spacing:-.5px; margin:6px 0 6px; }
+    .cross-info p { color:var(--muted); font-size:14.5px; }
+    .cross-buy { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+    .cross-buy .p { font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700; }
+
+    .faq { max-width:780px; margin:0 auto; }
+    .qa { border-bottom:1px solid var(--line); }
+    .qa button { width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:22px 0; font-size:17px; font-weight:600; display:flex; justify-content:space-between; align-items:center; gap:20px; color:var(--ink); }
+    .qa .chev { width:20px; height:20px; color:var(--acc); transition:transform .25s; flex-shrink:0; }
+    .qa.open .chev { transform:rotate(180deg); }
+    .qa .ans { max-height:0; overflow:hidden; transition:max-height .3s ease; color:var(--muted); font-size:15px; }
+    .qa.open .ans { max-height:200px; }
+    .qa .ans p { padding-bottom:22px; }
+
+    .final-wrap { padding:20px 0 100px; }
+    .final { position:relative; overflow:hidden; border-radius:var(--radius-lg); background:var(--ink); color:#fff; text-align:center; padding:70px 40px; }
+    .final::before { content:""; position:absolute; top:-160px; left:50%; transform:translateX(-50%); width:600px; height:380px; background:radial-gradient(50% 50% at 50% 50%, rgba(255,90,54,.5), transparent 70%); }
+    .final h2 { font-family:'Space Grotesk',sans-serif; font-size:clamp(30px,4vw,46px); letter-spacing:-1.4px; position:relative; }
+    .final p { color:#aab2bf; font-size:18px; margin:14px auto 28px; max-width:44ch; position:relative; }
+
+    .buybar { position:fixed; left:0; right:0; bottom:0; z-index:70; background:rgba(255,255,255,.92); backdrop-filter:blur(14px); border-top:1px solid var(--line); transform:translateY(110%); transition:transform .3s ease; box-shadow:0 -10px 30px -20px rgba(14,17,22,.4); }
+    .buybar.show { transform:translateY(0); }
+    .buybar .inner { display:flex; align-items:center; justify-content:space-between; gap:20px; height:74px; }
+    .buybar .bp { display:flex; align-items:center; gap:14px; }
+    .buybar .bp img { width:48px; height:48px; border-radius:10px; object-fit:cover; border:1px solid var(--line); }
+    .buybar .bp .n { font-weight:700; font-size:15px; }
+    .buybar .bp .s { font-size:12.5px; color:var(--muted); }
+    .buybar .bact { display:flex; align-items:center; gap:16px; }
+    .buybar .bprice { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; }
+
+    footer { background:var(--bg-2); border-top:1px solid var(--line); padding:60px 0 32px; }
+    .foot-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1.4fr; gap:40px; margin-bottom:44px; }
+    footer .about { color:var(--muted); font-size:14px; max-width:30ch; margin-top:14px; }
+    footer h4 { font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    footer ul { list-style:none; }
+    footer li { margin-bottom:9px; }
+    footer li a { color:var(--muted); font-size:14px; }
+    footer li a:hover { color:var(--ink); }
+    .news { display:flex; gap:8px; margin-top:14px; }
+    .news input { flex:1; padding:11px 14px; border:1px solid var(--line); border-radius:10px; font-family:inherit; font-size:14px; background:#fff; }
+    .news input:focus { outline:none; border-color:var(--acc); }
+    .foot-bottom { border-top:1px solid var(--line); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--faint); font-size:13px; }
+
+    .reveal { opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity:1; transform:none; }
+    .show-all .reveal { opacity:1 !important; transform:none !important; }
+    @media (prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none;transition:none;} }
+
+    @media (max-width:920px) {
+      .stage { height:auto; }
+      .stage-sticky { position:static; height:auto; grid-template-columns:1fr; gap:0; padding:32px 0 10px; }
+      .stage-left { padding:0 24px; order:2; }
+      .stage-right { height:62vh; min-height:380px; order:1; }
+      .scroll-cue { display:none; }
+      .trust-grid { grid-template-columns:1fr 1fr; }
+      .trust-item:nth-child(odd) { border-left:none; }
+      .feat { grid-template-columns:1fr; gap:28px; }
+      .feat.rev .feat-text { order:0; }
+      .specs-grid { grid-template-columns:1fr; gap:0; }
+      .rev-top { grid-template-columns:1fr; gap:28px; }
+      .rev-cards { grid-template-columns:1fr; }
+      .gallery { grid-template-columns:1fr 1fr; }
+      .foot-top { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:600px) {
+      .nav-links { display:none; }
+      .burger { display:flex; }
+      .nav-links.open { display:flex; flex-direction:column; position:absolute; top:68px; left:0; right:0; background:#fff; border-bottom:1px solid var(--line); padding:20px 24px; gap:16px; }
+      .trust-grid { grid-template-columns:1fr; }
+      .trust-item { border-left:none !important; border-bottom:1px solid var(--line); }
+      .gallery { grid-template-columns:1fr 1fr; }
+      .foot-top { grid-template-columns:1fr; }
+      section.block { padding:64px 0; }
+      .buybar .bp .s { display:none; }
+      .cross-buy { align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announce">Free shipping &amp; <b>60-day wear test</b> — run in them, return them if they're not for you.</div>
+
+  <header id="header">
+    <div class="container nav">
+      <a href="#" class="logo"><span class="mark"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17c5 1 9-1 13-6 2-2.5 5-3 7-2-3 6-8 9-13 9-3 0-5-.5-7-1z"/></svg></span> STRIDE</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#specs">Specs</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-right">
+        <button class="cart-btn" aria-label="Cart"><svg class="ico" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-count" id="cartCount">0</span></button>
+        <a href="#stage" class="btn btn-primary">Buy now</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3D scrollytelling stage -->
+  <section class="stage" id="stage">
+    <div class="stage-sticky">
+      <div class="stage-left">
+        <div class="rating-inline">
+          <span class="stars">
+            <svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </span>
+          <span class="txt">4.9 · 5,800+ runners</span>
+        </div>
+        <h1 class="grotesk">Stride 01.<br><em>Built to go further.</em></h1>
+        <p class="lead">Featherweight knit, responsive AuraFoam™ cushioning and a grippy outsole — explore every angle in 3D.</p>
+        <div class="tour-cap">
+          <span class="num" id="capNum">01</span>
+          <span class="txt" id="capTxt">Drag the shoe to spin it 360°</span>
+          <span class="bar"><i id="capBar"></i></span>
+        </div>
+        <div class="price-row">
+          <span class="price-now">$149</span>
+          <span class="price-was">$189</span>
+          <span class="price-save">Save $40</span>
+        </div>
+        <div class="swatches">
+          <div class="label">Colourway — <b id="swName">Midnight</b></div>
+          <div class="sw-row" id="swRow">
+            <button class="sw active" data-variant="midnight" data-name="Midnight"><span style="background:#1f2a44"></span></button>
+            <button class="sw" data-variant="beach" data-name="Beach"><span style="background:#d8c4a3"></span></button>
+            <button class="sw" data-variant="street" data-name="Street"><span style="background:#8a8f98"></span></button>
+          </div>
+        </div>
+        <div class="stage-cta">
+          <button class="btn btn-primary btn-lg" data-add>Add to cart — $149</button>
+          <a href="#features" class="btn btn-outline btn-lg">Learn more</a>
+        </div>
+      </div>
+      <div class="stage-right">
+        <model-viewer id="mv"
+          src="shoe.glb"
+          alt="Stride 01 running shoe — interactive 3D"
+          camera-controls
+          disable-zoom
+          interaction-prompt="none"
+          touch-action="pan-y"
+          shadow-intensity="1"
+          shadow-softness="1"
+          exposure="1.05"
+          environment-image="neutral"
+          camera-orbit="20deg 80deg 105%"
+          min-camera-orbit="auto auto 85%"
+          max-camera-orbit="auto auto 150%"></model-viewer>
+        <span class="drag-hint"><svg class="ico" viewBox="0 0 24 24"><path d="M9 3 5 7l4 4"/><path d="M5 7h11a4 4 0 0 1 0 8h-1"/></svg> Drag to rotate</span>
+        <span class="scroll-cue"><span class="dot"></span> Scroll to explore</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust -->
+  <div class="trust">
+    <div class="container trust-grid">
+      <div class="trust-item"><svg class="ico" viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><div class="k">Free shipping</div><div class="s">Both ways</div></div></div>
+      <div class="trust-item"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M12 7v5l3 2"/></svg><div><div class="k">60-day wear test</div><div class="s">Run, then decide</div></div></div>
+      <div class="trust-item"><svg class="ico" viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 8 10 8 10s8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg><div><div class="k">1-year guarantee</div><div class="s">On every pair</div></div></div>
+      <div class="trust-item"><svg class="ico" viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9c0 2 1 4 3 6l6 5 6-5c2-2 3-4 3-6a9 9 0 0 0-9-9z"/><path d="M9 11h6"/></svg><div><div class="k">Carbon-neutral</div><div class="s">Recycled knit</div></div></div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="block" id="features">
+    <div class="container">
+      <div class="head reveal">
+        <span class="eyebrow">Why Stride 01</span>
+        <h2 class="grotesk">Light on your feet. Easy on the planet.</h2>
+        <p>Three years of testing for one goal: a shoe you forget you're wearing.</p>
+      </div>
+
+      <div class="feat reveal">
+        <div class="feat-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80&auto=format&fit=crop" alt="Stride 01 knit upper" onerror="this.style.opacity=0" /></div>
+        <div class="feat-text">
+          <span class="tag">Engineered knit</span>
+          <h3 class="grotesk">Breathes like a sock, holds like a shoe</h3>
+          <p>A one-piece recycled knit upper flexes with your foot and lets heat escape — no break-in, no hot spots, just go.</p>
+          <ul class="feat-list">
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Made from 7 recycled bottles</li>
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Seamless, zero break-in</li>
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Machine washable</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feat rev reveal">
+        <div class="feat-img"><img src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=800&q=80&auto=format&fit=crop" alt="Stride 01 cushioned midsole" onerror="this.style.opacity=0" /></div>
+        <div class="feat-text">
+          <span class="tag">AuraFoam™ midsole</span>
+          <h3 class="grotesk">Energy back on every step</h3>
+          <p>Our nitrogen-infused foam returns more of the energy you put in — soft enough for the commute, springy enough for the long run.</p>
+          <ul class="feat-list">
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> 12% more energy return</li>
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> 8 mm heel-to-toe drop</li>
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Holds its bounce for 800+ km</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feat reveal">
+        <div class="feat-img"><img src="https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&q=80&auto=format&fit=crop" alt="Stride 01 worn on the street" onerror="this.style.opacity=0" /></div>
+        <div class="feat-text">
+          <span class="tag">All-terrain grip</span>
+          <h3 class="grotesk">From the trail to the train</h3>
+          <p>A sticky rubber outsole with multi-directional lugs grips wet pavement and loose gravel alike — then looks sharp enough for the office.</p>
+          <ul class="feat-list">
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Wet-grip rubber compound</li>
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Abrasion-resistant tread</li>
+            <li><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Just 248 g (US 9)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <div class="specs-wrap">
+    <section class="block" id="specs">
+      <div class="container">
+        <div class="head reveal">
+          <span class="eyebrow">The details</span>
+          <h2 class="grotesk">Spec sheet</h2>
+        </div>
+        <div class="specs-grid reveal">
+          <div class="spec"><span class="k">Weight</span><span class="v">248 g (US 9)</span></div>
+          <div class="spec"><span class="k">Heel-to-toe drop</span><span class="v">8 mm</span></div>
+          <div class="spec"><span class="k">Upper</span><span class="v">Recycled engineered knit</span></div>
+          <div class="spec"><span class="k">Midsole</span><span class="v">AuraFoam™ (N²-infused)</span></div>
+          <div class="spec"><span class="k">Outsole</span><span class="v">Wet-grip rubber</span></div>
+          <div class="spec"><span class="k">Best for</span><span class="v">Road · gym · everyday</span></div>
+          <div class="spec"><span class="k">Sizes</span><span class="v">US 5 – 14 (half sizes)</span></div>
+          <div class="spec"><span class="k">Colourways</span><span class="v">Midnight · Beach · Street</span></div>
+          <div class="spec"><span class="k">Sustainability</span><span class="v">Carbon-neutral, 60% recycled</span></div>
+          <div class="spec"><span class="k">Care</span><span class="v">Machine washable, cold</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Reviews -->
+  <section class="block" id="reviews">
+    <div class="container">
+      <div class="head reveal">
+        <span class="eyebrow">Reviews</span>
+        <h2 class="grotesk">58,000 runners, one favourite</h2>
+      </div>
+      <div class="rev-top reveal">
+        <div class="rev-score">
+          <div class="big grotesk">4.9</div>
+          <span class="stars">
+            <svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </span>
+          <div class="cnt">Based on 58,140 reviews</div>
+        </div>
+        <div class="bars">
+          <div class="bar-row"><span class="n">5★</span><span class="bar-track"><i style="width:91%"></i></span><span class="pct">91%</span></div>
+          <div class="bar-row"><span class="n">4★</span><span class="bar-track"><i style="width:6%"></i></span><span class="pct">6%</span></div>
+          <div class="bar-row"><span class="n">3★</span><span class="bar-track"><i style="width:2%"></i></span><span class="pct">2%</span></div>
+          <div class="bar-row"><span class="n">2★</span><span class="bar-track"><i style="width:1%"></i></span><span class="pct">1%</span></div>
+          <div class="bar-row"><span class="n">1★</span><span class="bar-track"><i style="width:0%"></i></span><span class="pct">0%</span></div>
+        </div>
+      </div>
+      <div class="rev-cards">
+        <div class="rev-card reveal">
+          <span class="stars"><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></span>
+          <p>"I bought one pair for runs and ended up wearing them everywhere. Lightest shoe I've owned and zero break-in."</p>
+          <div class="who"><div class="ava">JM</div><div><div class="name">Jordan M.</div><div class="verified"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Verified buyer</div></div></div>
+        </div>
+        <div class="rev-card reveal">
+          <span class="stars"><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></span>
+          <p>"The foam is the real deal — my knees feel better after long runs. Being able to spin them in 3D before buying sealed it."</p>
+          <div class="who"><div class="ava">PT</div><div><div class="name">Priya T.</div><div class="verified"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Verified buyer</div></div></div>
+        </div>
+        <div class="rev-card reveal">
+          <span class="stars"><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></span>
+          <p>"Ordered the Beach colourway after seeing it on the 3D viewer. Looks exactly like it did online. Comfiest shoes I own."</p>
+          <div class="who"><div class="ava">LO</div><div><div class="name">Liam O.</div><div class="verified"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg> Verified buyer</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="block" style="padding-top:0;">
+    <div class="container">
+      <div class="head reveal">
+        <span class="eyebrow">#OnTheStride</span>
+        <h2 class="grotesk">Out there with our runners</h2>
+      </div>
+      <div class="gallery reveal">
+        <div class="g"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=500&q=80&auto=format&fit=crop" alt="Runner photo" onerror="this.style.opacity=0" /><span class="handle">@maya.runs</span></div>
+        <div class="g"><img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=500&q=80&auto=format&fit=crop" alt="Runner photo" onerror="this.style.opacity=0" /><span class="handle">@theo.miles</span></div>
+        <div class="g"><img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&q=80&auto=format&fit=crop" alt="Runner photo" onerror="this.style.opacity=0" /><span class="handle">@lola.pace</span></div>
+        <div class="g"><img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500&q=80&auto=format&fit=crop" alt="Runner photo" onerror="this.style.opacity=0" /><span class="handle">@daily.km</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross-sell -->
+  <section class="block" style="padding-top:0;">
+    <div class="container">
+      <div class="cross reveal">
+        <div class="cross-img"><img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&q=80&auto=format&fit=crop" alt="Stride Pastel pack" onerror="this.style.opacity=0" /></div>
+        <div class="cross-info">
+          <span class="tag">Limited drop</span>
+          <h3 class="grotesk">Stride 01 — Pastel pack</h3>
+          <p>The same shoe you love, in three soft seasonal tones. Once they're gone, they're gone.</p>
+        </div>
+        <div class="cross-buy">
+          <span class="p">$159</span>
+          <button class="btn btn-dark" data-add data-name="Pastel pack">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="faq" style="padding-top:0;">
+    <div class="container">
+      <div class="head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="grotesk">Good questions</h2>
+      </div>
+      <div class="faq reveal">
+        <div class="qa"><button>How does the 60-day wear test work? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>Run, train and walk in them for 60 days. If they're not your new favourites, request a free return label from your account for a full refund — even if you've worn them outside.</p></div></div>
+        <div class="qa"><button>How do they fit? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>True to size for most runners. The knit upper has a little give, so if you're between sizes we suggest sizing down. Half sizes available US 5–14.</p></div></div>
+        <div class="qa"><button>Can I really machine wash them? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>Yes — remove the insoles, use a cold gentle cycle and air dry. The recycled knit holds its shape and colour wash after wash.</p></div></div>
+        <div class="qa"><button>When will my order ship? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>In-stock colourways ship the next business day with free delivery. You'll get tracking by email the moment they leave our warehouse.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <div class="final-wrap">
+    <div class="container">
+      <div class="final reveal">
+        <h2 class="grotesk">Your next 800 km start here</h2>
+        <p>Try Stride 01 for 60 days. If you don't love them, we'll take them back — shipping's on us.</p>
+        <button class="btn btn-primary btn-lg" data-add>Add to cart — $149</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="foot-top">
+        <div>
+          <a href="#" class="logo"><span class="mark"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17c5 1 9-1 13-6 2-2.5 5-3 7-2-3 6-8 9-13 9-3 0-5-.5-7-1z"/></svg></span> STRIDE</a>
+          <p class="about">Lightweight, low-impact running shoes designed in Lisbon and built to go the distance.</p>
+        </div>
+        <div><h4>Shop</h4><ul><li><a href="#stage">Stride 01</a></li><li><a href="#">Pastel pack</a></li><li><a href="#">Socks</a></li><li><a href="#">Gift cards</a></li></ul></div>
+        <div><h4>Support</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="#">Sizing</a></li><li><a href="#">Returns</a></li><li><a href="#">Contact</a></li></ul></div>
+        <div>
+          <h4>Get 10% off your first pair</h4>
+          <form class="news" id="newsForm"><input type="email" placeholder="you@email.com" required /><button class="btn btn-dark" type="submit">Join</button></form>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Stride Running Co. All rights reserved.</span>
+        <span>Free shipping · 60-day wear test · Carbon-neutral</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky buy bar -->
+  <div class="buybar" id="buybar">
+    <div class="container inner">
+      <div class="bp">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=120&q=70&auto=format&fit=crop" alt="Stride 01" />
+        <div><div class="n">Stride 01</div><div class="s">AuraFoam™ · 248 g</div></div>
+      </div>
+      <div class="bact">
+        <span class="bprice">$149</span>
+        <button class="btn btn-primary" data-add>Add to cart</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 8));
+
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    let cart = 0;
+    const cartCount = document.getElementById('cartCount');
+    document.querySelectorAll('[data-add]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        cart++; cartCount.textContent = cart; cartCount.classList.add('show');
+        const original = btn.textContent;
+        btn.textContent = 'Added ✓'; btn.disabled = true;
+        setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1400);
+      });
+    });
+
+    document.getElementById('newsForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const b = e.target.querySelector('button'); b.textContent = 'Joined ✓';
+      e.target.querySelector('input').disabled = true;
+    });
+
+    document.querySelectorAll('.qa button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qa = btn.parentElement;
+        const open = qa.classList.contains('open');
+        document.querySelectorAll('.qa').forEach(x => x.classList.remove('open'));
+        if (!open) qa.classList.add('open');
+      });
+    });
+
+    const buybar = document.getElementById('buybar');
+    const stage = document.getElementById('stage');
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => buybar.classList.toggle('show', !e.isIntersecting));
+    }, { threshold: 0, rootMargin: '-40% 0px 0px 0px' }).observe(stage);
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    window.addEventListener('load', () => setTimeout(() => document.body.classList.add('show-all'), 1400));
+
+    // ===== 3D shoe: scroll tour + drag + live colourway =====
+    const mv = document.getElementById('mv');
+    const swName = document.getElementById('swName');
+    const capNum = document.getElementById('capNum');
+    const capTxt = document.getElementById('capTxt');
+    const capBar = document.getElementById('capBar');
+    let loaded = false, interacting = false;
+
+    const chapters = [
+      { t: 0.00, n: '01', label: 'Drag the shoe to spin it 360°' },
+      { t: 0.30, n: '02', label: 'Recycled engineered knit upper' },
+      { t: 0.55, n: '03', label: 'Responsive AuraFoam™ midsole' },
+      { t: 0.80, n: '04', label: 'Grippy all-terrain rubber outsole' },
+    ];
+
+    function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+    function stageProgress(){
+      const total = stage.offsetHeight - window.innerHeight;
+      if (total <= 0) return 0;
+      return clamp(-stage.getBoundingClientRect().top / total, 0, 1);
+    }
+    function tourOrbit(p){
+      const theta = 20 + p * 340;
+      const phi = 80 - Math.sin(p * Math.PI) * 14;
+      const rad = 105 + Math.sin(p * Math.PI * 2) * 12;
+      return `${theta}deg ${phi}deg ${rad}%`;
+    }
+
+    mv.addEventListener('load', () => {
+      loaded = true;
+      try { mv.variantName = 'midnight'; } catch(e){}
+    });
+    mv.addEventListener('pointerdown', () => { interacting = true; });
+    window.addEventListener('pointerup', () => { interacting = false; });
+
+    let lastCh = -1;
+    function loop(){
+      requestAnimationFrame(loop);
+      const p = stageProgress();
+      // caption
+      let idx = 0;
+      for (let i = 0; i < chapters.length; i++) if (p >= chapters[i].t) idx = i;
+      if (idx !== lastCh){
+        lastCh = idx;
+        capTxt.style.opacity = 0;
+        setTimeout(() => { capNum.textContent = chapters[idx].n; capTxt.textContent = chapters[idx].label; capTxt.style.opacity = 1; }, 160);
+      }
+      capBar.style.width = (p * 100).toFixed(1) + '%';
+      // camera
+      if (loaded && !interacting) mv.cameraOrbit = tourOrbit(p);
+    }
+    requestAnimationFrame(loop);
+
+    document.querySelectorAll('#swRow .sw').forEach(sw => {
+      sw.addEventListener('click', () => {
+        document.querySelectorAll('#swRow .sw').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+        swName.textContent = sw.dataset.name;
+        try { mv.variantName = sw.dataset.variant; } catch(e){}
+      });
+    });
+  </script>
+</body>
+</html>

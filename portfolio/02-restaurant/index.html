@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sálvia — Seasonal Mediterranean Kitchen</title>
+  <meta name="description" content="Sálvia is a seasonal Mediterranean bistro in the heart of downtown. Fresh produce, an ever-changing menu and a warm room to linger in." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #fbf6ee;
+      --cream-2: #f3ead9;
+      --paper: #ffffff;
+      --ink: #2a211b;
+      --muted: #6f6357;
+      --faint: #a99a87;
+      --line: #e7dcc9;
+      --terra: #c0623b;
+      --terra-d: #9f4d2c;
+      --sage: #7c8a6b;
+      --plum: #7a4a63;
+      --radius: 16px;
+      --shadow: 0 24px 60px -32px rgba(70, 45, 25, .4);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    .serif { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; }
+    .container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 26px; }
+    svg { display: block; }
+    .ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; gap:9px; font-weight:600; font-size:14.5px; padding:13px 26px; border-radius:999px; cursor:pointer; border:1.5px solid transparent; transition: transform .15s, background .2s, color .2s, border-color .2s, box-shadow .2s; white-space:nowrap; }
+    .btn-primary { background: var(--terra); color: #fff7f0; box-shadow: 0 12px 26px -14px rgba(192,98,59,.8); }
+    .btn-primary:hover { background: var(--terra-d); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--ink); border-color: var(--ink); }
+    .btn-outline:hover { background: var(--ink); color: var(--cream); transform: translateY(-2px); }
+    .btn-cream { background: var(--cream); color: var(--ink); }
+    .btn-cream:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    /* topbar */
+    .topbar { background: var(--ink); color: #e9dfd0; font-size: 13px; }
+    .topbar .container { display:flex; justify-content:space-between; align-items:center; height: 40px; }
+    .topbar .t { display:flex; align-items:center; gap:8px; color:#cdbfad; }
+    .topbar .t .ico { width:15px; height:15px; stroke:var(--terra); }
+    .topbar .sep { opacity:.4; }
+
+    /* Header */
+    header { position: sticky; top: 0; z-index: 50; background: rgba(251,246,238,.82); backdrop-filter: saturate(140%) blur(12px); border-bottom: 1px solid transparent; transition: border-color .25s, box-shadow .25s; }
+    header.scrolled { border-color: var(--line); box-shadow: 0 8px 26px -22px rgba(70,45,25,.6); }
+    .nav { display:flex; align-items:center; justify-content:space-between; height: 76px; }
+    .brand { font-family:'Fraunces',serif; font-size: 26px; font-weight: 600; letter-spacing: .5px; display:flex; align-items:center; gap:9px; }
+    .brand .leaf { width:26px; height:26px; color: var(--terra); }
+    .nav-links { display:flex; gap: 34px; }
+    .nav-links a { font-size:14.5px; font-weight:500; color: var(--muted); transition: color .15s; position:relative; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-right { display:flex; align-items:center; gap: 14px; }
+    .burger { display:none; background:none; border:none; cursor:pointer; flex-direction:column; gap:5px; }
+    .burger span { width:24px; height:2px; background: var(--ink); border-radius:2px; }
+
+    /* photo panels (real imagery) */
+    .photo { position: relative; border-radius: var(--radius); overflow: hidden; border:1px solid var(--line); background:#e7dcc9; }
+    .photo .glow, .photo .dish { display:none; }
+    .photo > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
+    .photo::after { content:""; position:absolute; inset:0; pointer-events:none; background: linear-gradient(to top, rgba(26,15,8,.62), rgba(26,15,8,.04) 42%, transparent 68%); }
+    .photo .lbl { position:absolute; left:16px; bottom:14px; z-index:3; display:flex; flex-direction:column; gap:1px; }
+    .photo .lbl .k { font-family:'Fraunces',serif; font-size: 17px; font-weight:600; line-height:1.15; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,.55); }
+    .photo .lbl .s { font-size:11.5px; color: rgba(255,255,255,.9); letter-spacing:.3px; text-shadow:0 1px 8px rgba(0,0,0,.55); }
+
+    /* 3D hero scene */
+    .scene { perspective: 1200px; }
+    .tilt { transform-style: preserve-3d; transition: transform .25s ease-out; }
+    .hero-card { position:relative; height: 520px; border-radius: 24px; overflow:hidden;
+      background:#e7dcc9; border:1px solid var(--line); box-shadow: 0 44px 90px -42px rgba(90,55,25,.6); }
+    .hero-card > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .hero-card::after { content:""; position:absolute; inset:0; pointer-events:none; background: linear-gradient(to top, rgba(26,15,8,.5), transparent 55%); }
+    .hero-card .hero-badge { transform: translateZ(55px); }
+
+    /* Hero */
+    .hero { padding: 70px 0 90px; position: relative; }
+    .hero-grid { display:grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items:center; }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; color: var(--terra); font-weight:600; font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom: 22px; }
+    .eyebrow::before { content:""; width:30px; height:1.5px; background: var(--terra); }
+    .hero h1 { font-family:'Fraunces',serif; font-weight:500; font-size: clamp(44px, 6vw, 76px); line-height:1.02; letter-spacing:-1px; margin-bottom: 22px; }
+    .hero h1 em { font-style:italic; color: var(--terra); }
+    .hero p.lead { font-size: 18px; color: var(--muted); max-width: 46ch; margin-bottom: 30px; }
+    .hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+    .hero-photo { height: 540px; box-shadow: var(--shadow); }
+    .hero-badge { position:absolute; bottom: 22px; left: 22px; z-index:3; background: var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px 18px; box-shadow: var(--shadow); display:flex; align-items:center; gap:14px; }
+    .hero-badge .stars { color: var(--terra); font-size: 15px; letter-spacing:2px; }
+    .hero-badge .n { font-family:'Fraunces',serif; font-weight:600; font-size:20px; }
+    .hero-badge .sub { font-size:12px; color: var(--faint); }
+    .hero-photo-wrap { position: relative; }
+
+    /* marquee strip */
+    .strip { background: var(--ink); color: var(--cream); padding: 18px 0; overflow:hidden; }
+    .strip .track { display:flex; width:max-content; animation: marquee 28s linear infinite; }
+    .strip:hover .track { animation-play-state: paused; }
+    .strip .row { display:flex; gap: 44px; align-items:center; padding-right:44px; font-family:'Fraunces',serif; font-size: 18px; font-style: italic; color:#e9dccb; }
+    .strip .dot { width:6px; height:6px; border-radius:50%; background: var(--terra); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* Sections */
+    section.block { padding: 100px 0; }
+    .head { text-align:center; max-width: 620px; margin: 0 auto 60px; }
+    .head .eyebrow { justify-content:center; }
+    .head .eyebrow::after { content:""; width:30px; height:1.5px; background: var(--terra); }
+    .head h2 { font-family:'Fraunces',serif; font-weight:500; font-size: clamp(32px,4.4vw,50px); line-height:1.08; letter-spacing:-.5px; }
+    .head p { color: var(--muted); font-size: 17px; margin-top:16px; }
+
+    /* About */
+    .about-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items:center; }
+    .about-photos { display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap:16px; height: 460px; }
+    .about-photos .photo:first-child { grid-row: span 2; }
+    .about h2 { font-family:'Fraunces',serif; font-weight:500; font-size: clamp(30px,4vw,44px); line-height:1.1; margin-bottom: 20px; letter-spacing:-.5px; }
+    .about p { color: var(--muted); font-size: 16.5px; margin-bottom: 18px; }
+    .about .signature { font-family:'Fraunces',serif; font-style:italic; font-size:22px; color: var(--terra); margin-top: 6px; }
+    .stats-row { display:flex; gap: 40px; margin-top: 30px; }
+    .stats-row .s .n { font-family:'Fraunces',serif; font-size: 34px; font-weight:600; line-height:1; }
+    .stats-row .s .l { font-size: 13px; color: var(--faint); margin-top:6px; letter-spacing:.3px; }
+
+    /* Menu */
+    .menu-wrap { background: var(--cream-2); }
+    .menu-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 50px 70px; }
+    .menu-cat { margin-bottom: 6px; }
+    .menu-cat > h3 { font-family:'Fraunces',serif; font-weight:600; font-size: 24px; margin-bottom: 6px; display:flex; align-items:center; gap:12px; }
+    .menu-cat > h3 .ico { width:20px; height:20px; stroke: var(--terra); }
+    .menu-cat .cat-sub { font-size:13px; color: var(--faint); letter-spacing:.5px; margin-bottom: 22px; text-transform:uppercase; }
+    .m-item { margin-bottom: 20px; }
+    .m-top { display:flex; align-items:baseline; gap: 8px; }
+    .m-name { font-weight:600; font-size: 16.5px; }
+    .m-name .veg { color: var(--sage); font-size:12px; margin-left:6px; }
+    .m-dots { flex:1; border-bottom: 1.5px dotted var(--faint); transform: translateY(-4px); }
+    .m-price { font-family:'Fraunces',serif; font-weight:600; font-size: 17px; color: var(--terra); }
+    .m-desc { font-size: 13.5px; color: var(--muted); margin-top: 2px; max-width: 42ch; }
+
+    /* Gallery / signatures */
+    .gallery { display:grid; grid-template-columns: repeat(4,1fr); gap: 16px; perspective: 1000px; }
+    .gallery .photo { height: 300px; transform-style: preserve-3d; transition: transform .3s ease, box-shadow .3s ease; }
+    .gallery .photo:hover { transform: translateY(-8px) rotateX(6deg) rotateY(-6deg); box-shadow: var(--shadow); }
+
+    /* Chef */
+    .chef-wrap { background: var(--ink); color: var(--cream); }
+    .chef-grid { display:grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items:center; }
+    .chef-photo { height: 460px; box-shadow: var(--shadow); }
+    .chef .eyebrow { color: #e3a578; }
+    .chef .eyebrow::before { background:#e3a578; }
+    .chef h2 { font-family:'Fraunces',serif; font-weight:500; font-size: clamp(30px,4vw,46px); line-height:1.1; margin-bottom:22px; letter-spacing:-.5px; }
+    .chef p { color:#d8cbba; font-size:16.5px; margin-bottom:18px; }
+    .chef .quote { font-family:'Fraunces',serif; font-style:italic; font-size: 22px; color:#f0e3d2; border-left:3px solid var(--terra); padding-left:20px; margin: 26px 0; }
+    .chef .name { font-family:'Fraunces',serif; font-size:20px; }
+    .chef .role { color:#b3a690; font-size:13.5px; letter-spacing:.5px; }
+
+    /* Reviews */
+    .reviews { display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .review { background: var(--paper); border:1px solid var(--line); border-radius: var(--radius); padding: 30px; }
+    .review .stars { color: var(--terra); letter-spacing:2px; margin-bottom: 14px; font-size:15px; }
+    .review p { font-family:'Fraunces',serif; font-size: 17px; line-height:1.5; margin-bottom: 18px; }
+    .review .who { font-size:13.5px; color: var(--muted); font-weight:600; }
+    .review .who span { color: var(--faint); font-weight:400; }
+
+    /* Reserve */
+    .reserve-wrap { background: var(--cream-2); }
+    .reserve-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items:stretch; }
+    .info-card { }
+    .info-row { display:flex; gap:16px; padding: 18px 0; border-bottom:1px solid var(--line); }
+    .info-row:last-child { border-bottom:none; }
+    .info-row .ic { width:42px; height:42px; border-radius:11px; background: var(--paper); border:1px solid var(--line); display:grid; place-items:center; flex-shrink:0; }
+    .info-row .ic .ico { stroke: var(--terra); }
+    .info-row .k { font-weight:700; font-size:15px; margin-bottom:2px; }
+    .info-row .v { color: var(--muted); font-size:14.5px; }
+    .form-card { background: var(--paper); border:1px solid var(--line); border-radius: var(--radius); padding: 34px; box-shadow: var(--shadow); }
+    .form-card h3 { font-family:'Fraunces',serif; font-weight:600; font-size: 26px; margin-bottom: 6px; }
+    .form-card .fsub { color: var(--muted); font-size:14.5px; margin-bottom: 24px; }
+    .field { margin-bottom: 16px; }
+    .field label { display:block; font-size:13px; font-weight:600; color: var(--muted); margin-bottom:7px; }
+    .field input, .field select { width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:10px; font-family:inherit; font-size:14.5px; background: var(--cream); color: var(--ink); }
+    .field input:focus, .field select:focus { outline:none; border-color: var(--terra); }
+    .field-row { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-card .btn { width:100%; justify-content:center; margin-top: 8px; }
+    .form-note { text-align:center; font-size:12.5px; color: var(--faint); margin-top: 14px; }
+
+    /* Footer */
+    footer { background: var(--ink); color: #cdbfad; padding: 70px 0 36px; }
+    .foot-grid { display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    footer .brand { color: var(--cream); margin-bottom: 14px; }
+    footer .about-f { font-size:14px; color:#a99a87; max-width: 30ch; }
+    footer h4 { color: var(--cream); font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    footer ul { list-style:none; }
+    footer li { margin-bottom:9px; }
+    footer li a, footer li span { color:#a99a87; font-size:14px; }
+    footer li a:hover { color: var(--cream); }
+    .foot-bottom { border-top:1px solid #43362b; padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13px; color:#897a68; align-items:center; }
+    .socials { display:flex; gap:10px; }
+    .socials a { width:36px; height:36px; border-radius:50%; border:1px solid #43362b; display:grid; place-items:center; transition: border-color .2s, background .2s; }
+    .socials a:hover { background: var(--terra); border-color: var(--terra); }
+    .socials .ico { width:16px; height:16px; stroke:#cdbfad; }
+    .socials a:hover .ico { stroke:#fff; }
+
+    /* Reveal */
+    .reveal { opacity:0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity:1; transform:none; }
+    .show-all .reveal { opacity:1 !important; transform:none !important; }
+    @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none;} }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .hero-grid, .about-grid, .chef-grid, .reserve-grid { grid-template-columns: 1fr; gap: 44px; }
+      .hero-card, .chef-photo { height: 380px; }
+      .chef-grid .chef-photo { order:-1; }
+      .menu-grid { grid-template-columns: 1fr; gap: 40px; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .reviews { grid-template-columns: 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .hero-badge { left: 0; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display:none; }
+      .nav-right .btn-outline { display:none; }
+      .burger { display:flex; }
+      .nav-links.open { display:flex; flex-direction:column; position:absolute; top:76px; left:0; right:0; background: var(--cream); border-bottom:1px solid var(--line); padding: 22px 26px; gap:18px; }
+      .topbar .container { justify-content:center; } .topbar .t.right { display:none; }
+      .about-photos { grid-template-columns:1fr 1fr; height: 320px; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .foot-grid { grid-template-columns: 1fr; }
+      section.block { padding: 70px 0; }
+      .field-row { grid-template-columns: 1fr; }
+      .stats-row { flex-wrap:wrap; gap: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="container">
+      <span class="t"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Open today · 12:00 – 23:00</span>
+      <span class="t right"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 24 Almond Street, Downtown · <span class="sep">+1 (555) 014-2280</span></span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="container nav">
+      <a href="#" class="brand"><svg class="leaf ico" viewBox="0 0 24 24" style="width:26px;height:26px;stroke-width:1.6;"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg> Sálvia</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#about">Our story</a>
+        <a href="#menu">Menu</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reserve">Visit</a>
+      </nav>
+      <div class="nav-right">
+        <a href="#reserve" class="btn btn-outline">Book a table</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">Seasonal Mediterranean Kitchen</span>
+        <h1 class="serif">Food worth <em>slowing down</em> for.</h1>
+        <p class="lead">A small bistro built around the market — produce picked that morning, a menu that changes with the season, and a room made for long, unhurried evenings.</p>
+        <div class="hero-actions">
+          <a href="#reserve" class="btn btn-primary">Reserve a table</a>
+          <a href="#menu" class="btn btn-outline">View the menu</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap reveal">
+        <div class="scene">
+          <div class="tilt hero-card" id="heroCard">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1100&q=80&auto=format&fit=crop" alt="A beautifully plated dish at Sálvia" onerror="this.style.display='none'" />
+            <div class="hero-badge">
+              <div>
+                <div class="stars">★★★★★</div>
+                <div class="sub">1,240+ guest reviews</div>
+              </div>
+              <div style="width:1px; height:38px; background:var(--line);"></div>
+              <div>
+                <div class="n serif">4.9</div>
+                <div class="sub">Avg. rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Strip -->
+  <div class="strip">
+    <div class="track">
+      <div class="row">
+        <span>Wood-fired oven</span><span class="dot"></span>
+        <span>Market-fresh daily</span><span class="dot"></span>
+        <span>House-made pasta</span><span class="dot"></span>
+        <span>Natural wine</span><span class="dot"></span>
+        <span>Est. 2014</span><span class="dot"></span>
+      </div>
+      <div class="row" aria-hidden="true">
+        <span>Wood-fired oven</span><span class="dot"></span>
+        <span>Market-fresh daily</span><span class="dot"></span>
+        <span>House-made pasta</span><span class="dot"></span>
+        <span>Natural wine</span><span class="dot"></span>
+        <span>Est. 2014</span><span class="dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section class="block about" id="about">
+    <div class="container about-grid">
+      <div class="about-photos reveal">
+        <div class="photo ph-sage">
+          <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=700&q=80&auto=format&fit=crop" alt="Fresh produce from the market" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">From the garden</span></span>
+        </div>
+        <div class="photo ph-amber">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700&q=80&auto=format&fit=crop" alt="Wood-fired pizza" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">Wood-fired</span></span>
+        </div>
+        <div class="photo ph-espresso">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=80&auto=format&fit=crop" alt="Coffee with latte art" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">Slow mornings</span></span>
+        </div>
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">Our story</span>
+        <h2 class="serif">A neighbourhood table, ten years in the making.</h2>
+        <p>Sálvia started as a tiny six-table room with one wood oven and a simple idea: cook what's good right now, and cook it with care. A decade later the idea hasn't changed — only the queue out front has.</p>
+        <p>We work with a handful of local farms and fishers, write the menu each morning, and make our pasta, bread and ice cream in-house. Nothing fancy. Just honest food, generously served.</p>
+        <p class="signature serif">— Marco &amp; Elena, owners</p>
+        <div class="stats-row">
+          <div class="s"><div class="n serif">10 yrs</div><div class="l">Serving downtown</div></div>
+          <div class="s"><div class="n serif">7</div><div class="l">Local farm partners</div></div>
+          <div class="s"><div class="n serif">100%</div><div class="l">Made in-house</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <div class="menu-wrap">
+    <section class="block" id="menu">
+      <div class="container">
+        <div class="head reveal">
+          <span class="eyebrow">The menu</span>
+          <h2 class="serif">Written fresh, every morning</h2>
+          <p>A snapshot of this week's plates. The full list changes with the season and the market.</p>
+        </div>
+        <div class="menu-grid">
+
+          <div class="menu-cat reveal">
+            <h3 class="serif"><svg class="ico" viewBox="0 0 24 24"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M12 4v1"/><path d="M4 15h16l-1 4H5z"/></svg> To start</h3>
+            <div class="cat-sub">Small plates, made for sharing</div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Heirloom Tomato Bruschetta <span class="veg">veg</span></span><span class="m-dots"></span><span class="m-price">12</span></div>
+              <div class="m-desc">Sourdough, sweet basil, aged balsamic</div>
+            </div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Burrata &amp; Grilled Peach</span><span class="m-dots"></span><span class="m-price">16</span></div>
+              <div class="m-desc">Prosciutto, rocket, toasted hazelnut</div>
+            </div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Charred Octopus</span><span class="m-dots"></span><span class="m-price">18</span></div>
+              <div class="m-desc">Salsa verde, fingerling potato, lemon</div>
+            </div>
+          </div>
+
+          <div class="menu-cat reveal">
+            <h3 class="serif"><svg class="ico" viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 9v13M21 2c-2 0-3 2-3 6s1 5 3 5m0 0v9"/></svg> Mains</h3>
+            <div class="cat-sub">From the wood oven &amp; pasta bar</div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Wild Mushroom Risotto <span class="veg">veg</span></span><span class="m-dots"></span><span class="m-price">24</span></div>
+              <div class="m-desc">Parmesan, truffle oil, fresh thyme</div>
+            </div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Pan-Seared Sea Bass</span><span class="m-dots"></span><span class="m-price">29</span></div>
+              <div class="m-desc">Braised fennel, citrus, Castelvetrano olive</div>
+            </div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Dry-Aged Ribeye</span><span class="m-dots"></span><span class="m-price">38</span></div>
+              <div class="m-desc">Smoked butter, rosemary fries, jus</div>
+            </div>
+          </div>
+
+          <div class="menu-cat reveal">
+            <h3 class="serif"><svg class="ico" viewBox="0 0 24 24"><path d="M5 21h14M7 21V11a5 5 0 0 1 10 0v10M9 7c0-2 1-4 3-4"/></svg> Sweet</h3>
+            <div class="cat-sub">House-made, daily</div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Dark Chocolate Tart</span><span class="m-dots"></span><span class="m-price">11</span></div>
+              <div class="m-desc">Sea salt, crème fraîche, olive oil</div>
+            </div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Lemon &amp; Olive Oil Cake <span class="veg">veg</span></span><span class="m-dots"></span><span class="m-price">10</span></div>
+              <div class="m-desc">Mascarpone, basil sugar</div>
+            </div>
+          </div>
+
+          <div class="menu-cat reveal">
+            <h3 class="serif"><svg class="ico" viewBox="0 0 24 24"><path d="M8 22h8M12 22v-6M5 3h14l-1 7a6 6 0 0 1-12 0z"/></svg> To drink</h3>
+            <div class="cat-sub">Natural wine &amp; low-intervention pours</div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">House Red / White</span><span class="m-dots"></span><span class="m-price">9</span></div>
+              <div class="m-desc">By the glass · ask for today's pour</div>
+            </div>
+            <div class="m-item">
+              <div class="m-top"><span class="m-name">Negroni Sbagliato</span><span class="m-dots"></span><span class="m-price">13</span></div>
+              <div class="m-desc">Campari, sweet vermouth, prosecco</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Gallery -->
+  <section class="block" id="gallery">
+    <div class="container">
+      <div class="head reveal">
+        <span class="eyebrow">On the pass</span>
+        <h2 class="serif">A few of this season's favourites</h2>
+      </div>
+      <div class="gallery">
+        <div class="photo reveal">
+          <img src="https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=700&q=80&auto=format&fit=crop" alt="Bruschetta with heirloom tomato" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">Bruschetta</span><span class="s">Heirloom tomato</span></span>
+        </div>
+        <div class="photo reveal">
+          <img src="https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=700&q=80&auto=format&fit=crop" alt="Wild mushroom risotto" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">Risotto</span><span class="s">Wild mushroom</span></span>
+        </div>
+        <div class="photo reveal">
+          <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=700&q=80&auto=format&fit=crop" alt="Dark chocolate dessert" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">Chocolate</span><span class="s">Dark &amp; gooey</span></span>
+        </div>
+        <div class="photo reveal">
+          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=700&q=80&auto=format&fit=crop" alt="Signature cocktails" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">Cocktails</span><span class="s">From the bar</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chef -->
+  <div class="chef-wrap chef">
+    <section class="block">
+      <div class="container chef-grid">
+        <div class="photo ph-espresso chef-photo reveal">
+          <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80&auto=format&fit=crop" alt="Chef plating a dish in the kitchen" onerror="this.style.display='none'" />
+          <span class="lbl"><span class="k serif">In the kitchen</span></span>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Meet the chef</span>
+          <h2 class="serif">Cooking that tastes like somewhere.</h2>
+          <p>Chef Elena Rossi trained across Liguria and Lisbon before bringing her market-led cooking home. Her food is rooted in memory — the coast, the garden, a grandmother's Sunday table.</p>
+          <div class="quote serif">"Good cooking isn't complicated. It's paying attention — to the season, the fire, and the people at the table."</div>
+          <div class="name serif">Elena Rossi</div>
+          <div class="role">Chef &amp; co-owner</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Reviews -->
+  <section class="block">
+    <div class="container">
+      <div class="head reveal">
+        <span class="eyebrow">Kind words</span>
+        <h2 class="serif">Loved by our regulars</h2>
+      </div>
+      <div class="reviews">
+        <div class="review reveal">
+          <div class="stars">★★★★★</div>
+          <p>"The kind of place you walk into for dinner and leave three hours later, completely happy. That ribeye is unreal."</p>
+          <div class="who">James P. <span>· local guide</span></div>
+        </div>
+        <div class="review reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Everything tastes like it was made by someone who cares. We come back every month and the menu always surprises us."</p>
+          <div class="who">Priya N. <span>· regular since 2019</span></div>
+        </div>
+        <div class="review reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Booked for our anniversary and the whole team made it special. Warm, generous, genuinely delicious."</p>
+          <div class="who">The Okafors <span>· anniversary dinner</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reserve -->
+  <div class="reserve-wrap">
+    <section class="block" id="reserve">
+      <div class="container">
+        <div class="head reveal">
+          <span class="eyebrow">Visit us</span>
+          <h2 class="serif">Reserve your table</h2>
+          <p>We hold a few walk-in seats at the bar each night, but evenings book up fast.</p>
+        </div>
+        <div class="reserve-grid">
+          <div class="info-card reveal">
+            <div class="info-row">
+              <div class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><div class="k">Find us</div><div class="v">24 Almond Street, Downtown<br>Two blocks from Central Park station</div></div>
+            </div>
+            <div class="info-row">
+              <div class="ic"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+              <div><div class="k">Opening hours</div><div class="v">Tue – Sun · 12:00 – 23:00<br>Closed Mondays</div></div>
+            </div>
+            <div class="info-row">
+              <div class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg></div>
+              <div><div class="k">Reservations</div><div class="v">+1 (555) 014-2280<br>hello@salvia.kitchen</div></div>
+            </div>
+          </div>
+
+          <form class="form-card reveal" id="resForm">
+            <h3 class="serif">Book a table</h3>
+            <div class="fsub">We'll confirm by email within the hour.</div>
+            <div class="field">
+              <label for="rname">Full name</label>
+              <input id="rname" type="text" placeholder="Your name" required />
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="rdate">Date</label><input id="rdate" type="date" required /></div>
+              <div class="field"><label for="rtime">Time</label>
+                <select id="rtime"><option>12:30</option><option>13:00</option><option>19:00</option><option selected>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option></select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="rguests">Guests</label>
+                <select id="rguests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
+              </div>
+              <div class="field"><label for="rphone">Phone</label><input id="rphone" type="tel" placeholder="(555) 000-0000" /></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Request reservation</button>
+            <div class="form-note">No card required · free cancellation up to 2 hours before</div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <div class="brand serif"><svg class="leaf ico" viewBox="0 0 24 24" style="width:24px;height:24px;stroke:var(--terra);stroke-width:1.6;"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg> Sálvia</div>
+          <p class="about-f">Seasonal Mediterranean cooking in the heart of downtown. Come hungry, stay a while.</p>
+        </div>
+        <div><h4>Visit</h4><ul><li><a href="#about">Our story</a></li><li><a href="#menu">Menu</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#reserve">Book a table</a></li></ul></div>
+        <div><h4>Hours</h4><ul><li><span>Tue – Thu · 12–22</span></li><li><span>Fri – Sat · 12–23</span></li><li><span>Sunday · 12–21</span></li><li><span>Monday · Closed</span></li></ul></div>
+        <div><h4>Find us</h4><ul><li><span>24 Almond Street</span></li><li><span>Downtown</span></li><li><span>+1 (555) 014-2280</span></li><li><span>hello@salvia.kitchen</span></li></ul></div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Sálvia Kitchen. Crafted with care.</span>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg class="ico" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" aria-label="TripAdvisor"><svg class="ico" viewBox="0 0 24 24"><circle cx="7" cy="13" r="3"/><circle cx="17" cy="13" r="3"/><path d="M7 10a8 8 0 0 1 10 0"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 8));
+
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // 3D tilt on hero card following the mouse
+    const scene = document.querySelector('.scene');
+    const card = document.getElementById('heroCard');
+    if (scene && card && window.matchMedia('(hover: hover)').matches) {
+      scene.addEventListener('mousemove', (e) => {
+        const r = scene.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `rotateY(${px * 13}deg) rotateX(${-py * 13}deg)`;
+      });
+      scene.addEventListener('mouseleave', () => { card.style.transform = 'rotateY(0deg) rotateX(0deg)'; });
+    }
+
+    document.getElementById('resForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'Reservation requested ✓';
+      btn.style.background = 'var(--sage)';
+      btn.disabled = true;
+    });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    window.addEventListener('load', () => setTimeout(() => document.body.classList.add('show-all'), 1400));
+  </script>
+</body>
+</html>

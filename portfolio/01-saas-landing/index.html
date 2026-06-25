@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flowly — The calm home for your team's work</title>
+  <meta name="description" content="Flowly helps teams plan, track and ship work without the chaos. The calm project tool your team will actually use." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #08080a;
+      --bg-2: #0d0d10;
+      --surface: #141418;
+      --surface-2: #1a1a20;
+      --border: rgba(255,255,255,.08);
+      --border-2: rgba(255,255,255,.14);
+      --text: #f4f4f6;
+      --muted: #a1a1ad;
+      --faint: #6c6c78;
+      --acc: #2dd4bf;
+      --acc-2: #22d3ee;
+      --acc-soft: rgba(45,212,191,.12);
+      --acc-line: rgba(45,212,191,.30);
+      --radius: 18px;
+      --radius-lg: 26px;
+      --shadow: 0 30px 70px -30px rgba(0,0,0,.8);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "cv11", "ss01";
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+    svg { display: block; }
+    .ico { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .acc-text { color: var(--acc); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-weight: 600; font-size: 15px;
+      padding: 12px 22px; border-radius: 11px;
+      cursor: pointer; border: 1px solid transparent;
+      transition: transform .15s ease, box-shadow .2s ease, background .2s, border-color .2s, color .2s;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--acc); color: #052e2b; box-shadow: 0 12px 30px -12px rgba(45,212,191,.6); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -12px rgba(45,212,191,.75); background: #43e0cd; }
+    .btn-ghost { background: rgba(255,255,255,.04); color: var(--text); border-color: var(--border-2); }
+    .btn-ghost:hover { border-color: var(--acc-line); color: #fff; background: rgba(255,255,255,.07); }
+    .btn-ghost .ico { width: 17px; height: 17px; }
+    .btn-lg { padding: 15px 28px; font-size: 16px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(8,8,10,.6);
+      backdrop-filter: saturate(160%) blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .25s, background .25s;
+    }
+    header.scrolled { border-color: var(--border); background: rgba(8,8,10,.85); }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -.4px; }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: linear-gradient(140deg, var(--acc), var(--acc-2));
+      display: grid; place-items: center; color: #04211f;
+      box-shadow: 0 8px 20px -8px rgba(45,212,191,.6);
+    }
+    .logo-mark .ico { width: 18px; height: 18px; stroke: #04211f; stroke-width: 2.4; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { color: var(--muted); font-weight: 500; font-size: 14.5px; transition: color .15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+    .nav-cta .link { color: var(--muted); font-weight: 600; font-size: 14.5px; }
+    .nav-cta .link:hover { color: var(--text); }
+    .burger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
+    .burger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* Hero */
+    .hero { position: relative; overflow: hidden; padding: 110px 0 90px; }
+    .hero::before {
+      content: ""; position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 1100px; height: 700px; z-index: 0; pointer-events: none;
+      background: radial-gradient(45% 50% at 50% 50%, rgba(45,212,191,.16), transparent 70%),
+                  radial-gradient(40% 45% at 70% 35%, rgba(34,211,238,.12), transparent 70%);
+      filter: blur(10px);
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(255,255,255,.04); border: 1px solid var(--border-2); color: var(--muted);
+      padding: 6px 14px 6px 7px; border-radius: 999px; font-size: 13px; font-weight: 500;
+    }
+    .pill .tagnew { background: var(--acc-soft); color: var(--acc); border: 1px solid var(--acc-line); font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; letter-spacing: .4px; }
+    .pill .arrow { stroke: var(--faint); width: 14px; height: 14px; }
+    .hero h1 {
+      font-size: clamp(42px, 6.4vw, 72px); line-height: 1.0; letter-spacing: -2.6px;
+      font-weight: 800; margin: 26px 0 22px; max-width: 15ch;
+    }
+    .hero h1 .grad { background: linear-gradient(120deg, var(--acc), var(--acc-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p.lead { font-size: 19px; color: var(--muted); max-width: 50ch; margin-bottom: 32px; }
+    .hero-actions { display: flex; gap: 13px; flex-wrap: wrap; align-items: center; }
+    .hero-note { margin-top: 22px; color: var(--faint); font-size: 13.5px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+    .hero-note span { display: inline-flex; align-items: center; gap: 7px; }
+    .hero-note .ico { width: 16px; height: 16px; stroke: var(--acc); stroke-width: 2.4; }
+
+    /* Mockup */
+    .mock {
+      margin-top: 64px; position: relative;
+      border-radius: 16px; background: var(--surface);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .mock::before { content:""; position:absolute; inset:0; border-radius:16px; border:1px solid rgba(255,255,255,.04); pointer-events:none; }
+    .mock-bar { display: flex; align-items: center; gap: 8px; padding: 13px 18px; border-bottom: 1px solid var(--border); background: var(--bg-2); }
+    .mock-bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .mock-bar i:nth-child(1){ background:#ff5f57;} .mock-bar i:nth-child(2){ background:#febc2e;} .mock-bar i:nth-child(3){ background:#28c840;}
+    .mock-bar .url { margin-left: 14px; font-size: 12.5px; color: var(--faint); }
+    .mock-body { display: grid; grid-template-columns: 208px 1fr; min-height: 384px; }
+    .mock-side { background: var(--bg-2); border-right: 1px solid var(--border); padding: 18px 14px; }
+    .mock-side .s-logo { font-weight: 700; font-size: 14px; margin-bottom: 20px; display:flex; gap:8px; align-items:center; color: var(--text);}
+    .mock-side .s-item { display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:9px; color: var(--muted); font-size:13.5px; font-weight:500; margin-bottom:3px;}
+    .mock-side .s-item .ico { width: 16px; height: 16px; color: var(--faint); }
+    .mock-side .s-item.active { background: rgba(255,255,255,.05); color: var(--text); }
+    .mock-side .s-item.active .ico { color: var(--acc); }
+    .mock-main { padding: 24px; }
+    .mock-main h3 { font-size: 17px; margin-bottom: 4px; }
+    .mock-main .sub { color: var(--faint); font-size: 12.5px; margin-bottom: 20px; }
+    .kanban { display: grid; grid-template-columns: repeat(3,1fr); gap: 13px; }
+    .col-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--faint); margin-bottom: 10px; }
+    .card-mini { background: var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:11px; margin-bottom:9px; }
+    .card-mini .tag { display:inline-block; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:999px; margin-bottom:8px; }
+    .tag-a { background: rgba(45,212,191,.15); color:#5eead4;} .tag-b{ background: rgba(244,114,182,.15); color:#f9a8d4;} .tag-c{ background: rgba(96,165,250,.15); color:#93c5fd;}
+    .card-mini p { font-size: 12.5px; font-weight: 500; color: var(--text); }
+    .card-mini .row { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+    .avatars { display:flex; }
+    .avatars span { width:21px; height:21px; border-radius:50%; border:2px solid var(--surface-2); margin-left:-6px; background: linear-gradient(140deg,var(--acc),var(--acc-2)); }
+    .bar { height:5px; border-radius:999px; background: rgba(255,255,255,.08); width:58px; overflow:hidden;}
+    .bar i { display:block; height:100%; background: linear-gradient(90deg,var(--acc),var(--acc-2)); }
+
+    /* Logos */
+    .logos { padding: 46px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .logos p { text-align: center; color: var(--faint); font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 26px; }
+    .logo-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 46px; align-items: center; }
+    .logo-row .brand { display:flex; align-items:center; gap:9px; font-weight: 700; font-size: 18px; color: var(--muted); letter-spacing: -.4px; opacity:.55; transition: opacity .2s; }
+    .logo-row .brand:hover { opacity: 1; }
+    .logo-row .brand .ico { width: 21px; height: 21px; color: var(--muted); }
+
+    /* Sections */
+    section.block { padding: 110px 0; }
+    .section-head { max-width: 660px; margin: 0 auto 56px; text-align: center; }
+    .eyebrow { color: var(--acc); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1.6px; margin-bottom: 16px; display:inline-flex; align-items:center; gap:8px; }
+    .eyebrow .ico { width: 15px; height: 15px; }
+    .section-head .eyebrow { justify-content: center; }
+    .section-head h2 { font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -1.6px; line-height: 1.06; font-weight: 800; }
+    .section-head p { color: var(--muted); font-size: 18px; margin-top: 18px; }
+
+    /* Stats */
+    .stats { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    .stats-grid { display:grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+    .stat { text-align:center; }
+    .stat .num { font-size: clamp(32px, 4vw, 44px); font-weight: 800; letter-spacing: -1.5px; color: var(--text); line-height:1.1; }
+    .stat .num b { color: var(--acc); font-weight: 800; }
+    .stat .lbl { color: var(--faint); font-size: 13.5px; font-weight: 500; margin-top: 8px; }
+    .stat + .stat { border-left: 1px solid var(--border); }
+
+    /* Bento features */
+    .bento { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .bcard {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 26px; transition: border-color .2s, transform .2s; position: relative; overflow: hidden;
+    }
+    .bcard:hover { border-color: var(--border-2); transform: translateY(-3px); }
+    .bcard .ficon { width: 44px; height: 44px; border-radius: 12px; background: var(--acc-soft); border: 1px solid var(--acc-line); display: grid; place-items: center; margin-bottom: 18px; }
+    .bcard .ficon .ico { width: 22px; height: 22px; stroke: var(--acc); }
+    .bcard h3 { font-size: 18px; margin-bottom: 8px; letter-spacing: -.4px; }
+    .bcard p { color: var(--muted); font-size: 14.5px; }
+    /* split card (boards): text + visual side by side, full width */
+    .b-split { grid-column: span 4; display:grid; grid-template-columns: 1.05fr 1.4fr; gap: 44px; align-items:center; padding: 34px; }
+    .b-quarter { grid-column: span 1; }
+    .b-wide { grid-column: span 4; display:flex; align-items:center; justify-content:space-between; gap: 36px; flex-wrap: wrap; padding: 34px; }
+    .b-wide .wtext { max-width: 40ch; }
+    /* board visual */
+    .b-board { display:grid; grid-template-columns: repeat(3,1fr); gap: 12px; align-items: start; }
+    .b-board .bc { background: var(--bg-2); border:1px solid var(--border); border-radius:11px; padding:12px; }
+    .b-board .bc .t { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--faint); margin-bottom:10px; }
+    .b-board .chip { background: var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:9px; font-size:11.5px; color:var(--text); margin-bottom:8px; }
+    .b-board .chip:last-child { margin-bottom:0; }
+    .b-board .chip .d { width:100%; height:4px; border-radius:999px; background: rgba(255,255,255,.08); margin-top:8px; overflow:hidden;}
+    .b-board .chip .d i { display:block; height:100%; background: linear-gradient(90deg,var(--acc),var(--acc-2)); }
+    /* integration chips in wide card */
+    .ints { display:grid; grid-template-columns: repeat(3, auto); gap: 10px; }
+    .ints .chip2 { display:flex; align-items:center; gap:9px; background: var(--bg-2); border:1px solid var(--border); border-radius:11px; padding:10px 14px; font-size:13.5px; font-weight:600; color: var(--text); }
+    .ints .chip2 .ico { width:17px; height:17px; stroke: var(--muted); }
+
+    /* Showcase */
+    .showcase-wrap { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .showcase { display:flex; flex-direction:column; gap: 100px; }
+    .srow { display:grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items:center; }
+    .srow.rev .stext { order: 2; }
+    .stext h2 { font-size: clamp(26px, 3.6vw, 38px); letter-spacing: -1.3px; line-height: 1.12; margin-bottom: 18px; font-weight: 800; }
+    .stext > p { color: var(--muted); font-size: 17px; margin-bottom: 26px; }
+    .checklist { list-style:none; }
+    .checklist li { display:flex; gap:12px; align-items:flex-start; margin-bottom: 14px; font-size: 15.5px; color: var(--text); font-weight: 500; }
+    .checklist li .ckwrap { width: 23px; height: 23px; border-radius: 7px; background: var(--acc-soft); border:1px solid var(--acc-line); display:grid; place-items:center; flex-shrink:0; margin-top: 1px; }
+    .checklist li .ckwrap .ico { width: 13px; height: 13px; stroke: var(--acc); stroke-width: 2.6; }
+
+    .svisual { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow); }
+    .tl-row { display:grid; grid-template-columns: 92px 1fr; align-items:center; gap: 14px; margin-bottom: 15px; }
+    .tl-row:last-child { margin-bottom: 0; }
+    .tl-label { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .tl-track { position:relative; height: 15px; background: rgba(255,255,255,.06); border-radius: 999px; }
+    .tl-bar { position:absolute; top:0; height: 15px; border-radius: 999px; background: linear-gradient(90deg,var(--acc),var(--acc-2)); }
+    .tl-head { display:flex; justify-content:space-between; font-size:12px; color:var(--faint); font-weight:600; margin-bottom:18px; }
+    .ai-head { display:flex; align-items:center; gap: 12px; margin-bottom: 18px; }
+    .ai-badge { width: 40px; height: 40px; border-radius: 11px; background: var(--acc-soft); border:1px solid var(--acc-line); display:grid; place-items:center; }
+    .ai-badge .ico { width: 21px; height: 21px; stroke: var(--acc); }
+    .ai-head .t { font-weight: 700; font-size: 15px; }
+    .ai-head .s { font-size: 12px; color: var(--faint); }
+    .ai-body p { font-size: 14.5px; color: var(--muted); margin-bottom: 14px; }
+    .ai-body p b { color: var(--text); font-weight: 700; }
+    .ai-body .warn { display:flex; gap:8px; align-items:flex-start; }
+    .ai-body .warn .ico { width:18px; height:18px; stroke:#fbbf24; flex-shrink:0; margin-top:2px; }
+    .ai-tags { display:flex; gap: 8px; flex-wrap: wrap; }
+    .ai-tags span { font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: rgba(255,255,255,.05); border:1px solid var(--border); color: var(--muted); }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; position: relative; }
+    .step { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+    .step .num { width: 42px; height: 42px; border-radius: 11px; background: var(--acc-soft); border:1px solid var(--acc-line); display: grid; place-items: center; font-weight: 800; color: var(--acc); font-size: 17px; margin-bottom: 18px; }
+    .step h3 { font-size: 18px; margin-bottom: 8px; }
+    .step p { color: var(--muted); font-size: 14.5px; }
+
+    /* Pricing */
+    .pricing { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; align-items: stretch; }
+    .price-card { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 32px 28px; display:flex; flex-direction:column; transition: transform .2s, border-color .2s; }
+    .price-card:hover { transform: translateY(-4px); border-color: var(--border-2); }
+    .price-card.popular { border-color: var(--acc-line); background: linear-gradient(180deg, rgba(45,212,191,.07), var(--surface) 40%); box-shadow: 0 30px 70px -40px rgba(45,212,191,.5); position: relative; }
+    .badge-pop { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background: var(--acc); color:#052e2b; font-size:11.5px; font-weight:700; padding:5px 14px; border-radius:999px; letter-spacing:.3px; }
+    .price-card h3 { font-size: 15px; color: var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.8px; }
+    .price { font-size: 44px; font-weight: 800; letter-spacing: -2px; margin: 14px 0 2px; }
+    .price span { font-size: 15px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
+    .price-card .desc { color: var(--faint); font-size: 14px; margin-bottom: 24px; min-height: 40px; }
+    .plist { list-style: none; margin-bottom: 26px; flex: 1; }
+    .plist li { display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color: var(--muted); padding: 7px 0; }
+    .plist li .ico { width: 17px; height: 17px; stroke: var(--acc); stroke-width: 2.6; flex-shrink:0; margin-top: 3px; }
+
+    /* Testimonials */
+    .tcards { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .tcard { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+    .stars { display:flex; gap: 3px; margin-bottom: 16px; }
+    .stars .ico { width: 17px; height: 17px; fill: var(--acc); stroke: var(--acc); }
+    .tcard p { font-size: 15px; color: var(--text); margin-bottom: 22px; }
+    .tperson { display:flex; align-items:center; gap:12px; }
+    .tperson .ava { width:42px; height:42px; border-radius:50%; background: linear-gradient(140deg,var(--acc),var(--acc-2)); display:grid; place-items:center; color:#04211f; font-weight:800; font-size:14px; }
+    .tperson .name { font-weight:700; font-size:14.5px; }
+    .tperson .role { color: var(--faint); font-size:13px; }
+
+    /* FAQ */
+    .faq { max-width: 780px; margin: 0 auto; }
+    .qa { border-bottom: 1px solid var(--border); }
+    .qa button { width:100%; text-align:left; background:none; border:none; cursor:pointer; padding: 22px 0; font-size: 16.5px; font-weight:600; color: var(--text); display:flex; justify-content:space-between; align-items:center; gap: 20px; }
+    .qa .chev { width: 20px; height: 20px; color: var(--acc); transition: transform .25s; flex-shrink:0; fill:none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .qa.open .chev { transform: rotate(180deg); }
+    .qa .ans { max-height: 0; overflow: hidden; transition: max-height .3s ease; color: var(--muted); font-size: 14.5px; }
+    .qa.open .ans { max-height: 240px; }
+    .qa .ans p { padding-bottom: 22px; }
+
+    /* CTA */
+    .cta-wrap { padding: 30px 0 110px; }
+    .cta {
+      position: relative; overflow: hidden; text-align:center;
+      border-radius: var(--radius-lg); padding: 70px 40px;
+      background: linear-gradient(180deg, var(--surface), var(--bg-2));
+      border: 1px solid var(--border-2);
+    }
+    .cta::before { content:""; position:absolute; top:-160px; left:50%; transform:translateX(-50%); width:700px; height:400px;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(45,212,191,.22), transparent 70%); pointer-events:none; }
+    .cta h2 { font-size: clamp(29px, 4vw, 44px); letter-spacing: -1.5px; font-weight: 800; position:relative; }
+    .cta p { font-size: 18px; color: var(--muted); margin: 16px auto 30px; max-width: 46ch; position:relative; }
+    .cta .btn { position: relative; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 60px 0 36px; }
+    .foot-grid { display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 46px; }
+    footer .about { font-size:14px; color:var(--faint); max-width: 32ch; margin-top: 14px; }
+    footer h4 { color:var(--text); font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    footer ul { list-style:none; }
+    footer ul li { margin-bottom: 10px; }
+    footer ul a { color:var(--faint); font-size:14px; transition: color .15s; }
+    footer ul a:hover { color:var(--text); }
+    .foot-bottom { border-top:1px solid var(--border); padding-top: 24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--faint); font-size:13px; align-items:center; }
+    .socials { display:flex; gap: 10px; }
+    .socials a { width: 34px; height: 34px; border-radius: 9px; background: var(--surface); border:1px solid var(--border); display:grid; place-items:center; transition: border-color .2s, background .2s; }
+    .socials a:hover { border-color: var(--acc-line); }
+    .socials .ico { width: 16px; height: 16px; stroke: var(--muted); }
+    .socials a:hover .ico { stroke: var(--acc); }
+
+    /* Reveal — content visible by default; animates on scroll. Never stays hidden. */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .no-js .reveal, .show-all .reveal { opacity: 1 !important; transform: none !important; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; transition:none; } }
+
+    /* Responsive */
+    @media (max-width: 940px) {
+      .bento { grid-template-columns: 1fr 1fr; }
+      .b-split { grid-column: span 2; grid-template-columns: 1fr; gap: 28px; }
+      .b-quarter { grid-column: span 1; }
+      .b-wide { grid-column: span 2; flex-direction: column; align-items: flex-start; }
+      .ints { grid-template-columns: repeat(3, 1fr); }
+      .pricing, .tcards { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .mock-body { grid-template-columns: 1fr; }
+      .mock-side { display:none; }
+      .kanban { grid-template-columns: 1fr; }
+      .srow { grid-template-columns: 1fr; gap: 38px; }
+      .srow.rev .stext { order: 0; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 34px 0; }
+      .stat:nth-child(3) { border-left: none; }
+    }
+    @media (max-width: 640px) {
+      .nav-links, .nav-cta .link { display: none; }
+      .burger { display: flex; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 20px 24px; gap: 18px; }
+      .bento, .pricing, .tcards, .foot-grid, .ints { grid-template-columns: 1fr; }
+      .b-split, .b-wide, .b-quarter { grid-column: span 1; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 70px 0 56px; }
+      section.block { padding: 72px 0; }
+      .showcase { gap: 64px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="container nav">
+      <a href="#" class="logo">
+        <span class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/></svg></span> Flowly
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#" class="link">Sign in</a>
+        <a href="#pricing" class="btn btn-primary">Start free</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <span class="pill"><span class="tagnew">NEW</span> AI task summaries are here <svg class="ico arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+      <h1>The calm home for your team's <span class="grad">work</span></h1>
+      <p class="lead">Flowly brings tasks, projects and deadlines into one focused workspace — so your team spends less time managing work and more time doing it.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-primary btn-lg">Start free — no card needed</a>
+        <a href="#how" class="btn btn-ghost btn-lg">
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg>
+          See how it works
+        </a>
+      </div>
+      <div class="hero-note">
+        <span><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Free for up to 5 people</span>
+        <span><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Set up in 2 minutes</span>
+      </div>
+
+      <div class="mock reveal">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">app.flowly.io/board</span></div>
+        <div class="mock-body">
+          <aside class="mock-side">
+            <div class="s-logo"><span class="logo-mark" style="width:24px;height:24px;border-radius:7px;"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M4 6h16M4 12h10M4 18h6"/></svg></span> Flowly</div>
+            <div class="s-item active"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg> Board</div>
+            <div class="s-item"><svg class="ico" viewBox="0 0 24 24"><path d="M8 6h10M6 12h9M11 18h7"/></svg> Timeline</div>
+            <div class="s-item"><svg class="ico" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></svg> Inbox</div>
+            <div class="s-item"><svg class="ico" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg> Reports</div>
+            <div class="s-item"><svg class="ico" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Team</div>
+          </aside>
+          <main class="mock-main">
+            <h3>Product Launch</h3>
+            <div class="sub">12 tasks · 4 members · due in 9 days</div>
+            <div class="kanban">
+              <div>
+                <div class="col-head">To do</div>
+                <div class="card-mini"><span class="tag tag-a">Design</span><p>Finalize landing page hero</p><div class="row"><div class="avatars"><span></span><span></span></div><div class="bar"><i style="width:30%"></i></div></div></div>
+                <div class="card-mini"><span class="tag tag-b">Marketing</span><p>Draft launch email</p><div class="row"><div class="avatars"><span></span></div><div class="bar"><i style="width:10%"></i></div></div></div>
+              </div>
+              <div>
+                <div class="col-head">In progress</div>
+                <div class="card-mini"><span class="tag tag-c">Dev</span><p>Build pricing page</p><div class="row"><div class="avatars"><span></span><span></span></div><div class="bar"><i style="width:65%"></i></div></div></div>
+              </div>
+              <div>
+                <div class="col-head">Done</div>
+                <div class="card-mini"><span class="tag tag-a">Design</span><p>Brand color system</p><div class="row"><div class="avatars"><span></span></div><div class="bar"><i style="width:100%"></i></div></div></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logos -->
+  <div class="logos">
+    <div class="container">
+      <p>Trusted by fast-moving teams at</p>
+      <div class="logo-row">
+        <span class="brand"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/></svg> Northwind</span>
+        <span class="brand"><svg class="ico" viewBox="0 0 24 24"><path d="m12 3 9 6-9 6-9-6 9-6z"/><path d="m3 15 9 6 9-6"/></svg> Lumen</span>
+        <span class="brand"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg> Acme Co</span>
+        <span class="brand"><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg> Vertex</span>
+        <span class="brand"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg> Brightly</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="num">12,000<b>+</b></div><div class="lbl">Teams onboarded</div></div>
+        <div class="stat reveal"><div class="num">4.9<b>/5</b></div><div class="lbl">Average user rating</div></div>
+        <div class="stat reveal"><div class="num">2.4<b>M</b></div><div class="lbl">Tasks shipped weekly</div></div>
+        <div class="stat reveal"><div class="num">99.9<b>%</b></div><div class="lbl">Uptime, guaranteed</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features (bento) -->
+  <section class="block" id="features">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Features</div>
+        <h2>Everything your team needs, nothing it doesn't</h2>
+        <p>Powerful enough for complex projects, simple enough that everyone actually uses it.</p>
+      </div>
+      <div class="bento">
+
+        <div class="bcard b-split reveal">
+          <div class="wtext">
+            <div class="ficon"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></svg></div>
+            <h3>Lightning-fast boards</h3>
+            <p>Drag, drop and update tasks instantly. No lag, no clutter — just flow, the moment inspiration hits.</p>
+          </div>
+          <div class="b-board">
+            <div class="bc"><div class="t">To do</div><div class="chip">Hero section<div class="d"><i style="width:30%"></i></div></div><div class="chip">Launch email<div class="d"><i style="width:12%"></i></div></div></div>
+            <div class="bc"><div class="t">Doing</div><div class="chip">Pricing page<div class="d"><i style="width:65%"></i></div></div></div>
+            <div class="bc"><div class="t">Done</div><div class="chip">Color system<div class="d"><i style="width:100%"></i></div></div></div>
+          </div>
+        </div>
+
+        <div class="bcard b-quarter reveal">
+          <div class="ficon"><svg class="ico" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/><path d="M19 16v4M17 18h4"/></svg></div>
+          <h3>AI summaries</h3>
+          <p>An instant plain-language recap of any project's status and blockers.</p>
+        </div>
+
+        <div class="bcard b-quarter reveal">
+          <div class="ficon"><svg class="ico" viewBox="0 0 24 24"><path d="M8 6h10M6 12h9M11 18h7"/></svg></div>
+          <h3>Smart timelines</h3>
+          <p>Deadlines and dependencies on a clean timeline that updates in real time.</p>
+        </div>
+
+        <div class="bcard b-quarter reveal">
+          <div class="ficon"><svg class="ico" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+          <h3>Calm notifications</h3>
+          <p>Only get pinged about what matters to you. Stay focused, stay sane.</p>
+        </div>
+
+        <div class="bcard b-quarter reveal">
+          <div class="ficon"><svg class="ico" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg></div>
+          <h3>Live reports</h3>
+          <p>Track progress, workload and velocity without building a single spreadsheet.</p>
+        </div>
+
+        <div class="bcard b-wide reveal">
+          <div class="wtext">
+            <div class="ficon"><svg class="ico" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><path d="M8 12h8"/></svg></div>
+            <h3>Connects to everything you already use</h3>
+            <p>Two-way sync with 40+ tools, so Flowly fits into your stack instead of replacing it.</p>
+          </div>
+          <div class="ints">
+            <span class="chip2"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg> Slack</span>
+            <span class="chip2"><svg class="ico" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3.1-.3 6.4-1.5 6.4-7A5.4 5.4 0 0 0 20 4.8 5 5 0 0 0 19.9 1S18.7.7 16 2.5a13.4 13.4 0 0 0-7 0C6.3.7 5.1 1 5.1 1A5 5 0 0 0 5 4.8a5.4 5.4 0 0 0-1.5 3.8c0 5.4 3.3 6.6 6.4 7A3.4 3.4 0 0 0 9 18.1V22"/></svg> GitHub</span>
+            <span class="chip2"><svg class="ico" viewBox="0 0 24 24"><path d="M12 2 2 19.5h6L12 12l4 7.5h6z"/></svg> Drive</span>
+            <span class="chip2"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2.5"/></svg> Figma</span>
+            <span class="chip2"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg> Notion</span>
+            <span class="chip2"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3z"/></svg> Zoom</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase -->
+  <div class="showcase-wrap">
+    <section class="block">
+      <div class="container">
+        <div class="showcase">
+
+          <div class="srow reveal">
+            <div class="stext">
+              <div class="eyebrow"><svg class="ico" viewBox="0 0 24 24"><path d="M8 6h10M6 12h9M11 18h7"/></svg> Plan visually</div>
+              <h2>See every deadline before it sees you</h2>
+              <p>Lay out your whole roadmap on a living timeline. Drag a task and every dependency updates automatically — so slipping dates never catch your team by surprise.</p>
+              <ul class="checklist">
+                <li><span class="ckwrap"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span> Auto-adjusting dependencies</li>
+                <li><span class="ckwrap"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span> Milestones &amp; critical-path view</li>
+                <li><span class="ckwrap"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span> Workload balancing across the team</li>
+              </ul>
+            </div>
+            <div class="svisual">
+              <div class="tl-head"><span>Q3 Roadmap</span><span>Jul — Sep</span></div>
+              <div class="tl-row"><span class="tl-label">Research</span><div class="tl-track"><div class="tl-bar" style="left:0;width:32%"></div></div></div>
+              <div class="tl-row"><span class="tl-label">Design</span><div class="tl-track"><div class="tl-bar" style="left:22%;width:38%"></div></div></div>
+              <div class="tl-row"><span class="tl-label">Development</span><div class="tl-track"><div class="tl-bar" style="left:46%;width:42%"></div></div></div>
+              <div class="tl-row"><span class="tl-label">QA</span><div class="tl-track"><div class="tl-bar" style="left:74%;width:18%"></div></div></div>
+              <div class="tl-row"><span class="tl-label">Launch</span><div class="tl-track"><div class="tl-bar" style="left:88%;width:12%"></div></div></div>
+            </div>
+          </div>
+
+          <div class="srow rev reveal">
+            <div class="stext">
+              <div class="eyebrow"><svg class="ico" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Powered by AI</div>
+              <h2>Skip the status meeting — let AI catch you up</h2>
+              <p>Flowly reads your team's activity and writes a clear summary of what shipped, what's blocked and what's next. One click, no spreadsheets, no chasing people for updates.</p>
+              <ul class="checklist">
+                <li><span class="ckwrap"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span> Weekly digests in plain language</li>
+                <li><span class="ckwrap"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span> Automatic blocker detection</li>
+                <li><span class="ckwrap"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span> Shareable in Slack &amp; email</li>
+              </ul>
+            </div>
+            <div class="svisual">
+              <div class="ai-head">
+                <span class="ai-badge"><svg class="ico" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></span>
+                <div><div class="t">Weekly summary</div><div class="s">Generated just now</div></div>
+              </div>
+              <div class="ai-body">
+                <p>This week your team shipped <b>18 tasks</b> across the Product Launch project — <b>up 24%</b> from last week. The pricing page is now live and QA is on track.</p>
+                <p class="warn"><svg class="ico" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg> <span>One blocker: the launch email is waiting on final copy from Marketing.</span></p>
+                <div class="ai-tags"><span>18 shipped</span><span>1 blocker</span><span>On schedule</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- How it works -->
+  <section class="block" id="how">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">How it works</div>
+        <h2>Up and running in three steps</h2>
+        <p>No onboarding calls. No 40-page manuals. Just open it and start.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><div class="num">1</div><h3>Create your workspace</h3><p>Sign up free and invite your team in a single click. No setup fees, no credit card.</p></div>
+        <div class="step reveal"><div class="num">2</div><h3>Add your projects</h3><p>Drop in your tasks or import from your old tool. Flowly organizes the chaos for you.</p></div>
+        <div class="step reveal"><div class="num">3</div><h3>Ship with focus</h3><p>Track progress in real time and let AI keep everyone aligned on what's next.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <div class="showcase-wrap">
+    <section class="block" id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">Pricing</div>
+          <h2>Simple pricing that grows with you</h2>
+          <p>Start free forever. Upgrade only when your team is ready.</p>
+        </div>
+        <div class="pricing">
+          <div class="price-card reveal">
+            <h3>Starter</h3>
+            <div class="price">$0<span>/mo</span></div>
+            <div class="desc">For small teams getting organized.</div>
+            <ul class="plist">
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Up to 5 members</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Unlimited tasks</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Board &amp; list views</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Basic integrations</li>
+            </ul>
+            <a href="#" class="btn btn-ghost">Get started</a>
+          </div>
+          <div class="price-card popular reveal">
+            <span class="badge-pop">Most popular</span>
+            <h3>Pro</h3>
+            <div class="price">$12<span>/user/mo</span></div>
+            <div class="desc">For growing teams that ship fast.</div>
+            <ul class="plist">
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Everything in Starter</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> AI summaries &amp; reports</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Timelines &amp; dependencies</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 40+ integrations</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Priority support</li>
+            </ul>
+            <a href="#" class="btn btn-primary">Start 14-day trial</a>
+          </div>
+          <div class="price-card reveal">
+            <h3>Business</h3>
+            <div class="price">$24<span>/user/mo</span></div>
+            <div class="desc">For companies that need control.</div>
+            <ul class="plist">
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Everything in Pro</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Advanced permissions</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> SSO &amp; audit logs</li>
+              <li><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Dedicated manager</li>
+            </ul>
+            <a href="#" class="btn btn-ghost">Contact sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Testimonials -->
+  <section class="block">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Loved by teams</div>
+        <h2>Don't just take our word for it</h2>
+      </div>
+      <div class="tcards">
+        <div class="tcard reveal">
+          <div class="stars">
+            <svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <p>"We tried four tools before Flowly. This is the first one the whole team actually opens every day. It just feels calm."</p>
+          <div class="tperson"><div class="ava">SM</div><div><div class="name">Sara Mitchell</div><div class="role">Head of Ops, Lumen</div></div></div>
+        </div>
+        <div class="tcard reveal">
+          <div class="stars">
+            <svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <p>"The AI summaries save me an hour of status meetings every week. I always know where every project stands."</p>
+          <div class="tperson"><div class="ava">DK</div><div><div class="name">David Kim</div><div class="role">Founder, Vertex</div></div></div>
+        </div>
+        <div class="tcard reveal">
+          <div class="stars">
+            <svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><svg class="ico" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <p>"Set up took five minutes and our whole roadmap was clear by the end of the day. Worth every cent."</p>
+          <div class="tperson"><div class="ava">AR</div><div><div class="name">Ana Reyes</div><div class="role">PM, Brightly</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">FAQ</div>
+        <h2>Questions, answered</h2>
+      </div>
+      <div class="faq reveal">
+        <div class="qa"><button>Is there really a free plan? <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>Yes — Flowly is free forever for teams of up to 5 people, with unlimited tasks. No credit card required to start.</p></div></div>
+        <div class="qa"><button>Can I import from my current tool? <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>Absolutely. Flowly imports projects and tasks from Trello, Asana, Jira and CSV files in just a couple of clicks.</p></div></div>
+        <div class="qa"><button>How does the AI summary work? <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>Flowly reads your project's activity and generates a clear, plain-language summary of progress, blockers and what's coming next — on demand or scheduled.</p></div></div>
+        <div class="qa"><button>Can I cancel anytime? <svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div class="ans"><p>Of course. Plans are month-to-month with no lock-in. Cancel in one click and keep access until the end of your billing period.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <div class="container">
+      <div class="cta reveal">
+        <h2>Ready to find your flow?</h2>
+        <p>Join thousands of teams that ship more with less stress. Get started free in under two minutes.</p>
+        <a href="#" class="btn btn-primary btn-lg">Start free today</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <a href="#" class="logo"><span class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/></svg></span> Flowly</a>
+          <p class="about">The calm project tool that helps teams plan, track and ship their best work.</p>
+        </div>
+        <div><h4>Product</h4><ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#">Integrations</a></li><li><a href="#">Changelog</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+        <div><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li></ul></div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Flowly Inc. All rights reserved.</span>
+        <div class="socials">
+          <a href="#" aria-label="Twitter"><svg class="ico" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg class="ico" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="#" aria-label="GitHub"><svg class="ico" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.documentElement.classList.remove('no-js');
+
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 8));
+
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    document.querySelectorAll('.qa button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qa = btn.parentElement;
+        const isOpen = qa.classList.contains('open');
+        document.querySelectorAll('.qa').forEach(x => x.classList.remove('open'));
+        if (!isOpen) qa.classList.add('open');
+      });
+    });
+
+    // Scroll reveal — robust: reveals on view, plus a safety net so content is never stuck hidden.
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(el => io.observe(el));
+    // Safety net: if the page is fully loaded and static (e.g. screenshots), show everything.
+    window.addEventListener('load', () => setTimeout(() => {
+      document.body.classList.add('show-all');
+    }, 1400));
+  </script>
+</body>
+</html>
