@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haven — Find a place to call home</title>
+  <meta name="description" content="Haven helps you buy, sell and rent beautiful homes. Browse handpicked listings, estimate your mortgage and connect with trusted agents." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2311293f'/%3E%3Cg fill='none' stroke='%23bd8b46' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 15l8-7 8 7'/%3E%3Cpath d='M10 14v9h12v-9'/%3E%3Cpath d='M14 23v-5h4v5'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#f7f5f0; --paper:#ffffff; --navy:#11293f; --navy-2:#1b3b5c; --navy-3:#0c1f30;
+      --ink:#16212e; --muted:#566472; --faint:#6f7d8b; --line:#e7e3d9;
+      --gold:#bd8b46; --gold-d:#9b6f33; --gold-soft:#f3ecde;
+      --radius:16px; --radius-lg:24px; --shadow-sm:0 10px 30px -18px rgba(17,41,63,.3); --shadow:0 34px 70px -36px rgba(17,41,63,.45);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
+    .serif { font-family:'Cormorant Garamond',Georgia,serif; }
+    .container { width:100%; max-width:1200px; margin:0 auto; padding:0 28px; }
+    svg { display:block; }
+    .ico { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:9px; font-weight:600; font-size:15px; padding:13px 24px; border-radius:10px; cursor:pointer; border:1.5px solid transparent; transition:transform .15s, background .2s, color .2s, border-color .2s, box-shadow .2s; white-space:nowrap; }
+    .btn-gold { background:var(--gold); color:#fff; box-shadow:0 14px 30px -14px rgba(189,139,70,.85); }
+    .btn-gold:hover { background:var(--gold-d); transform:translateY(-2px); }
+    .btn-navy { background:var(--navy); color:#fff; }
+    .btn-navy:hover { background:var(--navy-2); transform:translateY(-2px); }
+    .btn-outline { background:transparent; color:var(--navy); border-color:var(--line); }
+    .btn-outline:hover { border-color:var(--navy); transform:translateY(-2px); }
+    .btn-lg { padding:16px 32px; font-size:16px; }
+
+    header { position:fixed; top:0; left:0; right:0; z-index:60; transition:background .3s, border-color .3s, box-shadow .3s; border-bottom:1px solid transparent; }
+    header.scrolled { background:rgba(247,245,240,.92); backdrop-filter:saturate(150%) blur(12px); border-color:var(--line); box-shadow:0 8px 26px -22px rgba(17,41,63,.5); }
+    .nav { display:flex; align-items:center; justify-content:space-between; height:78px; }
+    .logo { display:flex; align-items:center; gap:11px; font-family:'Cormorant Garamond',serif; font-weight:700; font-size:29px; letter-spacing:.5px; color:#fff; transition:color .3s; }
+    header.scrolled .logo { color:var(--navy); }
+    .logo .mk { width:36px; height:36px; border-radius:9px; background:var(--gold); display:grid; place-items:center; }
+    .logo .mk .ico { stroke:#fff; width:21px; height:21px; }
+    .nav-links { display:flex; gap:30px; }
+    .nav-links a { color:rgba(255,255,255,.85); font-weight:500; font-size:14.5px; transition:color .15s; }
+    header.scrolled .nav-links a { color:var(--muted); }
+    .nav-links a:hover { color:#fff; }
+    header.scrolled .nav-links a:hover { color:var(--navy); }
+    .nav-cta { display:flex; align-items:center; gap:14px; }
+    .burger { display:none; background:none; border:none; cursor:pointer; flex-direction:column; gap:5px; }
+    .burger span { width:24px; height:2px; background:#fff; border-radius:2px; }
+    header.scrolled .burger span { background:var(--navy); }
+
+    /* hero — cinematic */
+    .hero { position:relative; z-index:3; min-height:92vh; display:flex; align-items:flex-end; padding:140px 0 46px; }
+    .hero-bg { position:absolute; inset:0; z-index:0; overflow:hidden; }
+    .hero-bg img { width:100%; height:100%; object-fit:cover; animation:kenburns 18s ease-in-out infinite alternate; }
+    @keyframes kenburns { from{ transform:scale(1.04); } to{ transform:scale(1.16) translate(-2%,-1%); } }
+    .hero-bg::after { content:""; position:absolute; inset:0; background:linear-gradient(115deg, rgba(11,25,40,.86) 0%, rgba(11,25,40,.55) 42%, rgba(11,25,40,.25) 100%), linear-gradient(to top, rgba(11,25,40,.7), transparent 45%); }
+    .hero .container { position:relative; z-index:2; width:100%; }
+    .hero .eyebrow { display:inline-flex; align-items:center; gap:10px; color:var(--gold); font-weight:600; font-size:13px; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:22px; }
+    .hero .eyebrow::before { content:""; width:34px; height:1.5px; background:var(--gold); }
+    .hero h1 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(48px,7vw,96px); line-height:.98; letter-spacing:-1px; color:#fff; margin-bottom:18px; max-width:14ch; }
+    .hero h1 em { font-style:italic; color:var(--gold); }
+    .hero .lead { font-size:18px; color:rgba(255,255,255,.85); max-width:48ch; margin-bottom:30px; }
+    /* search card */
+    .search { background:rgba(255,255,255,.97); border-radius:var(--radius); box-shadow:var(--shadow); padding:12px; max-width:760px; }
+    .search-tabs { display:flex; gap:6px; margin-bottom:10px; }
+    .search-tabs button { padding:9px 20px; border:none; background:transparent; border-radius:9px; font-family:inherit; font-weight:600; font-size:14px; color:var(--muted); cursor:pointer; transition:.2s; }
+    .search-tabs button.on { background:var(--navy); color:#fff; }
+    .search-fields { display:grid; grid-template-columns:1.4fr 1fr 1fr auto; gap:4px; align-items:stretch; }
+    .field { display:flex; flex-direction:column; gap:3px; padding:8px 14px; justify-content:center; }
+    .field label { font-size:11px; font-weight:700; color:var(--faint); text-transform:uppercase; letter-spacing:.6px; }
+    .field input, .field select { border:none; background:transparent; font-family:inherit; font-size:15px; font-weight:500; color:var(--ink); padding:1px 0; cursor:pointer; width:100%; }
+    .field input { cursor:text; }
+    .field select { -webkit-appearance:none; -moz-appearance:none; appearance:none; padding-right:22px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23bd8b46' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 0 center; }
+    .field select::-ms-expand { display:none; }
+    .field input:focus, .field select:focus { outline:none; }
+    /* custom dropdown */
+    .field.dd { position:relative; }
+    .dd-trigger { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; background:none; border:none; font-family:inherit; font-size:15px; font-weight:500; color:var(--ink); cursor:pointer; padding:1px 0; }
+    .dd-trigger .chev { width:13px; height:13px; fill:none; stroke:var(--gold); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s; flex-shrink:0; }
+    .field.dd.open .dd-trigger .chev { transform:rotate(180deg); }
+    .dd-menu { position:absolute; top:calc(100% + 16px); left:-12px; min-width:210px; background:var(--paper); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:7px; opacity:0; visibility:hidden; transform:translateY(-8px) scale(.98); transform-origin:top left; transition:.18s ease; z-index:30; }
+    .field.dd.open .dd-menu { opacity:1; visibility:visible; transform:none; }
+    .dd-opt { display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; text-align:left; background:none; border:none; font-family:inherit; font-size:14.5px; font-weight:500; color:var(--ink); padding:11px 14px; border-radius:9px; cursor:pointer; transition:background .15s, color .15s; white-space:nowrap; }
+    .dd-opt:hover { background:var(--gold-soft); }
+    .dd-opt.on { color:var(--gold-d); font-weight:600; }
+    .dd-opt .ck { width:16px; height:16px; fill:none; stroke:var(--gold); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; opacity:0; flex-shrink:0; }
+    .dd-opt.on .ck { opacity:1; }
+    .field + .field { border-left:1px solid var(--line); }
+    .search .go { background:var(--gold); color:#fff; border:none; border-radius:11px; padding:0 26px; display:inline-flex; align-items:center; gap:9px; cursor:pointer; font-family:inherit; font-weight:600; font-size:15px; transition:background .2s; }
+    .search .go:hover { background:var(--gold-d); }
+    .search .go .ico { width:20px; height:20px; stroke:#fff; }
+    .hero-trust { display:flex; gap:28px; margin-top:22px; color:rgba(255,255,255,.8); font-size:13.5px; flex-wrap:wrap; }
+    .hero-trust span { display:inline-flex; align-items:center; gap:8px; }
+    .hero-trust .stars { color:var(--gold); letter-spacing:1px; }
+
+    /* press */
+    .press { background:var(--navy); padding:24px 0; }
+    .press .container { display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap; }
+    .press .lbl { font-family:'Space Mono',monospace; color:#7e92a6; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+    .press .logos { display:flex; gap:42px; align-items:center; flex-wrap:wrap; }
+    .press .logos span { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:#cdd7e1; opacity:.85; letter-spacing:.5px; }
+
+    /* stats */
+    .stats { background:var(--paper); border-bottom:1px solid var(--line); }
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); }
+    .stat { text-align:center; padding:40px 18px; }
+    .stat + .stat { border-left:1px solid var(--line); }
+    .stat .n { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:48px; color:var(--navy); line-height:1; }
+    .stat .n .gd { color:var(--gold); }
+    .stat .l { font-size:13.5px; color:var(--muted); margin-top:8px; letter-spacing:.2px; }
+
+    section.block { padding:96px 0; }
+    .head { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:44px; flex-wrap:wrap; }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; color:var(--gold); font-weight:600; font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+    .eyebrow::before { content:""; width:28px; height:1.5px; background:var(--gold); }
+    .head h2 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(34px,4.6vw,54px); line-height:1.04; color:var(--navy); letter-spacing:-.5px; }
+    .head p { color:var(--muted); font-size:16px; margin-top:8px; max-width:50ch; }
+    .head.center { flex-direction:column; align-items:center; text-align:center; }
+    .head.center .eyebrow { justify-content:center; }
+
+    .filters { display:flex; gap:10px; flex-wrap:wrap; }
+    .filters button { padding:10px 20px; border:1px solid var(--line); background:var(--paper); border-radius:999px; font-family:inherit; font-weight:600; font-size:13.5px; color:var(--muted); cursor:pointer; transition:all .2s; }
+    .filters button.on, .filters button:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+    /* listings */
+    .listings { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:30px; }
+    .listing { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; transition:transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s, border-color .3s; }
+    .listing:hover { transform:translateY(-5px); box-shadow:var(--shadow); border-color:transparent; }
+    .listing .ph { position:relative; aspect-ratio:16/11; overflow:hidden; }
+    .listing .ph img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.16,1,.3,1); }
+    .listing:hover .ph img { transform:scale(1.045); }
+    .ribbon { position:absolute; top:14px; left:14px; z-index:2; background:var(--gold); color:#fff; font-size:11px; font-weight:700; padding:6px 12px; border-radius:6px; letter-spacing:.5px; text-transform:uppercase; }
+    .ribbon.sale { background:rgba(17,41,63,.92); }
+    .ribbon.hot { background:#b5572f; }
+    .photo-count { position:absolute; bottom:14px; left:14px; z-index:2; background:rgba(11,25,40,.7); color:#fff; font-size:12px; font-weight:600; padding:5px 11px; border-radius:999px; display:inline-flex; align-items:center; gap:6px; backdrop-filter:blur(4px); }
+    .photo-count .ico { width:14px; height:14px; stroke:#fff; }
+    .listing .fav { position:absolute; top:12px; right:12px; z-index:2; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.95); border:none; display:grid; place-items:center; cursor:pointer; transition:transform .15s; }
+    .listing .fav:hover { transform:scale(1.1); }
+    .listing .fav .ico { width:19px; height:19px; stroke:var(--navy); fill:none; transition:.2s; }
+    .listing .fav.on .ico { fill:var(--gold); stroke:var(--gold); }
+    .listing .view { position:absolute; left:50%; bottom:14px; transform:translate(-50%,8px); z-index:3; opacity:0; transition:opacity .3s, transform .3s; background:var(--gold); color:#fff; font-weight:600; font-size:13.5px; padding:10px 20px; border-radius:999px; display:inline-flex; align-items:center; gap:7px; box-shadow:0 12px 26px -8px rgba(11,25,40,.55); }
+    .listing:hover .view { opacity:1; transform:translate(-50%,0); }
+    .listing .view .ico { width:15px; height:15px; stroke:#fff; }
+    .listing .body { padding:22px; }
+    .listing .price { font-weight:700; font-size:23px; color:var(--navy); letter-spacing:-.5px; }
+    .listing .price span { font-size:13px; font-weight:500; color:var(--faint); }
+    .listing h3 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:24px; color:var(--ink); margin:5px 0 6px; }
+    .listing .loc { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:13.5px; margin-bottom:13px; }
+    .listing .pulse { display:flex; align-items:center; gap:8px; margin-bottom:16px; font-size:12.5px; font-weight:600; color:var(--gold-d); letter-spacing:.2px; }
+    .listing .pulse .dot { width:7px; height:7px; border-radius:50%; background:var(--gold); position:relative; flex-shrink:0; }
+    .listing .pulse .dot::after { content:""; position:absolute; inset:0; border-radius:50%; animation:pulsering 2.2s ease-out infinite; }
+    @keyframes pulsering { 0%{ box-shadow:0 0 0 0 rgba(189,139,70,.5); } 70%{ box-shadow:0 0 0 8px rgba(189,139,70,0); } 100%{ box-shadow:0 0 0 0 rgba(189,139,70,0); } }
+    .listing .loc .ico { width:15px; height:15px; stroke:var(--gold); }
+    .listing .specs { display:flex; gap:20px; padding-top:16px; border-top:1px solid var(--line); }
+    .listing .specs .s { display:flex; align-items:center; gap:7px; color:var(--muted); font-size:13.5px; font-weight:500; }
+    .listing .specs .ico { width:18px; height:18px; stroke:var(--navy); }
+
+    /* filtering: motion, count + empty state */
+    .count-line { color:var(--muted); font-size:14.5px; margin-top:10px; }
+    .count-line b { color:var(--navy); font-weight:700; }
+    .listing.is-hidden { display:none; }
+    .listings.filtered .listing:not(.is-hidden) { animation:cardIn .45s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes cardIn { from { opacity:0; transform:translateY(12px) scale(.985); } to { opacity:1; transform:none; } }
+    .no-results { display:none; text-align:center; padding:64px 24px; border:1px dashed var(--line); border-radius:var(--radius); background:var(--paper); margin-top:30px; }
+    .no-results.show { display:block; animation:cardIn .45s ease both; }
+    .no-results .nr-ic { width:60px; height:60px; border-radius:50%; background:var(--gold-soft); display:grid; place-items:center; margin:0 auto 18px; }
+    .no-results .nr-ic .ico { width:26px; height:26px; stroke:var(--gold-d); }
+    .no-results h3 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:27px; color:var(--navy); margin-bottom:8px; }
+    .no-results p { color:var(--muted); font-size:14.5px; margin-bottom:22px; max-width:42ch; margin-left:auto; margin-right:auto; }
+    .field.is-off { opacity:.42; pointer-events:none; }
+
+    /* mortgage calculator */
+    .calc-wrap { background:var(--gold-soft); }
+    .calc { display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; }
+    .calc-inputs .row { margin-bottom:24px; }
+    .calc-inputs .rl { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+    .calc-inputs .rl .k { font-weight:600; font-size:14.5px; color:var(--ink); }
+    .calc-inputs .rl .v { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:var(--navy); }
+    .calc-inputs input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:999px; background:#e2d6bf; outline:none; }
+    .calc-inputs input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--gold); cursor:pointer; border:3px solid #fff; box-shadow:0 4px 10px -2px rgba(189,139,70,.7); }
+    .calc-inputs input[type=range]::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:var(--gold); cursor:pointer; border:3px solid #fff; }
+    .calc-inputs .seg { display:flex; gap:8px; }
+    .calc-inputs .seg button { flex:1; padding:11px; border:1px solid var(--line); background:var(--paper); border-radius:10px; font-family:inherit; font-weight:600; font-size:14px; color:var(--muted); cursor:pointer; transition:.2s; }
+    .calc-inputs .seg button.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+    .calc-result { background:var(--navy); color:#fff; border-radius:var(--radius-lg); padding:44px 40px; text-align:center; box-shadow:var(--shadow); }
+    .calc-result .lbl { color:#aab8c6; font-size:13px; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+    .calc-result .big { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:64px; line-height:1; color:var(--gold); }
+    .calc-result .big span { font-size:24px; color:#fff; }
+    .calc-result .bd { display:flex; justify-content:space-between; margin-top:26px; padding-top:22px; border-top:1px solid #1b3b5c; }
+    .calc-result .bd .k { color:#8fa0b0; font-size:13px; }
+    .calc-result .bd .pv { font-weight:700; font-size:15px; }
+    .calc-result .btn { margin-top:24px; width:100%; }
+
+    /* featured property */
+    .feat-wrap { background:var(--navy); color:#e7edf3; }
+    .feat { display:grid; grid-template-columns:1.15fr .85fr; gap:50px; align-items:center; }
+    .feat-gallery { display:grid; grid-template-columns:2fr 1fr; grid-template-rows:1fr 1fr; gap:12px; height:480px; }
+    .feat-gallery .g { border-radius:14px; overflow:hidden; }
+    .feat-gallery .g:first-child { grid-row:span 2; }
+    .feat-gallery .g img { width:100%; height:100%; object-fit:cover; transition:transform .6s; }
+    .feat-gallery .g:hover img { transform:scale(1.06); }
+    .feat-info .eyebrow { color:var(--gold); }
+    .feat-info h2 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(32px,3.8vw,48px); line-height:1.06; color:#fff; margin-bottom:10px; letter-spacing:-.5px; }
+    .feat-info .loc { display:flex; align-items:center; gap:7px; color:#aab8c6; font-size:14.5px; margin-bottom:18px; }
+    .feat-info .loc .ico { width:16px; height:16px; stroke:var(--gold); }
+    .feat-info .fprice { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:42px; color:var(--gold); margin-bottom:18px; }
+    .feat-info p { color:#bcc8d4; font-size:15.5px; margin-bottom:26px; max-width:46ch; }
+    .feat-specs { display:flex; gap:30px; margin-bottom:30px; flex-wrap:wrap; }
+    .feat-specs .s .ico { width:22px; height:22px; stroke:var(--gold); margin-bottom:7px; }
+    .feat-specs .s .v { font-weight:700; font-size:16px; color:#fff; }
+    .feat-specs .s .k { font-size:12px; color:#8fa0b0; }
+
+    /* neighborhoods */
+    .hoods { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+    .hood { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:3/4; }
+    .hood img { width:100%; height:100%; object-fit:cover; transition:transform .6s; }
+    .hood:hover img { transform:scale(1.08); }
+    .hood::after { content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(11,25,40,.85),transparent 55%); }
+    .hood .cap { position:absolute; left:20px; bottom:18px; z-index:2; color:#fff; }
+    .hood .cap .k { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:26px; }
+    .hood .cap .l { font-size:12.5px; color:#cdd7e1; display:inline-flex; align-items:center; gap:6px; }
+    .hood .arrow { position:absolute; top:18px; right:18px; z-index:2; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); display:grid; place-items:center; opacity:0; transform:translateY(-6px); transition:.3s; }
+    .hood:hover .arrow { opacity:1; transform:none; }
+    .hood .arrow .ico { width:17px; height:17px; stroke:#fff; }
+
+    /* services */
+    .services { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .service { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:36px 32px; transition:transform .25s, box-shadow .25s; position:relative; overflow:hidden; }
+    .service:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
+    .service .num { position:absolute; top:18px; right:24px; font-family:'Cormorant Garamond',serif; font-size:60px; font-weight:700; color:var(--gold-soft); }
+    .service .ic { width:56px; height:56px; border-radius:14px; background:var(--navy); display:grid; place-items:center; margin-bottom:22px; position:relative; }
+    .service .ic .ico { width:27px; height:27px; stroke:var(--gold); }
+    .service h3 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:26px; color:var(--navy); margin-bottom:10px; position:relative; }
+    .service p { color:var(--muted); font-size:14.5px; position:relative; }
+
+    /* agents */
+    .agents { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+    .agent { text-align:center; }
+    .agent .ph { aspect-ratio:1/1.15; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); margin-bottom:16px; position:relative; }
+    .agent .ph img { width:100%; height:100%; object-fit:cover; transition:transform .6s; }
+    .agent:hover .ph img { transform:scale(1.06); }
+    .agent .ph::after { content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(11,25,40,.7),transparent 45%); opacity:0; transition:.3s; }
+    .agent:hover .ph::after { opacity:1; }
+    .agent .social { position:absolute; left:0; right:0; bottom:14px; display:flex; gap:8px; justify-content:center; opacity:0; transform:translateY(10px); transition:.3s; z-index:2; }
+    .agent:hover .social { opacity:1; transform:none; }
+    .agent .social a { width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.95); display:grid; place-items:center; }
+    .agent .social .ico { width:16px; height:16px; stroke:var(--navy); }
+    .agent h3 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:23px; color:var(--navy); }
+    .agent .role { color:var(--gold-d); font-size:13px; font-weight:600; letter-spacing:.3px; }
+    .agent .meta { color:var(--faint); font-size:13px; margin-top:4px; }
+
+    /* testimonials */
+    .tcards { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .tcard { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:32px; position:relative; }
+    .tcard .quote { font-family:'Cormorant Garamond',serif; font-size:64px; color:var(--gold-soft); line-height:.6; position:absolute; top:24px; right:26px; }
+    .tcard .stars { color:var(--gold); letter-spacing:2px; margin-bottom:16px; font-size:15px; }
+    .tcard p { font-family:'Cormorant Garamond',serif; font-size:21px; line-height:1.4; color:var(--ink); margin-bottom:20px; position:relative; }
+    .tcard .who { display:flex; align-items:center; gap:12px; }
+    .tcard .ava { width:46px; height:46px; border-radius:50%; background:var(--navy); color:var(--gold); display:grid; place-items:center; font-weight:700; font-family:'Cormorant Garamond',serif; font-size:18px; }
+    .tcard .name { font-weight:700; font-size:14.5px; color:var(--navy); }
+    .tcard .city { color:var(--faint); font-size:13px; }
+
+    /* cta */
+    .cta-wrap { padding:20px 0 92px; }
+    .cta { position:relative; overflow:hidden; border-radius:var(--radius-lg); color:#fff; min-height:440px; padding:76px 40px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+    .cta-bg { position:absolute; inset:0; z-index:0; background:var(--navy-3); }
+    .cta-bg img { width:100%; height:100%; object-fit:cover; }
+    .cta-bg::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(11,25,40,.62) 0%, rgba(11,25,40,.86) 100%), radial-gradient(110% 80% at 50% 8%, rgba(11,25,40,.12), rgba(11,25,40,.72)); }
+    .cta-inner { position:relative; z-index:1; max-width:720px; }
+    .cta .cta-eyebrow { display:inline-flex; align-items:center; gap:10px; color:var(--gold); font-weight:600; font-size:12.5px; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:20px; }
+    .cta .cta-eyebrow::before, .cta .cta-eyebrow::after { content:""; width:26px; height:1.5px; background:var(--gold); opacity:.7; }
+    .cta h2 { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(34px,4.8vw,58px); line-height:1.03; letter-spacing:-.5px; max-width:18ch; margin:0 auto; }
+    .cta p { color:#cdd7e1; font-size:16.5px; margin:16px auto 0; max-width:54ch; }
+    .cta .cbtns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:30px; }
+    .cta-trust { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:30px; padding-top:26px; border-top:1px solid rgba(255,255,255,.16); color:#aeb9c5; font-size:13.5px; }
+    .cta-trust .stars { color:var(--gold); letter-spacing:1px; }
+    .cta-trust .dotsep { color:rgba(255,255,255,.3); }
+    .btn-ghost { background:rgba(255,255,255,.10); color:#fff; border-color:rgba(255,255,255,.34); backdrop-filter:blur(4px); }
+    .btn-ghost:hover { background:rgba(255,255,255,.18); border-color:#fff; transform:translateY(-2px); }
+
+    /* footer */
+    footer { background:var(--navy-3); color:#a9b6c2; padding:66px 0 32px; }
+    .foot-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:40px; margin-bottom:46px; }
+    footer .logo { color:#fff; margin-bottom:14px; }
+    footer .about { font-size:14px; color:#8fa0b0; max-width:30ch; }
+    footer h4 { color:#fff; font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    footer ul { list-style:none; }
+    footer li { margin-bottom:9px; }
+    footer li a, footer li span { color:#8fa0b0; font-size:14px; }
+    footer li a:hover { color:#fff; }
+    .foot-bottom { border-top:1px solid #1b3b5c; padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:#728499; font-size:13px; }
+
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .reveal.in { opacity:1; transform:none; }
+    .show-all .reveal { opacity:1 !important; transform:none !important; }
+    @media (prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none;transition:none;} .hero-bg img{animation:none;} .listings.filtered .listing:not(.is-hidden),.no-results.show{animation:none;} .listing .pulse .dot::after{animation:none;} }
+
+    @media (max-width:980px) {
+      .listings, .services { grid-template-columns:1fr 1fr; }
+      .hoods, .agents { grid-template-columns:1fr 1fr; }
+      .tcards { grid-template-columns:1fr; }
+      .feat, .calc { grid-template-columns:1fr; gap:34px; } .feat-gallery { height:380px; }
+      .stats-grid { grid-template-columns:1fr 1fr; } .stat:nth-child(3){ border-left:none; }
+      .foot-grid { grid-template-columns:1fr 1fr; }
+      .search-fields { grid-template-columns:1fr 1fr; }
+      .field:nth-child(3){ border-left:none; } .search .go { grid-column:span 2; justify-content:center; padding:14px; }
+    }
+    @media (max-width:620px) {
+      .nav-links, .nav-cta .btn { display:none; } .burger { display:flex; }
+      .nav-links.open { display:flex; flex-direction:column; position:absolute; top:78px; left:0; right:0; background:var(--bg); border-bottom:1px solid var(--line); padding:20px 28px; gap:16px; }
+      .nav-links.open a { color:var(--muted); }
+      .listings, .services, .hoods, .agents { grid-template-columns:1fr; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .foot-grid { grid-template-columns:1fr; }
+      section.block { padding:66px 0; }
+      .field + .field { border-left:none; }
+      .field.dd .dd-menu { left:0; right:0; min-width:0; }
+      .cta { padding:54px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container nav">
+      <a href="#" class="logo"><span class="mk"><svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span> Haven</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#listings">Buy</a>
+        <a href="#listings">Rent</a>
+        <a href="#services">Sell</a>
+        <a href="#agents">Agents</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-gold">List your property</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&auto=format&fit=crop" alt="Luxury home at dusk" onerror="this.style.opacity=0" /></div>
+    <div class="container">
+      <span class="eyebrow">Luxury real estate · Est. 2009</span>
+      <h1 class="serif">A home as<br><em>extraordinary</em><br>as your story.</h1>
+      <p class="lead">Browse handpicked homes, villas and apartments — and work with agents who treat your move like it's their own.</p>
+      <div class="search">
+        <div class="search-tabs">
+          <button class="on" data-tab="buy">For sale</button>
+          <button data-tab="rent">For rent</button>
+        </div>
+        <div class="search-fields">
+          <div class="field"><label>Location</label><input type="text" value="New York, NY" /></div>
+          <div class="field dd" data-dd data-role="type">
+            <label>Type</label>
+            <button class="dd-trigger" type="button"><span class="dd-val">Any type</span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="dd-menu">
+              <button class="dd-opt on" type="button" data-v="Any type" data-t="all">Any type <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+              <button class="dd-opt" type="button" data-v="House" data-t="house">House <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+              <button class="dd-opt" type="button" data-v="Villa" data-t="villa">Villa <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+              <button class="dd-opt" type="button" data-v="Apartment" data-t="apartment">Apartment <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+            </div>
+          </div>
+          <div class="field dd" data-dd data-role="price" id="priceField">
+            <label>Price</label>
+            <button class="dd-trigger" type="button"><span class="dd-val">Any price</span><svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="dd-menu">
+              <button class="dd-opt on" type="button" data-v="Any price" data-r="any">Any price <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+              <button class="dd-opt" type="button" data-v="Up to $500k" data-r="lt500">Up to $500k <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+              <button class="dd-opt" type="button" data-v="$500k – $1M" data-r="500-1m">$500k – $1M <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+              <button class="dd-opt" type="button" data-v="$1M+" data-r="gt1m">$1M+ <svg class="ck" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button>
+            </div>
+          </div>
+          <button class="go" id="searchGo"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Search</button>
+        </div>
+      </div>
+      <div class="hero-trust">
+        <span><span class="stars">★★★★★</span> 4.9 from 2,000+ reviews</span>
+        <span><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--gold);"><path d="M20 6 9 17l-5-5"/></svg> Verified listings only</span>
+        <span><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--gold);"><path d="M12 2 4 6v6c0 5 8 10 8 10s8-5 8-10V6z"/></svg> Trusted since 2009</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Press -->
+  <div class="press">
+    <div class="container">
+      <span class="lbl">As featured in</span>
+      <div class="logos"><span>Forbes</span><span>Architectural Digest</span><span>Bloomberg</span><span>Dwell</span><span>The Times</span></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="container stats-grid" id="stats">
+      <div class="stat"><div class="n serif"><span class="c" data-count="1200">0</span><span class="gd">+</span></div><div class="l">Active listings</div></div>
+      <div class="stat"><div class="n serif"><span class="c" data-count="28">0</span></div><div class="l">Cities covered</div></div>
+      <div class="stat"><div class="n serif"><span class="c" data-count="45">0</span></div><div class="l">Expert agents</div></div>
+      <div class="stat"><div class="n serif"><span class="c" data-count="10000">0</span><span class="gd">+</span></div><div class="l">Happy families</div></div>
+    </div>
+  </div>
+
+  <!-- Listings -->
+  <section class="block" id="listings">
+    <div class="container">
+      <div class="head reveal">
+        <div>
+          <span class="eyebrow">Featured listings</span>
+          <h2 class="serif">Handpicked homes for you</h2>
+          <p class="count-line" id="countLine">Showing <b>6</b> of 6 homes</p>
+        </div>
+        <div class="filters" id="filters">
+          <button class="on" data-f="all">All</button>
+          <button data-f="house">Houses</button>
+          <button data-f="villa">Villas</button>
+          <button data-f="apartment">Apartments</button>
+        </div>
+      </div>
+      <div class="listings" id="listGrid">
+
+        <div class="listing reveal" data-type="house" data-status="sale" data-price="845000">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="ribbon">New</span><button class="fav" aria-label="Save"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 3.5 0 5 3.5 3 7-2.5 4-9.5 8.5-9.5 8.5z"/></svg></button><span class="photo-count"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg> 18</span><a class="view" href="#contact">View details <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="body">
+            <div class="price">$845,000</div>
+            <h3 class="serif">Pine Ridge Retreat</h3>
+            <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Asheville, North Carolina</div>
+            <div class="pulse"><span class="dot"></span> Just listed · 2 days ago</div>
+            <div class="specs"><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg> 4 beds</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> 3 baths</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg> 2,400 ft²</span></div>
+          </div>
+        </div>
+
+        <div class="listing reveal" data-type="house" data-status="sale" data-price="1150000">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="ribbon sale">For sale</span><button class="fav" aria-label="Save"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 3.5 0 5 3.5 3 7-2.5 4-9.5 8.5-9.5 8.5z"/></svg></button><span class="photo-count"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg> 24</span><a class="view" href="#contact">View details <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="body">
+            <div class="price">$1,150,000</div>
+            <h3 class="serif">Maple Lane Cottage</h3>
+            <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Cape Cod, Massachusetts</div>
+            <div class="pulse"><span class="dot"></span> 8 buyers saved this home</div>
+            <div class="specs"><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg> 5 beds</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> 4 baths</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg> 3,100 ft²</span></div>
+          </div>
+        </div>
+
+        <div class="listing reveal" data-type="villa" data-status="sale" data-price="2650000">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="ribbon">Featured</span><button class="fav" aria-label="Save"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 3.5 0 5 3.5 3 7-2.5 4-9.5 8.5-9.5 8.5z"/></svg></button><span class="photo-count"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg> 32</span><a class="view" href="#contact">View details <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="body">
+            <div class="price">$2,650,000</div>
+            <h3 class="serif">Azure Modern Villa</h3>
+            <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Malibu, California</div>
+            <div class="pulse"><span class="dot"></span> Open house · Sat 2–4pm</div>
+            <div class="specs"><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg> 5 beds</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> 5 baths</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg> 5,200 ft²</span></div>
+          </div>
+        </div>
+
+        <div class="listing reveal" data-type="villa" data-status="sale" data-price="3200000">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="ribbon hot">Price reduced</span><button class="fav" aria-label="Save"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 3.5 0 5 3.5 3 7-2.5 4-9.5 8.5-9.5 8.5z"/></svg></button><span class="photo-count"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg> 27</span><a class="view" href="#contact">View details <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="body">
+            <div class="price">$3,200,000</div>
+            <h3 class="serif">Sunset Bluff Villa</h3>
+            <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Scottsdale, Arizona</div>
+            <div class="pulse"><span class="dot"></span> Reduced $150,000 this week</div>
+            <div class="specs"><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg> 6 beds</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> 6 baths</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg> 6,000 ft²</span></div>
+          </div>
+        </div>
+
+        <div class="listing reveal" data-type="apartment" data-status="rent" data-price="2400">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="ribbon sale">For rent</span><button class="fav" aria-label="Save"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 3.5 0 5 3.5 3 7-2.5 4-9.5 8.5-9.5 8.5z"/></svg></button><span class="photo-count"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg> 12</span><a class="view" href="#contact">View details <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="body">
+            <div class="price">$2,400<span> / mo</span></div>
+            <h3 class="serif">Garden Loft Apartment</h3>
+            <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Brooklyn, New York</div>
+            <div class="pulse"><span class="dot"></span> Tour available today</div>
+            <div class="specs"><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg> 2 beds</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> 1 bath</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg> 950 ft²</span></div>
+          </div>
+        </div>
+
+        <div class="listing reveal" data-type="apartment" data-status="rent" data-price="3800">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="ribbon sale">For rent</span><button class="fav" aria-label="Save"><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.5 1.5 4.5 3 1-1.5 2.5-3 4.5-3 3.5 0 5 3.5 3 7-2.5 4-9.5 8.5-9.5 8.5z"/></svg></button><span class="photo-count"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg> 16</span><a class="view" href="#contact">View details <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="body">
+            <div class="price">$3,800<span> / mo</span></div>
+            <h3 class="serif">Skyline Open-Plan Flat</h3>
+            <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Austin, Texas</div>
+            <div class="pulse"><span class="dot"></span> Available now · move-in ready</div>
+            <div class="specs"><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg> 3 beds</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> 2 baths</span><span class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg> 1,400 ft²</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="no-results" id="noResults">
+        <div class="nr-ic"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8.5 11h5"/></svg></div>
+        <h3 class="serif">No homes match your search</h3>
+        <p>Try widening your filters — adjust the price range or type, or switch between buying and renting.</p>
+        <button class="btn btn-navy" id="clearFilters">Clear all filters</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mortgage calculator -->
+  <div class="calc-wrap">
+    <section class="block">
+      <div class="container">
+        <div class="head reveal" style="margin-bottom:36px;">
+          <div>
+            <span class="eyebrow">Plan your purchase</span>
+            <h2 class="serif">What can you afford?</h2>
+            <p>Drag the sliders to estimate your monthly mortgage payment — no sign-up needed.</p>
+          </div>
+        </div>
+        <div class="calc reveal">
+          <div class="calc-inputs">
+            <div class="row">
+              <div class="rl"><span class="k">Home price</span><span class="v" id="vPrice">$850,000</span></div>
+              <input type="range" id="price" min="200000" max="5000000" step="50000" value="850000" />
+            </div>
+            <div class="row">
+              <div class="rl"><span class="k">Down payment</span><span class="v" id="vDown">20% · $170,000</span></div>
+              <input type="range" id="down" min="5" max="60" step="1" value="20" />
+            </div>
+            <div class="row">
+              <div class="rl"><span class="k">Interest rate</span><span class="v" id="vRate">6.5%</span></div>
+              <input type="range" id="rate" min="2" max="10" step="0.1" value="6.5" />
+            </div>
+            <div class="row">
+              <div class="rl"><span class="k">Loan term</span><span class="v" id="vTerm">30 years</span></div>
+              <div class="seg" id="term">
+                <button data-y="15">15 years</button>
+                <button class="on" data-y="30">30 years</button>
+              </div>
+            </div>
+          </div>
+          <div class="calc-result">
+            <div class="lbl">Estimated monthly payment</div>
+            <div class="big serif"><span>$</span><span id="monthly">4,298</span></div>
+            <div class="bd"><span class="k">Loan amount</span><span class="pv" id="loanAmt">$680,000</span></div>
+            <div class="bd" style="border-top:none;padding-top:8px;"><span class="k">Total over term</span><span class="pv" id="totalAmt">$1.55M</span></div>
+            <a href="#contact" class="btn btn-gold">Get pre-approved</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Featured property -->
+  <div class="feat-wrap">
+    <section class="block">
+      <div class="container feat">
+        <div class="feat-gallery reveal">
+          <div class="g"><img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /></div>
+          <div class="g"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /></div>
+          <div class="g"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /></div>
+        </div>
+        <div class="feat-info reveal">
+          <span class="eyebrow">Property of the week</span>
+          <h2 class="serif">The Glass House</h2>
+          <div class="loc"><svg class="ico" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Beverly Hills, California</div>
+          <div class="fprice serif">$5,900,000</div>
+          <p>An architectural masterpiece with floor-to-ceiling glass, an infinity pool and uninterrupted canyon views. Designed for those who want to live in the light.</p>
+          <div class="feat-specs">
+            <div class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/></svg><div class="v">6</div><div class="k">Bedrooms</div></div>
+            <div class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M4 12V6a2 2 0 0 1 4 0M2 12h20v3a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg><div class="v">7</div><div class="k">Bathrooms</div></div>
+            <div class="s"><svg class="ico" viewBox="0 0 24 24"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg><div class="v">8,400</div><div class="k">Sq feet</div></div>
+            <div class="s"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><div class="v">3</div><div class="k">Car garage</div></div>
+          </div>
+          <a href="#contact" class="btn btn-gold btn-lg">Schedule a private tour</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Neighborhoods -->
+  <section class="block">
+    <div class="container">
+      <div class="head center reveal">
+        <span class="eyebrow">Explore by area</span>
+        <h2 class="serif">Find your neighborhood</h2>
+      </div>
+      <div class="hoods reveal">
+        <a class="hood" href="#listings"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="arrow"><svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span><span class="cap"><span class="k serif">Downtown</span><br><span class="l"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:var(--gold)"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/></svg> 142 listings</span></span></a>
+        <a class="hood" href="#listings"><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="arrow"><svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span><span class="cap"><span class="k serif">Beachside</span><br><span class="l"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:var(--gold)"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/></svg> 86 listings</span></span></a>
+        <a class="hood" href="#listings"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="arrow"><svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span><span class="cap"><span class="k serif">Hillside</span><br><span class="l"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:var(--gold)"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/></svg> 64 listings</span></span></a>
+        <a class="hood" href="#listings"><img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=500&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><span class="arrow"><svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span><span class="cap"><span class="k serif">Countryside</span><br><span class="l"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:var(--gold)"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/></svg> 53 listings</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="block" id="services" style="padding-top:0;">
+    <div class="container">
+      <div class="head center reveal">
+        <span class="eyebrow">How we help</span>
+        <h2 class="serif">Whatever your next move</h2>
+      </div>
+      <div class="services">
+        <div class="service reveal">
+          <span class="num serif">01</span>
+          <span class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span>
+          <h3 class="serif">Buy a home</h3>
+          <p>Search verified listings, book tours in a click, and get an expert by your side from offer to keys in hand.</p>
+        </div>
+        <div class="service reveal">
+          <span class="num serif">02</span>
+          <span class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" transform="scale(0)"/><path d="M3 8l9-5 9 5M5 21V11l7-4 7 4v10M9 21v-5h6v5"/></svg></span>
+          <h3 class="serif">Sell with us</h3>
+          <p>Professional photos, smart pricing and serious marketing — so your property sells faster and for more.</p>
+        </div>
+        <div class="service reveal">
+          <span class="num serif">03</span>
+          <span class="ic"><svg class="ico" viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/><circle cx="12" cy="11" r="1.4"/></svg></span>
+          <h3 class="serif">Rent easily</h3>
+          <p>Find your next rental with transparent prices, virtual tours and no hidden fees. Move in with confidence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agents -->
+  <section class="block" id="agents" style="padding-top:0;">
+    <div class="container">
+      <div class="head center reveal">
+        <span class="eyebrow">Meet the team</span>
+        <h2 class="serif">Agents who actually care</h2>
+      </div>
+      <div class="agents">
+        <div class="agent reveal">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><div class="social"><a href="#"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a><a href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a></div></div>
+          <h3 class="serif">Daniel Reyes</h3>
+          <div class="role">Senior Agent</div>
+          <div class="meta">68 homes sold</div>
+        </div>
+        <div class="agent reveal">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><div class="social"><a href="#"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a><a href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a></div></div>
+          <h3 class="serif">Camila Duarte</h3>
+          <div class="role">Luxury Specialist</div>
+          <div class="meta">91 homes sold</div>
+        </div>
+        <div class="agent reveal">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><div class="social"><a href="#"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a><a href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a></div></div>
+          <h3 class="serif">Marcus Lee</h3>
+          <div class="role">Rentals Lead</div>
+          <div class="meta">120 rentals closed</div>
+        </div>
+        <div class="agent reveal">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /><div class="social"><a href="#"><svg class="ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a><a href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a></div></div>
+          <h3 class="serif">Sofia Bennett</h3>
+          <div class="role">Buyer's Agent</div>
+          <div class="meta">54 homes sold</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="block" style="padding-top:0;padding-bottom:64px;">
+    <div class="container">
+      <div class="head center reveal">
+        <span class="eyebrow">Happy homeowners</span>
+        <h2 class="serif">Loved by families like yours</h2>
+      </div>
+      <div class="tcards">
+        <div class="tcard reveal">
+          <span class="quote serif">"</span>
+          <div class="stars">★★★★★</div>
+          <p>Haven found us our dream home in three weeks. Our agent listened to every little thing we wanted.</p>
+          <div class="who"><div class="ava serif">EM</div><div><div class="name">Emma &amp; Mark</div><div class="city">Austin, TX</div></div></div>
+        </div>
+        <div class="tcard reveal">
+          <span class="quote serif">"</span>
+          <div class="stars">★★★★★</div>
+          <p>Sold our place for 12% above asking. The photos and marketing were on another level.</p>
+          <div class="who"><div class="ava serif">RK</div><div><div class="name">Raj Kapoor</div><div class="city">Brooklyn, NY</div></div></div>
+        </div>
+        <div class="tcard reveal">
+          <span class="quote serif">"</span>
+          <div class="stars">★★★★★</div>
+          <p>As first-time buyers we were terrified. They made the whole thing calm, clear and honestly fun.</p>
+          <div class="who"><div class="ava serif">TO</div><div><div class="name">The Okafors</div><div class="city">Atlanta, GA</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <div class="container">
+      <div class="cta reveal" id="contact">
+        <div class="cta-bg"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&q=80&auto=format&fit=crop" alt="" onerror="this.style.opacity=0" /></div>
+        <div class="cta-inner">
+          <span class="cta-eyebrow">Your next chapter</span>
+          <h2 class="serif">The home you've been picturing is closer than you think.</h2>
+          <p>Tell us what you're looking for and we'll send a handpicked shortlist within 24 hours — no pressure, no spam.</p>
+          <div class="cbtns">
+            <a href="#listings" class="btn btn-gold btn-lg">Browse homes</a>
+            <a href="mailto:hello@haven.com" class="btn btn-ghost btn-lg">Talk to an agent</a>
+          </div>
+          <div class="cta-trust">
+            <span><span class="stars">★★★★★</span> 4.9 · 2,000+ happy families</span>
+            <span class="dotsep">•</span>
+            <span>Avg. 21 days to close</span>
+            <span class="dotsep">•</span>
+            <span>No fees until you move in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <div class="logo"><span class="mk"><svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span> Haven</div>
+          <p class="about">Helping families buy, sell and rent beautiful homes since 2009. Your next chapter starts here.</p>
+        </div>
+        <div><h4>Explore</h4><ul><li><a href="#listings">Buy</a></li><li><a href="#listings">Rent</a></li><li><a href="#services">Sell</a></li><li><a href="#agents">Agents</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="#">About us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#contact">Contact</a></li></ul></div>
+        <div><h4>Contact</h4><ul><li><span>88 Park Avenue, NY</span></li><li><span>+1 (555) 200-7788</span></li><li><span>hello@haven.com</span></li></ul></div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Haven Realty. All rights reserved.</span>
+        <span>Privacy · Terms · Fair Housing</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 40));
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // (search tabs + search action are handled in the unified filtering module below)
+
+    // custom dropdowns
+    document.querySelectorAll('[data-dd]').forEach(dd => {
+      const trig = dd.querySelector('.dd-trigger'), val = dd.querySelector('.dd-val');
+      trig.addEventListener('click', e => {
+        e.stopPropagation();
+        const open = dd.classList.contains('open');
+        document.querySelectorAll('[data-dd]').forEach(d => d.classList.remove('open'));
+        if (!open) dd.classList.add('open');
+      });
+      dd.querySelectorAll('.dd-opt').forEach(o => o.addEventListener('click', e => {
+        e.stopPropagation();
+        dd.querySelectorAll('.dd-opt').forEach(x => x.classList.remove('on'));
+        o.classList.add('on');
+        val.textContent = o.dataset.v;
+        dd.classList.remove('open');
+      }));
+    });
+    document.addEventListener('click', () => document.querySelectorAll('[data-dd]').forEach(d => d.classList.remove('open')));
+
+    // ---- unified search + filtering ----
+    const grid = document.getElementById('listGrid');
+    const cards = Array.from(grid.querySelectorAll('.listing'));
+    const countLine = document.getElementById('countLine');
+    const noResults = document.getElementById('noResults');
+    const filterBtns = Array.from(document.querySelectorAll('#filters button'));
+    const tabBtns = Array.from(document.querySelectorAll('.search-tabs button'));
+    const typeField = document.querySelector('[data-role="type"]');
+    const priceField = document.getElementById('priceField');
+    const f = { status: 'all', type: 'all', price: 'any' };
+
+    function priceOk(card) {
+      if (card.dataset.status !== 'sale') return true;       // rentals ignore sale price bands
+      const p = +card.dataset.price;
+      if (f.price === 'lt500') return p < 500000;
+      if (f.price === '500-1m') return p >= 500000 && p <= 1000000;
+      if (f.price === 'gt1m') return p > 1000000;
+      return true;
+    }
+    function matches(card) {
+      return (f.status === 'all' || card.dataset.status === f.status)
+          && (f.type === 'all' || card.dataset.type === f.type)
+          && priceOk(card);
+    }
+    function syncChips() {
+      filterBtns.forEach(b => b.classList.toggle('on', b.dataset.f === f.type));
+    }
+    function render() {
+      grid.classList.add('filtered');
+      let n = 0;
+      cards.forEach(c => { const ok = matches(c); c.classList.toggle('is-hidden', !ok); if (ok) n++; });
+      countLine.innerHTML = 'Showing <b>' + n + '</b> of ' + cards.length + ' ' + (n === 1 ? 'home' : 'homes');
+      noResults.classList.toggle('show', n === 0);
+    }
+
+    // section chips -> filter by type
+    filterBtns.forEach(btn => btn.addEventListener('click', () => { f.type = btn.dataset.f; syncChips(); render(); }));
+
+    // hero tabs (For sale / For rent): rent makes the price band not applicable
+    tabBtns.forEach(b => b.addEventListener('click', () => {
+      tabBtns.forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      const rent = b.dataset.tab === 'rent';
+      priceField.classList.toggle('is-off', rent);
+      if (rent) {
+        priceField.querySelectorAll('.dd-opt').forEach(o => o.classList.toggle('on', o.dataset.r === 'any'));
+        priceField.querySelector('.dd-val').textContent = 'Any price';
+      }
+    }));
+
+    // Search -> apply the whole hero form, sync the section chips, then scroll to results
+    const searchGo = document.getElementById('searchGo');
+    searchGo.addEventListener('click', () => {
+      const activeTab = document.querySelector('.search-tabs button.on');
+      f.status = (activeTab && activeTab.dataset.tab === 'rent') ? 'rent' : 'sale';
+      const typeOpt = typeField.querySelector('.dd-opt.on');
+      f.type = typeOpt ? typeOpt.dataset.t : 'all';
+      const priceOpt = priceField.querySelector('.dd-opt.on');
+      f.price = priceField.classList.contains('is-off') ? 'any' : (priceOpt ? priceOpt.dataset.r : 'any');
+      syncChips();
+      render();
+      const label = searchGo.innerHTML;
+      searchGo.innerHTML = 'Searching…';
+      setTimeout(() => {
+        searchGo.innerHTML = label;
+        document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+      }, 360);
+    });
+
+    // empty-state: reset everything
+    document.getElementById('clearFilters').addEventListener('click', () => {
+      f.status = 'all'; f.type = 'all'; f.price = 'any';
+      tabBtns.forEach((x, i) => x.classList.toggle('on', i === 0));
+      priceField.classList.remove('is-off');
+      [typeField, priceField].forEach(fl => {
+        fl.querySelectorAll('.dd-opt').forEach((o, i) => o.classList.toggle('on', i === 0));
+        fl.querySelector('.dd-val').textContent = fl.querySelector('.dd-opt.on').dataset.v;
+      });
+      syncChips();
+      render();
+    });
+
+    // favorites
+    document.querySelectorAll('.fav').forEach(b => b.addEventListener('click', e => { e.preventDefault(); b.classList.toggle('on'); }));
+
+    // mortgage calculator
+    const price = document.getElementById('price'), down = document.getElementById('down'), rate = document.getElementById('rate');
+    let years = 30;
+    const fmt = n => '$' + Math.round(n).toLocaleString();
+    const fmtM = n => n >= 1e6 ? '$' + (n/1e6).toFixed(2) + 'M' : '$' + Math.round(n).toLocaleString();
+    function calc() {
+      const P = +price.value, dp = +down.value, r = +rate.value;
+      const downAmt = P * dp / 100, loan = P - downAmt;
+      const i = r / 100 / 12, n = years * 12;
+      const m = i === 0 ? loan / n : loan * i * Math.pow(1+i, n) / (Math.pow(1+i, n) - 1);
+      document.getElementById('vPrice').textContent = fmt(P);
+      document.getElementById('vDown').textContent = dp + '% · ' + fmt(downAmt);
+      document.getElementById('vRate').textContent = r.toFixed(1) + '%';
+      document.getElementById('vTerm').textContent = years + ' years';
+      document.getElementById('monthly').textContent = Math.round(m).toLocaleString();
+      document.getElementById('loanAmt').textContent = fmt(loan);
+      document.getElementById('totalAmt').textContent = fmtM(m * n);
+    }
+    [price, down, rate].forEach(el => el.addEventListener('input', calc));
+    document.querySelectorAll('#term button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#term button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on'); years = +b.dataset.y; calc();
+    }));
+    calc();
+
+    // animated counters
+    let counted = false;
+    function runCounters() {
+      if (counted) return; counted = true;
+      document.querySelectorAll('#stats .c').forEach(el => {
+        const target = +el.dataset.count, dur = 1500, start = performance.now();
+        function tick(now) { const p = Math.min((now - start) / dur, 1); const e = 1 - Math.pow(1 - p, 3); el.textContent = Math.floor(target * e).toLocaleString(); if (p < 1) requestAnimationFrame(tick); else el.textContent = target.toLocaleString(); }
+        requestAnimationFrame(tick);
+      });
+    }
+    const statObs = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) runCounters(); }), { threshold: 0.4 });
+    statObs.observe(document.getElementById('stats'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    window.addEventListener('load', () => setTimeout(() => document.body.classList.add('show-all'), 1400));
+  </script>
+</body>
+</html>
