@@ -1,18 +1,14 @@
-# Pablo Ruan — Portfolio
+# Portfólio antigo — mudou de endereço
 
-Personal portfolio + 3 case-study projects, hand-built with **HTML, CSS & JavaScript** (no frameworks), including **interactive WebGL / 3D**.
+Este era o meu primeiro portfólio. Ele foi totalmente reconstruído.
 
-**Live:** _coming soon_ · **Contact:** [LinkedIn](https://www.linkedin.com/in/dev-pabloruan/) · [GitHub](https://github.com/pabloruancoder)
+## 👉 O portfólio atual está em https://pabloruan.netlify.app
 
-## What's inside
-- `index.html` — personal portfolio (dark, creative; EN/PT toggle; interactive 3D hero; live project previews)
-- `portfolio/01-saas-landing/` — **Flowly**, a SaaS landing page
-- `portfolio/02-restaurant/` — **Sálvia**, a restaurant website
-- `portfolio/03-ecommerce/` — **Stride 01**, an e-commerce store with an interactive 3D product
+Este repositório serve apenas uma página de redirecionamento
+(`index.html` e `404.html`, idênticos), para que os links antigos
+continuem levando alguém a algum lugar útil.
 
-## Tech
-HTML5 · CSS3 · JavaScript (vanilla) · Three.js / WebGL · `<model-viewer>`
+A versão original continua no histórico do Git — o commit anterior
+a este tem o site como ele era.
 
-> The 3D experiences need to be served over http(s) — open the site through the deployed URL (or a local server), not by double-clicking the file.
-
-Built and designed by **Pablo Ruan**.
+— Pablo Ruan · desenvolvedor full-stack
